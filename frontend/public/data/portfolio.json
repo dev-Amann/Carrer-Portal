@@ -1,0 +1,138 @@
+[
+  {
+    "id": 1,
+    "slug": "ai-career-advisor",
+    "title": "AI Career Advisor Platform",
+    "tags": ["AI/ML", "React", "Python", "Career Tech"],
+    "images": [
+      "https://picsum.photos/seed/project1-1/800/600",
+      "https://picsum.photos/seed/project1-2/800/600",
+      "https://picsum.photos/seed/project1-3/800/600"
+    ],
+    "description": "An intelligent career guidance platform that uses machine learning to analyze user skills and provide personalized career recommendations with detailed roadmaps.",
+    "techStack": ["React", "Node.js", "Python", "TensorFlow", "PostgreSQL", "AWS"],
+    "challenge": "Creating an accurate recommendation engine that could process diverse skill sets and match them with relevant career paths while considering market demand and salary trends.",
+    "solution": "Implemented a hybrid recommendation system combining collaborative filtering and content-based algorithms, trained on industry data and user feedback to continuously improve accuracy.",
+    "clientType": "EdTech Startup",
+    "url": "https://example.com/ai-career-advisor"
+  },
+  {
+    "id": 2,
+    "slug": "expert-booking-system",
+    "title": "Expert Consultation Booking System",
+    "tags": ["Full Stack", "React", "Video Integration", "Payments"],
+    "images": [
+      "https://picsum.photos/seed/project2-1/800/600",
+      "https://picsum.photos/seed/project2-2/800/600",
+      "https://picsum.photos/seed/project2-3/800/600"
+    ],
+    "description": "A comprehensive booking platform connecting users with industry experts for one-on-one video consultations, featuring integrated payment processing and scheduling.",
+    "techStack": ["React", "Flask", "MySQL", "Jitsi Meet", "Razorpay", "JWT"],
+    "challenge": "Synchronizing real-time availability, handling payment processing securely, and ensuring seamless video conferencing integration across different devices and network conditions.",
+    "solution": "Built a robust scheduling system with conflict detection, integrated Razorpay for secure payments, and embedded Jitsi Meet for reliable video calls with automatic room generation.",
+    "clientType": "Professional Services",
+    "url": "https://example.com/expert-booking"
+  },
+  {
+    "id": 3,
+    "slug": "skill-assessment-dashboard",
+    "title": "Interactive Skill Assessment Dashboard",
+    "tags": ["React", "Data Visualization", "UX/UI", "Analytics"],
+    "images": [
+      "https://picsum.photos/seed/project3-1/800/600",
+      "https://picsum.photos/seed/project3-2/800/600",
+      "https://picsum.photos/seed/project3-3/800/600"
+    ],
+    "description": "A dynamic dashboard for users to assess their skills, track progress over time, and visualize skill gaps compared to desired career paths with interactive charts.",
+    "techStack": ["React", "D3.js", "Recharts", "Tailwind CSS", "Express", "MongoDB"],
+    "challenge": "Presenting complex skill data in an intuitive, visually appealing way while maintaining performance with large datasets and real-time updates.",
+    "solution": "Leveraged Recharts for performant visualizations, implemented progressive data loading, and designed an intuitive UI with clear visual hierarchy and interactive elements.",
+    "clientType": "HR Tech Company",
+    "url": "https://example.com/skill-dashboard"
+  },
+  {
+    "id": 4,
+    "slug": "learning-resource-aggregator",
+    "title": "Learning Resource Aggregator",
+    "tags": ["Full Stack", "API Integration", "Search", "Content"],
+    "images": [
+      "https://picsum.photos/seed/project4-1/800/600",
+      "https://picsum.photos/seed/project4-2/800/600",
+      "https://picsum.photos/seed/project4-3/800/600"
+    ],
+    "description": "A centralized platform aggregating learning resources from multiple providers, with smart search and personalized recommendations based on user career goals.",
+    "techStack": ["Vue.js", "Node.js", "Elasticsearch", "Redis", "Docker", "Kubernetes"],
+    "challenge": "Integrating diverse APIs with different data formats, implementing fast search across millions of resources, and providing relevant recommendations.",
+    "solution": "Built a unified data pipeline with ETL processes, implemented Elasticsearch for lightning-fast search, and used collaborative filtering for personalized recommendations.",
+    "clientType": "Online Education Platform",
+    "url": "https://example.com/learning-hub"
+  },
+  {
+    "id": 5,
+    "slug": "resume-builder-ai",
+    "title": "AI-Powered Resume Builder",
+    "tags": ["AI/ML", "React", "NLP", "PDF Generation"],
+    "images": [
+      "https://picsum.photos/seed/project5-1/800/600",
+      "https://picsum.photos/seed/project5-2/800/600",
+      "https://picsum.photos/seed/project5-3/800/600"
+    ],
+    "description": "An intelligent resume builder that uses NLP to analyze job descriptions and optimize resume content, with professional templates and ATS-friendly formatting.",
+    "techStack": ["React", "Python", "OpenAI API", "jsPDF", "FastAPI", "PostgreSQL"],
+    "challenge": "Parsing diverse job descriptions accurately, generating contextually relevant suggestions, and creating ATS-compatible PDF outputs with custom styling.",
+    "solution": "Integrated OpenAI API for content optimization, built a custom PDF generation engine with ATS-friendly formatting, and implemented real-time preview with editing.",
+    "clientType": "Career Services",
+    "url": "https://example.com/resume-ai"
+  },
+  {
+    "id": 6,
+    "slug": "interview-prep-simulator",
+    "title": "Interview Preparation Simulator",
+    "tags": ["React", "Video", "AI/ML", "Speech Recognition"],
+    "images": [
+      "https://picsum.photos/seed/project6-1/800/600",
+      "https://picsum.photos/seed/project6-2/800/600",
+      "https://picsum.photos/seed/project6-3/800/600"
+    ],
+    "description": "A mock interview platform with AI-powered feedback on responses, body language analysis, and personalized improvement suggestions for job seekers.",
+    "techStack": ["React", "WebRTC", "Python", "TensorFlow", "Speech-to-Text API", "Firebase"],
+    "challenge": "Analyzing video and audio in real-time, providing accurate feedback on communication skills, and creating a realistic interview experience.",
+    "solution": "Implemented WebRTC for video recording, integrated speech recognition for transcription, and used ML models for sentiment analysis and body language detection.",
+    "clientType": "Career Coaching",
+    "url": "https://example.com/interview-sim"
+  },
+  {
+    "id": 7,
+    "slug": "career-roadmap-visualizer",
+    "title": "Career Roadmap Visualizer",
+    "tags": ["React", "Data Visualization", "Interactive", "Planning"],
+    "images": [
+      "https://picsum.photos/seed/project7-1/800/600",
+      "https://picsum.photos/seed/project7-2/800/600",
+      "https://picsum.photos/seed/project7-3/800/600"
+    ],
+    "description": "An interactive tool for visualizing career progression paths with milestones, required skills, and estimated timelines, helping users plan their career journey.",
+    "techStack": ["React", "D3.js", "Framer Motion", "Node.js", "GraphQL", "Neo4j"],
+    "challenge": "Representing complex career paths with multiple branches and dependencies in an intuitive visual format that users could interact with and customize.",
+    "solution": "Created a custom graph visualization using D3.js with drag-and-drop functionality, implemented smooth animations with Framer Motion, and stored relationships in Neo4j.",
+    "clientType": "Corporate Training",
+    "url": "https://example.com/career-roadmap"
+  },
+  {
+    "id": 8,
+    "slug": "mentorship-matching-platform",
+    "title": "Mentorship Matching Platform",
+    "tags": ["Full Stack", "Matching Algorithm", "Social", "Messaging"],
+    "images": [
+      "https://picsum.photos/seed/project8-1/800/600",
+      "https://picsum.photos/seed/project8-2/800/600",
+      "https://picsum.photos/seed/project8-3/800/600"
+    ],
+    "description": "A platform connecting mentees with experienced mentors based on skills, goals, and compatibility, featuring messaging, scheduling, and progress tracking.",
+    "techStack": ["React", "Node.js", "Socket.io", "MongoDB", "Redis", "AWS S3"],
+    "challenge": "Creating an effective matching algorithm that considers multiple factors, implementing real-time messaging, and tracking mentorship progress over time.",
+    "solution": "Developed a weighted scoring algorithm for mentor-mentee matching, integrated Socket.io for real-time chat, and built a progress tracking system with milestone management.",
+    "clientType": "Professional Network",
+    "url": "https://example.com/mentorship"
+  }
+]

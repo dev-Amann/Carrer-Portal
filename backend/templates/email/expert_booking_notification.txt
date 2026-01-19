@@ -1,0 +1,24 @@
+CarrerPortal - New Booking Received
+
+Hello {{ expert_name }}!
+
+You have received a new booking from {{ user_name }}. Payment has been confirmed.
+
+SESSION DETAILS
+---------------
+Client: {{ user_name }}
+Date: {{ formatted_date }}
+Time: {{ formatted_start_time }} - {{ formatted_end_time }}
+Booking ID: #{{ booking_id }}
+
+Meeting Link: {{ meeting_url }}
+
+You can view all your bookings and manage your schedule from your expert dashboard: {{ dashboard_url }}
+
+Please be available at the scheduled time to provide the best experience for your client.
+
+Best regards,
+The CarrerPortal Team
+
+© 2024 CarrerPortal. All rights reserved.
+This is an automated email. Please do not reply.

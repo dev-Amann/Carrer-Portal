@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmed - CarrerPortal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #6EE7B7 0%, #3B82F6 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+        .header p {
+            margin: 10px 0 0 0;
+            font-size: 16px;
+            opacity: 0.95;
+        }
+        .content {
+            padding: 30px;
+        }
+        .content h2 {
+            color: #111827;
+            margin-top: 0;
+        }
+        .booking-details {
+            background: #f9f9f9;
+            border-left: 4px solid #3B82F6;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .booking-details h3 {
+            margin-top: 0;
+            color: #111827;
+        }
+        .detail-row {
+            margin: 10px 0;
+            display: flex;
+            align-items: baseline;
+        }
+        .label {
+            font-weight: bold;
+            color: #555;
+            min-width: 120px;
+        }
+        .value {
+            color: #333;
+        }
+        .important {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .important strong {
+            color: #856404;
+        }
+        .button-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .meeting-link {
+            background: linear-gradient(135deg, #6EE7B7 0%, #3B82F6 100%);
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .meeting-link:hover {
+            opacity: 0.9;
+        }
+        .footer {
+            background: #f9f9f9;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            border-top: 1px solid #e5e7eb;
+        }
+        .footer p {
+            margin: 5px 0;
+        }
+        a {
+            color: #3B82F6;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎉 Booking Confirmed!</h1>
+            <p>Your consultation session is all set</p>
+        </div>
+        
+        <div class="content">
+            <h2>Hello {{ user_name }}!</h2>
+            <p>Great news! Your booking with <strong>{{ expert_name }}</strong> has been confirmed and payment received.</p>
+            
+            <div class="booking-details">
+                <h3>📅 Booking Details</h3>
+                <div class="detail-row">
+                    <span class="label">Expert:</span>
+                    <span class="value">{{ expert_name }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Date:</span>
+                    <span class="value">{{ formatted_date }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Time:</span>
+                    <span class="value">{{ formatted_start_time }} - {{ formatted_end_time }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Booking ID:</span>
+                    <span class="value">#{{ booking_id }}</span>
+                </div>
+                {% if razorpay_payment_id %}
+                <div class="detail-row">
+                    <span class="label">Transaction ID:</span>
+                    <span class="value">{{ razorpay_payment_id }}</span>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="important">
+                <strong>⏰ Important:</strong> Please join the meeting at the scheduled time using the link below.
+            </div>
+            
+            <div class="button-container">
+                <a href="{{ meeting_url }}" class="meeting-link">Join Video Meeting</a>
+            </div>
+            
+            <p>You can also access your booking details anytime from your <a href="{{ dashboard_url }}">dashboard</a>.</p>
+            
+            <p><strong>Meeting Link:</strong> <a href="{{ meeting_url }}">{{ meeting_url }}</a></p>
+            
+            <p>If you have any questions or need to reschedule, please contact us through your dashboard.</p>
+            
+            <p>Best regards,<br>The CarrerPortal Team</p>
+        </div>
+        
+        <div class="footer">
+            <p>© 2024 CarrerPortal. All rights reserved.</p>
+            <p>This is an automated email. Please do not reply.</p>
+        </div>
+    </div>
+</body>
+</html>

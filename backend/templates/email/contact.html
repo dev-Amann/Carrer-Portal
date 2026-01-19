@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Contact Form Submission</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f4f6;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #6EE7B7 0%, #3B82F6 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .content {
+            padding: 30px 20px;
+        }
+        .field {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .field:last-child {
+            border-bottom: none;
+        }
+        .label {
+            display: block;
+            font-weight: 600;
+            color: #6b7280;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+        .value {
+            color: #111827;
+            font-size: 16px;
+            word-wrap: break-word;
+        }
+        .message-value {
+            background-color: #f9fafb;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #8B5CF6;
+            white-space: pre-wrap;
+        }
+        .footer {
+            background-color: #f9fafb;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #6b7280;
+        }
+        .badge {
+            display: inline-block;
+            background-color: #8B5CF6;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .badge.success {
+            background-color: #10b981;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>📬 New Contact Form Submission</h1>
+        </div>
+        
+        <div class="content">
+            <div class="field">
+                <span class="label">Full Name</span>
+                <div class="value">{{ fullName or 'N/A' }}</div>
+            </div>
+            
+            {% if businessName %}
+            <div class="field">
+                <span class="label">Business Name</span>
+                <div class="value">{{ businessName }}</div>
+            </div>
+            {% endif %}
+            
+            <div class="field">
+                <span class="label">Email Address</span>
+                <div class="value">
+                    <a href="mailto:{{ email }}" style="color: #3B82F6; text-decoration: none;">{{ email or 'N/A' }}</a>
+                </div>
+            </div>
+            
+            {% if phone %}
+            <div class="field">
+                <span class="label">Phone Number</span>
+                <div class="value">
+                    <a href="tel:{{ phone }}" style="color: #3B82F6; text-decoration: none;">{{ phone }}</a>
+                </div>
+            </div>
+            {% endif %}
+            
+            {% if budgetRange %}
+            <div class="field">
+                <span class="label">Budget Range</span>
+                <div class="value">{{ budgetRange }}</div>
+            </div>
+            {% endif %}
+            
+            {% if interestedService %}
+            <div class="field">
+                <span class="label">Interested Service</span>
+                <div class="value">
+                    <span class="badge">{{ interestedService }}</span>
+                </div>
+            </div>
+            {% endif %}
+            
+            <div class="field">
+                <span class="label">Message</span>
+                <div class="value message-value">{{ message or 'No message provided' }}</div>
+            </div>
+            
+            <div class="field">
+                <span class="label">Consent Status</span>
+                <div class="value">
+                    {% if consent %}
+                        <span class="badge success">✓ Consent Given</span>
+                    {% else %}
+                        <span class="badge">✗ No Consent</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>This email was sent from the CarrerPortal contact form.</p>
+            <p>Please respond to the contact within 24 hours for best customer experience.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+CarrerPortal - Booking Confirmed!
+
+Hello {{ user_name }}!
+
+Great news! Your booking with {{ expert_name }} has been confirmed and payment received.
+
+BOOKING DETAILS
+---------------
+Expert: {{ expert_name }}
+Date: {{ formatted_date }}
+Time: {{ formatted_start_time }} - {{ formatted_end_time }}
+Booking ID: #{{ booking_id }}
+{% if razorpay_payment_id %}Transaction ID: {{ razorpay_payment_id }}{% endif %}
+
+IMPORTANT: Please join the meeting at the scheduled time using the link below.
+
+Meeting Link: {{ meeting_url }}
+
+You can also access your booking details anytime from your dashboard: {{ dashboard_url }}
+
+If you have any questions or need to reschedule, please contact us through your dashboard.
+
+Best regards,
+The CarrerPortal Team
+
+© 2024 CarrerPortal. All rights reserved.
+This is an automated email. Please do not reply.

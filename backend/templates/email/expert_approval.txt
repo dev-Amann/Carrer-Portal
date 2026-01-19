@@ -1,0 +1,23 @@
+Congratulations! Your Expert Application Has Been Approved!
+
+Hello {{ name }}!
+
+Great news! Your expert application for {{ specialization }} has been approved by our admin team.
+
+What's Next?
+- Log in to your expert dashboard
+- Complete your profile if needed
+- Set your availability
+- Start accepting consultation bookings
+
+You can access your expert dashboard at: {{ dashboard_url }}
+
+You can now start offering your expertise and helping others in their career journey. We're excited to have you on board!
+
+If you have any questions or need assistance, feel free to reach out to our support team.
+
+Best regards,
+The CarrerPortal Team
+
+© 2024 CarrerPortal. All rights reserved.
+This is an automated email. Please do not reply.
