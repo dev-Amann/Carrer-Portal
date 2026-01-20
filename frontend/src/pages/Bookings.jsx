@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 // Force rebuild
-import { bookingsAPI } from '../lib/api';
+import { API } from '../lib/api';
 import JitsiEmbed from '../components/JitsiEmbed';
 import Toast from '../components/Toast';
+import SEO from '../components/SEO';
+import Button from '../components/ui/Button';
 
 const Bookings = () => {
   const [bookings, setBookings] = useState([]);
@@ -18,7 +20,7 @@ const Bookings = () => {
   const fetchBookings = async () => {
     try {
       setLoading(true);
-      const response = await bookingsAPI.getUserBookings();
+      const response = await API.bookings.getUserBookings();
       setBookings(response.data.bookings || []);
       setError(null);
     } catch (err) {
@@ -74,10 +76,10 @@ const Bookings = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-900 py-12 px-4">
+      <div className="min-h-screen bg-[#0a0a0f] py-12 px-4 shadow-xl">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center justify-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500"></div>
           </div>
         </div>
       </div>
@@ -86,18 +88,18 @@ const Bookings = () => {
 
   if (activeRoom) {
     return (
-      <div className="min-h-screen bg-gray-900 py-4 px-4">
-        <div className="max-w-7xl mx-auto">
+      <div className="min-h-screen bg-[#0a0a0f] py-4 px-4 overflow-hidden">
+        <div className="max-w-7xl mx-auto h-[full]">
           <div className="mb-4 flex items-center justify-between">
             <h1 className="text-2xl font-bold text-white">Video Consultation</h1>
-            <button
+            <Button
               onClick={handleLeaveCall}
-              className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              variant="danger"
             >
               Leave Call
-            </button>
+            </Button>
           </div>
-          <div className="bg-gray-800 rounded-lg p-4" style={{ height: 'calc(100vh - 120px)' }}>
+          <div className="glass-card p-4 h-[calc(100vh-100px)]">
             <JitsiEmbed roomId={activeRoom} />
           </div>
         </div>
@@ -106,8 +108,11 @@ const Bookings = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 py-12 px-4">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-[#0a0a0f] py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <SEO title="My Bookings" description="Manage your expert consultation sessions." />
+      {/* Background Grid */}
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" style={{ opacity: 0.05, pointerEvents: 'none' }}></div>
+      <div className="max-w-6xl mx-auto relative z-10">
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-white mb-2">
             My Bookings
@@ -124,7 +129,7 @@ const Bookings = () => {
         )}
 
         {bookings.length === 0 ? (
-          <div className="bg-gray-800 rounded-lg shadow-md p-12 text-center">
+          <div className="glass-card rounded-lg p-12 text-center animate-fade-in">
             <svg
               className="mx-auto h-16 w-16 text-gray-400 mb-4"
               fill="none"
@@ -134,7 +139,7 @@ const Bookings = () => {
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeWidth={2}
+                strokeWidth={1.5}
                 d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
               />
             </svg>
@@ -144,19 +149,19 @@ const Bookings = () => {
             <p className="text-gray-400 mb-6">
               Book a consultation with an expert to get started
             </p>
-            <a
-              href="/services"
-              className="inline-block px-6 py-3 bg-gradient-to-r from-green-400 to-blue-500 text-white font-semibold rounded-lg hover:shadow-lg transition-shadow"
+            <Button
+              onClick={() => window.location.href = '/services'}
+              variant="gradient"
             >
               Browse Experts
-            </a>
+            </Button>
           </div>
         ) : (
           <div className="space-y-6">
             {bookings.map((booking) => (
               <div
                 key={booking.id}
-                className="bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
+                className="glass-card rounded-lg p-6 hover:border-indigo-500/30 transition-all animate-fade-in-up"
               >
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                   <div className="flex-1">
@@ -234,9 +239,10 @@ const Bookings = () => {
 
                   <div className="flex flex-col gap-2">
                     {booking.status === 'confirmed' && booking.jitsi_room && (
-                      <button
+                      <Button
                         onClick={() => handleJoinCall(booking)}
-                        className="px-6 py-3 bg-gradient-to-r from-green-400 to-blue-500 text-white font-semibold rounded-lg hover:shadow-lg transition-shadow flex items-center justify-center gap-2"
+                        variant="gradient"
+                        className="flex items-center justify-center gap-2"
                       >
                         <svg
                           className="h-5 w-5"
@@ -252,7 +258,7 @@ const Bookings = () => {
                           />
                         </svg>
                         Join Video Call
-                      </button>
+                      </Button>
                     )}
                     {booking.status === 'pending' && (
                       <div className="text-center text-sm text-gray-400">

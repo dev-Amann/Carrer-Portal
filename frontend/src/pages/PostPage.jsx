@@ -60,7 +60,7 @@ const PostPage = () => {
 
   if (!post) {
     return (
-      <div className="min-h-screen bg-gray-900 py-16 px-4">
+      <div className="min-h-screen bg-[#0a0a0f] py-16 px-4 flex items-center justify-center">
         <SEO title="Post Not Found" description="The blog post you're looking for doesn't exist." />
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl font-bold text-gray-100 mb-4">
@@ -81,13 +81,19 @@ const PostPage = () => {
   }
 
   return (
-    <div className="post-page min-h-screen bg-gray-900 py-16 px-4 sm:px-6 lg:px-8">
+    <div className="post-page min-h-screen bg-[#0a0a0f] py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Background Grid */}
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" style={{ opacity: 0.05, pointerEvents: 'none' }}></div>
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-900/10 rounded-full blur-[100px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-900/10 rounded-full blur-[100px]" />
+      </div>
       <SEO
         title={post.title}
         description={post.excerpt}
         ogImage={post.image}
       />
-      <article className="max-w-4xl mx-auto">
+      <article className="max-w-4xl mx-auto relative z-10">
         {/* Back to Blog Link */}
         <motion.div
           className="mb-8"
@@ -121,7 +127,7 @@ const PostPage = () => {
           initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: prefersReducedMotion ? 0 : 0.6 }}
-          className="bg-gray-800 rounded-2xl overflow-hidden shadow-xl"
+          className="glass-card rounded-2xl overflow-hidden shadow-xl"
         >
           {/* Featured Image */}
           <div className="aspect-video overflow-hidden">
@@ -176,7 +182,7 @@ const PostPage = () => {
                 </span>
                 <button
                   onClick={shareOnTwitter}
-                  className="p-2 rounded-full bg-gray-700 hover:bg-blue-900 transition-colors"
+                  className="p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors"
                   aria-label="Share on Twitter"
                 >
                   <svg
@@ -189,7 +195,7 @@ const PostPage = () => {
                 </button>
                 <button
                   onClick={shareOnLinkedIn}
-                  className="p-2 rounded-full bg-gray-700 hover:bg-blue-900 transition-colors"
+                  className="p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors"
                   aria-label="Share on LinkedIn"
                 >
                   <svg
@@ -202,7 +208,7 @@ const PostPage = () => {
                 </button>
                 <button
                   onClick={shareOnFacebook}
-                  className="p-2 rounded-full bg-gray-700 hover:bg-blue-900 transition-colors"
+                  className="p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors"
                   aria-label="Share on Facebook"
                 >
                   <svg
@@ -215,7 +221,7 @@ const PostPage = () => {
                 </button>
                 <button
                   onClick={copyLink}
-                  className="p-2 rounded-full bg-gray-700 hover:bg-gray-600 transition-colors"
+                  className="p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors"
                   aria-label="Copy link"
                 >
                   <svg

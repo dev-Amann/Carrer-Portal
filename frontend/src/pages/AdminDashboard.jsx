@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { API } from '../lib/api'
 import Toast from '../components/Toast'
+import SEO from '../components/SEO'
+import Button from '../components/ui/Button'
 import {
   BarChart,
   Bar,
@@ -45,23 +47,23 @@ const AdminDashboard = () => {
   const fetchData = async () => {
     try {
       setLoading(true)
-      
+
       // Fetch stats
       const statsResponse = await API.admin.getStats()
       setStats(statsResponse.data.stats)
-      
+
       // Fetch users
       const usersResponse = await API.admin.getAllUsers()
       setUsers(usersResponse.data.users)
-      
+
       // Fetch pending experts
       const pendingResponse = await API.admin.getPendingExperts()
       setPendingExperts(pendingResponse.data.experts)
-      
+
       // Fetch approved experts
       const approvedResponse = await API.experts.getAll('approved')
       setApprovedExperts(approvedResponse.data.experts)
-      
+
       setLoading(false)
     } catch (error) {
       console.error('Error fetching admin data:', error)
@@ -114,13 +116,16 @@ const AdminDashboard = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-end"></div>
+      <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-indigo-500 mx-auto mb-4"></div>
+          <p className="text-gray-400 font-medium">Loading admin dashboard...</p>
+        </div>
       </div>
     )
   }
 
-  const COLORS = ['#6EE7B7', '#3B82F6', '#8B5CF6', '#F59E0B', '#EF4444']
+  const COLORS = ['#6366f1', '#3b82f6', '#8b5cf6', '#f59e0b', '#ef4444']
 
   const bookingsData = stats ? [
     { name: 'Pending', value: stats.bookings.pending },
@@ -135,162 +140,168 @@ const AdminDashboard = () => {
     { name: 'Rejected', value: stats.experts.rejected },
   ] : []
 
+  const tabs = [
+    { id: 'overview', label: 'Overview', icon: '📊' },
+    { id: 'users', label: 'Users', icon: '👥' },
+    { id: 'pending-experts', label: 'Pending Experts', icon: '⏳' },
+    { id: 'approved-experts', label: 'Approved Experts', icon: '✅' },
+  ]
+
   return (
-    <div className="min-h-screen bg-gray-900 pt-16">
+    <div className="min-h-screen bg-[#0a0a0f] py-24 relative overflow-hidden">
+      <SEO title="Admin Dashboard" description="Admin dashboard and management" />
+      {/* Background Grid */}
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" style={{ opacity: 0.05, pointerEvents: 'none' }}></div>
+
       {/* Header */}
-      <header className="bg-gray-800 shadow-sm border-b border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div>
-              <h1 className="text-3xl font-bold text-white">
-                Admin Dashboard
-              </h1>
-              <p className="mt-1 text-sm text-gray-400">
-                Welcome back, {user?.name}
-              </p>
+      <header className="relative z-10 border-b border-white/5 bg-[#0a0a0f]/80 backdrop-blur-md sticky top-0">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-red-500 to-orange-500 flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-red-500/20">
+                A
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-white">
+                  Admin Dashboard
+                </h1>
+                <p className="text-sm text-gray-400">
+                  Welcome back, {user?.name}
+                </p>
+              </div>
             </div>
-            <button
+            <Button
               onClick={handleLogout}
-              className="px-6 py-2.5 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors shadow-sm"
+              variant="outline"
+              size="sm"
+              className="text-red-400 border-red-500/20 hover:bg-red-500/10 hover:border-red-500/40"
             >
               Logout
-            </button>
+            </Button>
           </div>
         </div>
       </header>
 
-      {/* Tabs */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
-        <div className="border-b border-gray-700">
-          <nav className="-mb-px flex space-x-8">
-            {['overview', 'users', 'pending-experts', 'approved-experts'].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`${
-                  activeTab === tab
-                    ? 'border-accent text-accent'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
-                } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm capitalize`}
-              >
-                {tab.replace('-', ' ')}
-              </button>
-            ))}
-          </nav>
-        </div>
-      </div>
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
 
-      {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Tab Navigation */}
+        <div className="flex space-x-1 mb-8 bg-white/5 p-1 rounded-xl w-full sm:w-auto inline-flex overflow-x-auto">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex items-center gap-2 px-6 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 whitespace-nowrap ${activeTab === tab.id
+                ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/20'
+                : 'text-gray-400 hover:text-white hover:bg-white/5'
+                }`}
+            >
+              <span>{tab.icon}</span>
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
         {activeTab === 'overview' && stats && (
-          <div className="space-y-8">
+          <div className="space-y-8 animate-fade-in">
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="bg-gray-800 p-6 rounded-lg shadow">
-                <h3 className="text-sm font-medium text-gray-400">Total Users</h3>
-                <p className="mt-2 text-3xl font-bold text-white">{stats.users.total}</p>
-              </div>
-              
-              <div className="bg-gray-800 p-6 rounded-lg shadow">
-                <h3 className="text-sm font-medium text-gray-400">Total Experts</h3>
-                <p className="mt-2 text-3xl font-bold text-white">{stats.experts.total}</p>
-                <p className="mt-1 text-sm text-gray-400">
-                  {stats.experts.pending} pending approval
-                </p>
-              </div>
-              
-              <div className="bg-gray-800 p-6 rounded-lg shadow">
-                <h3 className="text-sm font-medium text-gray-400">Total Bookings</h3>
-                <p className="mt-2 text-3xl font-bold text-white">{stats.bookings.total}</p>
-                <p className="mt-1 text-sm text-gray-400">
-                  {stats.bookings.completed} completed
-                </p>
-              </div>
-              
-              <div className="bg-gray-800 p-6 rounded-lg shadow">
-                <h3 className="text-sm font-medium text-gray-400">Total Revenue</h3>
-                <p className="mt-2 text-3xl font-bold text-white">
-                  ₹{stats.revenue.total.toLocaleString()}
-                </p>
-                <p className="mt-1 text-sm text-gray-400">
-                  {stats.transactions.completed} transactions
-                </p>
-              </div>
+              {[
+                { label: "Total Users", value: stats.users.total, color: "blue", subtext: null },
+                { label: "Total Experts", value: stats.experts.total, color: "purple", subtext: `${stats.experts.pending} pending approval` },
+                { label: "Total Bookings", value: stats.bookings.total, color: "emerald", subtext: `${stats.bookings.completed} completed` },
+                { label: "Total Revenue", value: `₹${stats.revenue.total.toLocaleString()}`, color: "indigo", subtext: `${stats.transactions.completed} transactions` },
+              ].map((stat, idx) => (
+                <div key={idx} className="glass-card p-6 relative overflow-hidden group">
+                  <div className={`absolute top-0 right-0 w-24 h-24 bg-${stat.color}-500/10 rounded-full blur-2xl group-hover:bg-${stat.color}-500/20 transition-all`}></div>
+                  <div className="relative z-10">
+                    <h3 className="text-sm font-medium text-gray-400">{stat.label}</h3>
+                    <p className="mt-2 text-3xl font-bold text-white tracking-tight">
+                      {stat.value}
+                    </p>
+                    {stat.subtext && (
+                      <p className="mt-1 text-xs text-gray-500 font-medium">
+                        {stat.subtext}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))}
             </div>
 
             {/* Charts */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div className="bg-gray-800 p-6 rounded-lg shadow">
-                <h3 className="text-lg font-medium text-white mb-4">Bookings Status</h3>
-                <ResponsiveContainer width="100%" height={350}>
-                  <PieChart>
-                    <Pie
-                      data={bookingsData}
-                      cx="50%"
-                      cy="45%"
-                      labelLine={false}
-                      label={false}
-                      outerRadius={90}
-                      fill="#8884d8"
-                      dataKey="value"
-                    >
-                      {bookingsData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                    <Legend 
-                      verticalAlign="bottom" 
-                      height={36}
-                      formatter={(value, entry) => `${value}: ${entry.payload.value}`}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
+              <div className="glass-card p-6">
+                <h3 className="text-lg font-bold text-white mb-6">Bookings Status</h3>
+                <div className="h-[350px] w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={bookingsData}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={60}
+                        outerRadius={100}
+                        paddingAngle={5}
+                        dataKey="value"
+                      >
+                        {bookingsData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} stroke="rgba(0,0,0,0.5)" strokeWidth={2} />
+                        ))}
+                      </Pie>
+                      <Tooltip
+                        contentStyle={{ backgroundColor: '#1f2937', borderColor: '#374151', borderRadius: '0.5rem', color: '#fff' }}
+                        itemStyle={{ color: '#fff' }}
+                      />
+                      <Legend
+                        verticalAlign="bottom"
+                        height={36}
+                        formatter={(value, entry) => <span className="text-gray-300 ml-2">{value}</span>}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
               </div>
 
-              <div className="bg-gray-800 p-6 rounded-lg shadow">
-                <h3 className="text-lg font-medium text-white mb-4">Experts Status</h3>
-                <ResponsiveContainer width="100%" height={350}>
-                  <BarChart data={expertsData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="value" fill="#8B5CF6" />
-                  </BarChart>
-                </ResponsiveContainer>
+              <div className="glass-card p-6">
+                <h3 className="text-lg font-bold text-white mb-6">Experts Status</h3>
+                <div className="h-[350px] w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={expertsData}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" vertical={false} />
+                      <XAxis dataKey="name" tick={{ fill: '#9ca3af' }} axisLine={{ stroke: 'rgba(255,255,255,0.1)' }} tickLine={false} />
+                      <YAxis tick={{ fill: '#9ca3af' }} axisLine={{ stroke: 'rgba(255,255,255,0.1)' }} tickLine={false} />
+                      <Tooltip
+                        cursor={{ fill: 'rgba(255,255,255,0.05)' }}
+                        contentStyle={{ backgroundColor: '#1f2937', borderColor: '#374151', borderRadius: '0.5rem', color: '#fff' }}
+                      />
+                      <Bar dataKey="value" fill="#8B5CF6" radius={[4, 4, 0, 0]} barSize={40} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
               </div>
             </div>
           </div>
         )}
 
         {activeTab === 'users' && (
-          <div className="bg-gray-800 rounded-lg shadow overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-700">
-              <h3 className="text-lg font-medium text-white">All Users</h3>
+          <div className="glass-card overflow-hidden animate-fade-in">
+            <div className="px-6 py-5 border-b border-white/5">
+              <h3 className="text-lg font-bold text-white">All Users</h3>
             </div>
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-700">
-                <thead className="bg-gray-700">
+              <table className="min-w-full divide-y divide-white/5">
+                <thead className="bg-white/5">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                      Name
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                      Email
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                      Bookings
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                      Admin
-                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Name</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Email</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Bookings</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Role</th>
                   </tr>
                 </thead>
-                <tbody className="bg-gray-800 divide-y divide-gray-700">
+                <tbody className="divide-y divide-white/5">
                   {users.map((user) => (
-                    <tr key={user.id}>
+                    <tr key={user.id} className="hover:bg-white/5 transition-colors">
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
                         {user.name}
                       </td>
@@ -300,14 +311,14 @@ const AdminDashboard = () => {
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
                         {user.total_bookings || 0}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm">
                         {user.is_admin ? (
-                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                            Yes
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-500/10 text-red-400 border border-red-500/20">
+                            Admin
                           </span>
                         ) : (
-                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
-                            No
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-500/10 text-gray-400 border border-gray-500/20">
+                            User
                           </span>
                         )}
                       </td>
@@ -320,142 +331,121 @@ const AdminDashboard = () => {
         )}
 
         {activeTab === 'pending-experts' && (
-          <div className="bg-gray-800 rounded-lg shadow overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-700">
-              <h3 className="text-lg font-medium text-white">
-                Pending Expert Approvals ({pendingExperts.length})
+          <div className="glass-card overflow-hidden animate-fade-in">
+            <div className="px-6 py-5 border-b border-white/5 flex gap-2 items-center">
+              <h3 className="text-lg font-bold text-white">
+                Pending Approvals
               </h3>
+              <span className="px-2 py-0.5 rounded-full bg-yellow-500/10 text-yellow-400 text-xs font-bold border border-yellow-500/20">{pendingExperts.length}</span>
             </div>
-            <div className="divide-y divide-gray-700">
+            <div className="divide-y divide-white/5">
               {pendingExperts.length === 0 ? (
-                <div className="px-6 py-8 text-center text-gray-400">
-                  No pending expert approvals
+                <div className="px-6 py-12 text-center text-gray-400">
+                  <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <svg className="w-6 h-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  All caught up! No pending expert approvals.
                 </div>
               ) : (
                 pendingExperts.map((expert) => (
-                  <div key={expert.id} className="px-6 py-4">
-                    <div className="flex items-start justify-between">
+                  <div key={expert.id} className="px-6 py-6 hover:bg-white/5 transition-colors">
+                    <div className="flex flex-col md:flex-row items-start justify-between gap-6">
                       <div className="flex-1">
-                        <h4 className="text-lg font-medium text-white">
-                          {expert.user?.name}
-                        </h4>
-                        <p className="text-sm text-gray-400 mt-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <h4 className="text-xl font-bold text-white">
+                            {expert.user?.name}
+                          </h4>
+                          <span className="text-sm px-2 py-0.5 bg-blue-500/10 text-blue-400 rounded border border-blue-500/20">
+                            {expert.specialization}
+                          </span>
+                        </div>
+
+                        <p className="text-sm text-gray-400 font-mono mb-4">
                           {expert.user?.email}
                         </p>
-                        
-                        {expert.specialization && (
-                          <p className="text-sm font-medium text-accent mt-2">
-                            {expert.specialization} • {expert.years_of_experience} years experience
+
+
+                        <div className="mb-4">
+                          <p className="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-1">Bio</p>
+                          <p className="text-sm text-gray-300 leading-relaxed max-w-3xl">
+                            {expert.bio}
                           </p>
-                        )}
-                        
-                        <p className="text-sm text-gray-300 mt-2">
-                          {expert.bio}
-                        </p>
-                        
-                        <div className="mt-3 space-y-2">
-                          <div className="flex items-center gap-4 text-sm flex-wrap">
-                            <span className="text-gray-400">
-                              Rate: ₹{expert.rate_per_hour}/hour
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                          <div>
+                            <p className="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-1">Experience</p>
+                            <p className="text-white">{expert.years_of_experience} years</p>
+                          </div>
+                          <div>
+                            <p className="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-1">Rate</p>
+                            <p className="text-white">₹{expert.rate_per_hour}/hour</p>
+                          </div>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2">
+                          {expert.resume_url && (
+                            <a href={expert.resume_url} target="_blank" rel="noopener noreferrer" className="btn-link">
+                              📄 Resume
+                            </a>
+                          )}
+                          {expert.linkedin_url && (
+                            <a href={expert.linkedin_url} target="_blank" rel="noopener noreferrer" className="btn-link">
+                              💼 LinkedIn
+                            </a>
+                          )}
+                          {expert.github_url && (
+                            <a href={expert.github_url} target="_blank" rel="noopener noreferrer" className="btn-link">
+                              💻 GitHub
+                            </a>
+                          )}
+                          {expert.portfolio_url && (
+                            <a href={expert.portfolio_url} target="_blank" rel="noopener noreferrer" className="btn-link">
+                              🌐 Portfolio
+                            </a>
+                          )}
+                          {expert.email_for_communication && (
+                            <span className="btn-link cursor-default">
+                              📧 {expert.email_for_communication}
                             </span>
-                            {expert.email_for_communication && (
-                              <span className="text-gray-400">
-                                Contact: {expert.email_for_communication}
-                              </span>
-                            )}
-                          </div>
-                          
-                          <div className="flex items-center gap-3 text-sm flex-wrap">
-                            {expert.resume_url && (
-                              <a
-                                href={expert.resume_url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-accent hover:underline"
-                              >
-                                📄 Resume
-                              </a>
-                            )}
-                            {expert.linkedin_url && (
-                              <a
-                                href={expert.linkedin_url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-accent hover:underline"
-                              >
-                                💼 LinkedIn
-                              </a>
-                            )}
-                            {expert.github_url && (
-                              <a
-                                href={expert.github_url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-accent hover:underline"
-                              >
-                                💻 GitHub
-                              </a>
-                            )}
-                            {expert.portfolio_url && (
-                              <a
-                                href={expert.portfolio_url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-accent hover:underline"
-                              >
-                                🌐 Portfolio
-                              </a>
-                            )}
-                          </div>
-                          
-                          {expert.certificate_urls && expert.certificate_urls.length > 0 && (
-                            <div className="text-sm">
-                              <span className="text-gray-400">Certificates: </span>
-                              {expert.certificate_urls.map((cert, idx) => (
-                                <a
-                                  key={idx}
-                                  href={cert}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-accent hover:underline mr-2"
-                                >
-                                  Cert {idx + 1}
+                          )}
+                        </div>
+
+                        {((expert.certificate_urls && expert.certificate_urls.length > 0) || (expert.other_documents && expert.other_documents.length > 0)) && (
+                          <div className="mt-4 pt-4 border-t border-white/5">
+                            <p className="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-2">Documents</p>
+                            <div className="flex flex-wrap gap-2">
+                              {expert.certificate_urls?.map((cert, idx) => (
+                                <a key={`cert-${idx}`} href={cert} target="_blank" rel="noopener noreferrer" className="btn-link text-xs">
+                                  Spec Cert {idx + 1}
                                 </a>
                               ))}
-                            </div>
-                          )}
-                          
-                          {expert.other_documents && expert.other_documents.length > 0 && (
-                            <div className="text-sm">
-                              <span className="text-gray-400">Other Docs: </span>
-                              {expert.other_documents.map((doc, idx) => (
-                                <a
-                                  key={idx}
-                                  href={doc}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-accent hover:underline mr-2"
-                                >
+                              {expert.other_documents?.map((doc, idx) => (
+                                <a key={`doc-${idx}`} href={doc} target="_blank" rel="noopener noreferrer" className="btn-link text-xs">
                                   Doc {idx + 1}
                                 </a>
                               ))}
                             </div>
-                          )}
-                        </div>
+                          </div>
+                        )}
+
+
                       </div>
-                      <div className="ml-4 flex gap-2">
-                        <button
+                      <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                        <Button
                           onClick={() => handleApproveExpert(expert.id)}
-                          className="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700"
+                          className="bg-green-600 hover:bg-green-500 text-white w-full sm:w-auto justify-center"
                         >
                           Approve
-                        </button>
-                        <button
+                        </Button>
+                        <Button
                           onClick={() => handleRejectExpert(expert.id)}
-                          className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700"
+                          className="bg-red-600 hover:bg-red-500 text-white w-full sm:w-auto justify-center"
                         >
                           Reject
-                        </button>
+                        </Button>
                       </div>
                     </div>
                   </div>
@@ -466,44 +456,37 @@ const AdminDashboard = () => {
         )}
 
         {activeTab === 'approved-experts' && (
-          <div className="bg-gray-800 rounded-lg shadow overflow-hidden">
-            <div className="px-6 py-4 border-b border-gray-700">
-              <h3 className="text-lg font-medium text-white">
-                Approved Experts ({approvedExperts.length})
+          <div className="glass-card overflow-hidden animate-fade-in">
+            <div className="px-6 py-5 border-b border-white/5 flex gap-2 items-center">
+              <h3 className="text-lg font-bold text-white">
+                Approved Experts
               </h3>
+              <span className="px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 text-xs font-bold border border-green-500/20">{approvedExperts.length}</span>
             </div>
             <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-700">
-                <thead className="bg-gray-700">
+              <table className="min-w-full divide-y divide-white/5">
+                <thead className="bg-white/5">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                      Name
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                      Email
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                      Rate/Hour
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                      Status
-                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Name</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Email</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Rate/Hour</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Status</th>
                   </tr>
                 </thead>
-                <tbody className="bg-gray-800 divide-y divide-gray-700">
+                <tbody className="divide-y divide-white/5">
                   {approvedExperts.map((expert) => (
-                    <tr key={expert.id}>
+                    <tr key={expert.id} className="hover:bg-white/5 transition-colors">
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
                         {expert.user?.name}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
                         {expert.user?.email}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-white font-medium">
                         ₹{expert.rate_per_hour}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-500/10 text-green-400 border border-green-500/20">
                           Approved
                         </span>
                       </td>
@@ -515,6 +498,12 @@ const AdminDashboard = () => {
           </div>
         )}
       </div>
+
+      <style jsx>{`
+        .btn-link {
+            @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-indigo-300 hover:text-white transition-all text-sm font-medium;
+        }
+      `}</style>
 
       {toast && (
         <Toast

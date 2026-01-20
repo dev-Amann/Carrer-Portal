@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import api from '../lib/api';
+import { useParams, useNavigate } from 'react-router-dom';
+import { API } from '../lib/api';
 import Toast from '../components/Toast';
+import SEO from '../components/SEO';
+import Button from '../components/ui/Button';
 
 const SkillGapAnalysis = () => {
   const { careerId } = useParams();
@@ -17,7 +20,7 @@ const SkillGapAnalysis = () => {
   const fetchSkillGap = async () => {
     try {
       setLoading(true);
-      const response = await api.get(`/careers/${careerId}/skill-gap`);
+      const response = await API.careers.getSkillGap(careerId);
       console.log('Skill Gap Analysis Response:', response.data);
       setAnalysis(response.data);
     } catch (error) {
@@ -34,23 +37,22 @@ const SkillGapAnalysis = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500"></div>
       </div>
     );
   }
 
   if (!analysis) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center">
         <div className="text-center">
           <p className="text-gray-400 mb-4">Failed to load analysis</p>
-          <button
+          <Button
             onClick={() => navigate('/career-recommendation')}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
           >
             Back to Recommendations
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -59,13 +61,17 @@ const SkillGapAnalysis = () => {
   const { career_title, gaps, met_requirements, readiness_percentage, total_required_skills, met_skills_count } = analysis;
 
   return (
-    <div className="min-h-screen bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-[#0a0a0f] py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <SEO title={`Skill Gap - ${career_title}`} description="Analyze your skill gaps and readiness for this career." />
+
+      {/* Background Grid */}
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" style={{ opacity: 0.05, pointerEvents: 'none' }}></div>
+      <div className="max-w-6xl mx-auto relative z-10">
         {/* Header */}
         <div className="mb-8">
           <button
             onClick={() => navigate('/career-recommendation')}
-            className="mb-4 text-blue-400 hover:underline flex items-center gap-2"
+            className="mb-4 text-indigo-400 hover:text-indigo-300 hover:underline flex items-center gap-2 transition-colors"
           >
             ← Back to Recommendations
           </button>
@@ -78,7 +84,7 @@ const SkillGapAnalysis = () => {
         </div>
 
         {/* Readiness Score */}
-        <div className="bg-gradient-to-r from-emerald-400 to-blue-500 rounded-lg p-8 mb-8 text-white">
+        <div className="bg-gradient-to-r from-emerald-500/20 to-blue-500/20 border border-emerald-500/20 rounded-2xl p-8 mb-8 text-white backdrop-blur-sm">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-2xl font-bold mb-2">Career Readiness</h2>
@@ -95,8 +101,8 @@ const SkillGapAnalysis = () => {
 
         {/* Met Requirements */}
         {met_requirements.length > 0 && (
-          <div className="bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
-            <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+          <div className="glass-card p-8 mb-8">
+            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
               <svg className="w-6 h-6 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
@@ -106,7 +112,7 @@ const SkillGapAnalysis = () => {
               {met_requirements.map((skill, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between p-4 bg-green-900/20 border border-green-800 rounded-lg"
+                  className="flex items-center justify-between p-4 bg-emerald-900/10 border border-emerald-500/20 rounded-xl"
                 >
                   <div>
                     <h3 className="font-semibold text-white">{skill.skill_name}</h3>
@@ -126,8 +132,8 @@ const SkillGapAnalysis = () => {
 
         {/* Skill Gaps */}
         {gaps.length > 0 && (
-          <div className="bg-gray-800 rounded-lg shadow-lg p-6">
-            <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+          <div className="glass-card p-8">
+            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
               <svg className="w-6 h-6 text-orange-500" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
               </svg>
@@ -138,8 +144,8 @@ const SkillGapAnalysis = () => {
                 <div
                   key={index}
                   className={`p-4 rounded-lg border ${skill.status === 'missing'
-                      ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'
-                      : 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800'
+                    ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'
+                    : 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800'
                     }`}
                 >
                   <div className="flex items-start justify-between mb-2">
@@ -148,8 +154,8 @@ const SkillGapAnalysis = () => {
                       <p className="text-sm text-gray-400 capitalize">{skill.category}</p>
                     </div>
                     <span className={`px-3 py-1 rounded-full text-xs font-semibold ${skill.status === 'missing'
-                        ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
-                        : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+                      ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+                      : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
                       }`}>
                       {skill.status === 'missing' ? 'Not Started' : 'Needs Improvement'}
                     </span>
@@ -176,18 +182,18 @@ const SkillGapAnalysis = () => {
 
         {/* Action Buttons */}
         <div className="mt-8 flex gap-4 justify-center">
-          <button
+          <Button
             onClick={() => navigate('/career-recommendation')}
-            className="px-6 py-3 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-700"
+            variant="outline"
           >
             View Other Careers
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => navigate('/experts')}
-            className="px-6 py-3 bg-gradient-to-r from-emerald-400 to-blue-500 text-white font-semibold rounded-lg hover:shadow-lg"
+            variant="gradient"
           >
             Get Expert Guidance
-          </button>
+          </Button>
         </div>
       </div>
 

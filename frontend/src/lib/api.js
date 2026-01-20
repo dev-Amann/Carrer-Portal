@@ -37,7 +37,7 @@ api.interceptors.response.use(
 
       try {
         const refreshToken = localStorage.getItem('refreshToken')
-        
+
         if (!refreshToken) {
           // No refresh token available, logout user
           localStorage.removeItem('accessToken')
@@ -109,6 +109,10 @@ export const careersAPI = {
   getById: (id) => api.get(`/careers/${id}`),
   getSkillGap: (id) => api.get(`/careers/${id}/skill-gap`),
   save: (careerId) => api.post('/careers/save', { career_id: careerId }),
+  getSaved: () => api.get('/careers/saved'),
+  unsave: (careerId) => api.delete(`/careers/save/${careerId}`),
+  emailReport: (careerId) => api.post(`/careers/${careerId}/email-report`),
+  downloadPDF: (careerId) => api.get(`/careers/${careerId}/download-pdf`, { responseType: 'blob' }),
 }
 
 // Experts endpoints

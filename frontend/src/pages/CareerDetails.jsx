@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import api from '../lib/api';
+import { useParams, useNavigate } from 'react-router-dom';
+import { API } from '../lib/api';
 import Toast from '../components/Toast';
+import SEO from '../components/SEO';
+import Button from '../components/ui/Button';
 
 const CareerDetails = () => {
   const { careerId } = useParams();
@@ -17,7 +20,7 @@ const CareerDetails = () => {
   const fetchCareerDetails = async () => {
     try {
       setLoading(true);
-      const response = await api.get(`/careers/${careerId}`);
+      const response = await API.careers.getById(careerId);
       setCareer(response.data.career);
     } catch (error) {
       showToast(error.response?.data?.error || 'Failed to load career details', 'error');
@@ -32,39 +35,41 @@ const CareerDetails = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500"></div>
       </div>
     );
   }
 
   if (!career) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center">
         <div className="text-center">
           <p className="text-gray-400 mb-4">Career not found</p>
-          <button
+          <Button
             onClick={() => navigate('/career-recommendation')}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
           >
             Back to Recommendations
-          </button>
+          </Button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-[#0a0a0f] py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <SEO title={career.title} description={career.description} />
+      {/* Background Grid */}
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" style={{ opacity: 0.05, pointerEvents: 'none' }}></div>
+      <div className="max-w-4xl mx-auto relative z-10">
         <button
           onClick={() => navigate('/career-recommendation')}
-          className="mb-6 text-blue-400 hover:underline flex items-center gap-2"
+          className="mb-6 text-indigo-400 hover:text-indigo-300 hover:underline flex items-center gap-2 transition-colors"
         >
           ← Back to Recommendations
         </button>
 
-        <div className="bg-gray-800 rounded-lg shadow-lg p-8">
+        <div className="glass-card p-8 animate-fade-in-up">
           <h1 className="text-4xl font-bold text-white mb-4">
             {career.title}
           </h1>
@@ -78,12 +83,11 @@ const CareerDetails = () => {
             </div>
             <div className="flex items-center gap-2">
               <span className="text-gray-400">Demand:</span>
-              <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                career.demand_level === 'very_high' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
-                career.demand_level === 'high' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' :
-                career.demand_level === 'medium' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
-                'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
-              }`}>
+              <span className={`px-3 py-1 rounded-full text-sm font-semibold ${career.demand_level === 'very_high' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
+                  career.demand_level === 'high' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' :
+                    career.demand_level === 'medium' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
+                      'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
+                }`}>
                 {career.demand_level?.replace('_', ' ').toUpperCase()}
               </span>
             </div>
@@ -112,7 +116,7 @@ const CareerDetails = () => {
                 {career.required_skills.map((skill, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between p-4 bg-gray-700 rounded-lg"
+                    className="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-lg"
                   >
                     <div>
                       <h3 className="font-semibold text-white">{skill.skill_name}</h3>
@@ -128,18 +132,19 @@ const CareerDetails = () => {
           )}
 
           <div className="flex gap-4">
-            <button
+            <Button
               onClick={() => navigate(`/skill-gap/${career.id}`)}
-              className="flex-1 px-6 py-3 bg-gradient-to-r from-emerald-400 to-blue-500 text-white font-semibold rounded-lg hover:shadow-lg"
+              variant="gradient"
+              className="flex-1 justify-center"
             >
               View Skill Gap Analysis
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => navigate('/experts')}
-              className="px-6 py-3 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-700"
+              variant="outline"
             >
               Find Expert
-            </button>
+            </Button>
           </div>
         </div>
       </div>

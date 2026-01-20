@@ -4,6 +4,8 @@ import { useAuth } from '../contexts/AuthContext';
 import { authAPI } from '../lib/api';
 import SEO from '../components/SEO';
 import Toast from '../components/Toast';
+import Input from '../components/ui/Input';
+import Button from '../components/ui/Button';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -31,7 +33,7 @@ const Login = () => {
 
   const handleSendOTP = async (e) => {
     e.preventDefault();
-    
+
     if (!formData.email) {
       showToast('Please enter your email', 'error');
       return;
@@ -75,7 +77,7 @@ const Login = () => {
       };
 
       const response = await authAPI.login(loginData);
-      
+
       if (response.data.success) {
         login(response.data.user, {
           access_token: response.data.access_token,
@@ -92,27 +94,27 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Background Grid */}
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" style={{ opacity: 0.05, pointerEvents: 'none' }}></div>
       <SEO
         title="Sign In"
         description="Sign in to your CarrerPortal account to access personalized career recommendations and expert consultations."
       />
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
-            Sign in to your account
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-400">
-            Or{' '}
-            <Link to="/signup" className="font-medium text-blue-600 hover:text-blue-500">
-              create a new account
-            </Link>
+
+      <div className="max-w-md w-full space-y-8 relative z-10">
+        <div className="text-center">
+          <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-indigo-500 mb-2">
+            Welcome Back
+          </h1>
+          <p className="text-sm text-gray-400">
+            Sign in to access your dashboard
           </p>
         </div>
 
-        <div className="bg-gray-800 py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <div className="glass-card p-8 animate-fade-in-up">
           {/* Login Method Toggle */}
-          <div className="flex rounded-lg bg-gray-700 p-1 mb-6">
+          <div className="flex p-1 mb-6 bg-black/20 rounded-lg border border-white/5">
             <button
               type="button"
               onClick={() => {
@@ -120,11 +122,10 @@ const Login = () => {
                 setOtpSent(false);
                 setFormData({ ...formData, otp: '' });
               }}
-              className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
-                loginMethod === 'password'
-                  ? 'bg-white dark:bg-gray-600 text-white shadow'
-                  : 'text-gray-300'
-              }`}
+              className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all duration-200 ${loginMethod === 'password'
+                  ? 'bg-gradient-to-r from-teal-500 to-indigo-600 text-white shadow-lg'
+                  : 'text-gray-400 hover:text-white'
+                }`}
             >
               Password
             </button>
@@ -134,11 +135,10 @@ const Login = () => {
                 setLoginMethod('otp');
                 setFormData({ ...formData, password: '' });
               }}
-              className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
-                loginMethod === 'otp'
-                  ? 'bg-white dark:bg-gray-600 text-white shadow'
-                  : 'text-gray-300'
-              }`}
+              className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-all duration-200 ${loginMethod === 'otp'
+                  ? 'bg-gradient-to-r from-teal-500 to-indigo-600 text-white shadow-lg'
+                  : 'text-gray-400 hover:text-white'
+                }`}
             >
               OTP
             </button>
@@ -146,51 +146,37 @@ const Login = () => {
 
           <form className="space-y-6" onSubmit={handleSubmit}>
             {/* Email Field */}
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-300">
-                Email address
-              </label>
-              <div className="mt-1">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="appearance-none block w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-                  placeholder="you@example.com"
-                />
-              </div>
-            </div>
+            <Input
+              label="Email address"
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="you@example.com"
+              required
+            />
 
             {/* Password Field */}
             {loginMethod === 'password' && (
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-300">
-                  Password
-                </label>
-                <div className="mt-1">
-                  <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    autoComplete="current-password"
-                    required
-                    value={formData.password}
-                    onChange={handleChange}
-                    className="appearance-none block w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-                    placeholder="••••••••"
-                  />
-                </div>
-              </div>
+              <Input
+                label="Password"
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="••••••••"
+                required
+              />
             )}
 
             {/* OTP Field */}
             {loginMethod === 'otp' && (
               <div>
-                <div className="flex items-center justify-between mb-1">
+                <div className="flex items-center justify-between mb-2">
                   <label htmlFor="otp" className="block text-sm font-medium text-gray-300">
                     OTP Code
                   </label>
@@ -199,83 +185,82 @@ const Login = () => {
                       type="button"
                       onClick={handleSendOTP}
                       disabled={loading || !formData.email}
-                      className="text-sm font-medium text-blue-600 hover:text-blue-500 disabled:text-gray-400"
+                      className="text-xs font-medium text-teal-400 hover:text-teal-300 disabled:text-gray-500 transition-colors"
                     >
                       Send OTP
                     </button>
                   )}
                 </div>
-                <div className="mt-1">
-                  <input
-                    id="otp"
-                    name="otp"
-                    type="text"
-                    maxLength="6"
-                    required
-                    value={formData.otp}
-                    onChange={handleChange}
-                    disabled={!otpSent}
-                    className="appearance-none block w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm disabled:bg-gray-100 dark:disabled:bg-gray-800"
-                    placeholder="Enter 6-digit OTP"
-                  />
-                </div>
+                <Input
+                  id="otp"
+                  name="otp"
+                  type="text"
+                  maxLength="6"
+                  value={formData.otp}
+                  onChange={handleChange}
+                  disabled={!otpSent}
+                  placeholder="Enter 6-digit OTP"
+                  className="text-center tracking-widest text-lg"
+                  required
+                />
                 {otpSent && (
-                  <p className="mt-2 text-sm text-gray-400">
-                    OTP sent to your email. Check your inbox.
+                  <p className="mt-2 text-xs text-green-400 flex items-center gap-1">
+                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    OTP sent to your email
                   </p>
                 )}
               </div>
             )}
 
             {/* Submit Button */}
-            <div>
-              <button
-                type="submit"
-                disabled={loading || (loginMethod === 'otp' && !otpSent)}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-emerald-400 to-blue-500 hover:from-emerald-500 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {loading ? 'Please wait...' : 'Sign in'}
-              </button>
-            </div>
+            <Button
+              type="submit"
+              disabled={loading || (loginMethod === 'otp' && !otpSent)}
+              className="w-full"
+              isLoading={loading}
+            >
+              Sign in
+            </Button>
           </form>
 
-          {/* Admin and Expert Login Links */}
-          <div className="mt-6 pt-6 border-t border-gray-700">
-            <p className="text-center text-sm text-gray-400 mb-3">
-              Special Access
+          <div className="mt-6 text-center">
+            <p className="text-sm text-gray-400">
+              Don't have an account?{' '}
+              <Link to="/signup" className="font-medium text-teal-400 hover:text-teal-300 transition-colors">
+                Create one now
+              </Link>
             </p>
-            <div className="grid grid-cols-2 gap-3 mb-3">
-              <Link
-                to="/admin/login"
-                className="flex items-center justify-center px-4 py-2 border border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-300 bg-gray-700 hover:bg-gray-600 transition-colors"
-              >
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
-                Admin Login
-              </Link>
-              <Link
-                to="/expert/login"
-                className="flex items-center justify-center px-4 py-2 border border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-300 bg-gray-700 hover:bg-gray-600 transition-colors"
-              >
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                Expert Login
-              </Link>
-            </div>
-            
-            {/* Expert Registration CTA */}
+          </div>
+        </div>
+
+        {/* Special Access Links */}
+        <div className="mt-8 space-y-4">
+          <div className="grid grid-cols-2 gap-4">
             <Link
-              to="/expert/register"
-              className="flex items-center justify-center w-full px-4 py-3 border-2 border-accent rounded-md shadow-sm text-sm font-semibold text-accent bg-accent/10 hover:bg-accent/20 transition-colors"
+              to="/admin/login"
+              className="flex items-center justify-center px-4 py-3 border border-white/10 rounded-xl text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-all bg-[#0a0a0f]/50 backdrop-blur-sm"
             >
-              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-              </svg>
-              Become an Expert - Register Now
+              <span className="mr-2">🔒</span> Admin
+            </Link>
+            <Link
+              to="/expert/login"
+              className="flex items-center justify-center px-4 py-3 border border-white/10 rounded-xl text-sm font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-all bg-[#0a0a0f]/50 backdrop-blur-sm"
+            >
+              <span className="mr-2">🎓</span> Expert
             </Link>
           </div>
+
+          <Link
+            to="/expert/register"
+            className="flex items-center justify-center px-4 py-3 border border-indigo-500/30 rounded-xl text-sm font-medium text-indigo-400 bg-indigo-500/10 hover:bg-indigo-500/20 hover:text-indigo-300 transition-all backdrop-blur-sm"
+          >
+            <span>Join as an Expert</span>
+            <svg className="w-4 h-4 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </Link>
         </div>
       </div>
 

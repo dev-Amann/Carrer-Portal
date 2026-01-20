@@ -16,7 +16,13 @@ const Contact = () => {
   const prefilledService = location.state?.interestedService || '';
 
   return (
-    <div className="contact-page min-h-screen bg-gray-900 py-16 px-4 sm:px-6 lg:px-8">
+    <div className="contact-page min-h-screen bg-[#0a0a0f] py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Background Grid */}
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" style={{ opacity: 0.05, pointerEvents: 'none' }}></div>
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-900/10 rounded-full blur-[100px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-900/10 rounded-full blur-[100px]" />
+      </div>
       <SEO
         title="Contact Us"
         description="Get in touch with CarrerPortal. Send us a message, schedule a meeting, or reach out through email or phone."
@@ -24,13 +30,18 @@ const Contact = () => {
       <div className="max-w-7xl mx-auto">
         {/* Page Header */}
         <motion.header
-          className="text-center mb-16"
+          className="text-center mb-16 relative z-10"
           initial={{ opacity: 0, y: prefersReducedMotion ? 0 : -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: prefersReducedMotion ? 0 : 0.6 }}
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-100 mb-4">
-            Get In Touch
+          <div className="inline-block mb-4">
+            <span className="px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-sm font-medium text-blue-400">
+              Support
+            </span>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            Get In <span className="text-gradient">Touch</span>
           </h1>
           <p className="text-xl text-gray-400 max-w-3xl mx-auto">
             Have a question or ready to start your career journey? We'd love to hear from you.
@@ -45,8 +56,8 @@ const Contact = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: 0.2 }}
           >
-            <div className="bg-gray-800 rounded-2xl p-8 shadow-xl">
-              <h2 className="text-2xl font-bold text-gray-100 mb-6">
+            <div className="glass-card rounded-2xl p-8 shadow-xl">
+              <h2 className="text-2xl font-bold text-white mb-6">
                 Send Us a Message
               </h2>
               <ContactForm prefilledService={prefilledService} />
@@ -62,8 +73,8 @@ const Contact = () => {
           >
             <div className="space-y-6">
               {/* Alternate Contact Information */}
-              <div className="bg-gray-800 rounded-2xl p-6 shadow-xl">
-                <h3 className="text-xl font-bold text-gray-100 mb-4">
+              <div className="glass-card rounded-2xl p-6 shadow-xl">
+                <h3 className="text-xl font-bold text-white mb-4">
                   Contact Information
                 </h3>
                 <div className="space-y-4">
@@ -161,14 +172,14 @@ const Contact = () => {
               </div>
 
               {/* Calendly Embed Placeholder */}
-              <div className="bg-gray-800 rounded-2xl p-6 shadow-xl">
-                <h3 className="text-xl font-bold text-gray-100 mb-4">
+              <div className="glass-card rounded-2xl p-6 shadow-xl">
+                <h3 className="text-xl font-bold text-white mb-4">
                   Schedule a Meeting
                 </h3>
                 <p className="text-gray-400 mb-4">
                   Prefer to talk? Schedule a free consultation call with our team.
                 </p>
-                <div className="bg-gradient-to-r from-emerald-400 to-blue-500 rounded-lg p-8 text-center text-white">
+                <div className="bg-gradient-to-br from-emerald-500/20 to-blue-500/20 border border-emerald-500/20 rounded-lg p-8 text-center text-white backdrop-blur-sm">
                   <svg
                     className="w-16 h-16 mx-auto mb-4"
                     fill="none"
@@ -194,8 +205,8 @@ const Contact = () => {
               </div>
 
               {/* Business Hours */}
-              <div className="bg-gray-800 rounded-2xl p-6 shadow-xl">
-                <h3 className="text-xl font-bold text-gray-100 mb-4">
+              <div className="glass-card rounded-2xl p-6 shadow-xl">
+                <h3 className="text-xl font-bold text-white mb-4">
                   Business Hours
                 </h3>
                 <div className="space-y-2 text-gray-400">
@@ -215,8 +226,8 @@ const Contact = () => {
               </div>
 
               {/* Social Media Links */}
-              <div className="bg-gray-800 rounded-2xl p-6 shadow-xl">
-                <h3 className="text-xl font-bold text-gray-100 mb-4">
+              <div className="glass-card rounded-2xl p-6 shadow-xl">
+                <h3 className="text-xl font-bold text-white mb-4">
                   Follow Us
                 </h3>
                 <div className="flex gap-4">
@@ -224,7 +235,7 @@ const Contact = () => {
                     href="https://twitter.com/carrerportal"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-3 bg-gray-700 rounded-full hover:bg-blue-900 transition-colors"
+                    className="p-3 bg-white/5 rounded-full hover:bg-white/10 transition-colors"
                     aria-label="Twitter"
                   >
                     <svg
@@ -239,7 +250,7 @@ const Contact = () => {
                     href="https://linkedin.com/company/carrerportal"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-3 bg-gray-700 rounded-full hover:bg-blue-900 transition-colors"
+                    className="p-3 bg-white/5 rounded-full hover:bg-white/10 transition-colors"
                     aria-label="LinkedIn"
                   >
                     <svg
@@ -254,7 +265,7 @@ const Contact = () => {
                     href="https://facebook.com/carrerportal"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-3 bg-gray-700 rounded-full hover:bg-blue-900 transition-colors"
+                    className="p-3 bg-white/5 rounded-full hover:bg-white/10 transition-colors"
                     aria-label="Facebook"
                   >
                     <svg

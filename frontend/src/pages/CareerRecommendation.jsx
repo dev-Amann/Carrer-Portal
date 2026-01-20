@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react';
 // Force rebuild
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import api from '../lib/api';
+import { API } from '../lib/api';
 import SEO from '../components/SEO';
 import Toast from '../components/Toast';
 import CareerComparisonModal from '../components/CareerComparisonModal';
+import Button from '../components/ui/Button';
+import Input from '../components/ui/Input';
 
 const CareerRecommendation = () => {
   const navigate = useNavigate();
@@ -42,7 +44,7 @@ const CareerRecommendation = () => {
   const fetchSkills = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/skills');
+      const response = await API.skills.getAll();
       setAllSkills(response.data.skills || {});
     } catch (error) {
       showToast('Failed to load skills', 'error');
@@ -53,7 +55,7 @@ const CareerRecommendation = () => {
 
   const loadUserSkills = async () => {
     try {
-      const response = await api.get('/skills/user');
+      const response = await API.skills.getUserSkills();
       if (response.data.success && response.data.skills.length > 0) {
         const userSkills = response.data.skills.map(s => ({
           skill_id: s.skill_id,
@@ -88,7 +90,7 @@ const CareerRecommendation = () => {
 
   const fetchSavedCareers = async () => {
     try {
-      const response = await api.get('/careers/saved');
+      const response = await API.careers.getSaved();
       if (response.data.success) {
         const ids = new Set(response.data.careers.map(c => c.id));
         setSavedCareerIds(ids);
@@ -140,10 +142,10 @@ const CareerRecommendation = () => {
         proficiency: s.proficiency
       }));
 
-      await api.post('/skills/user', { skills: skillsPayload });
+      await API.skills.saveUserSkills(skillsPayload);
 
       // Get recommendations
-      const response = await api.post('/careers/recommend');
+      const response = await API.careers.getRecommendations();
       const newRecommendations = response.data.careers || [];
       setRecommendations(newRecommendations);
       setStep(2);
@@ -169,7 +171,7 @@ const CareerRecommendation = () => {
     try {
       if (savedCareerIds.has(careerId)) {
         // Unsave
-        await api.delete(`/careers/save/${careerId}`);
+        await API.careers.unsave(careerId);
         setSavedCareerIds(prev => {
           const newSet = new Set(prev);
           newSet.delete(careerId);
@@ -178,7 +180,7 @@ const CareerRecommendation = () => {
         showToast('Career removed from bookmarks', 'success');
       } else {
         // Save
-        await api.post('/careers/save', { career_id: careerId });
+        await API.careers.save(careerId);
         setSavedCareerIds(prev => new Set([...prev, careerId]));
         showToast('Career bookmarked successfully!', 'success');
       }
@@ -205,7 +207,7 @@ const CareerRecommendation = () => {
   const handleEmailReport = async (careerId) => {
     try {
       setLoading(true);
-      const response = await api.post(`/careers/${careerId}/email-report`);
+      const response = await API.careers.emailReport(careerId);
       if (response.data.success) {
         showToast('📧 Career report sent to your email!', 'success');
       }
@@ -219,9 +221,7 @@ const CareerRecommendation = () => {
   const handleDownloadPDF = async (careerId, careerTitle) => {
     try {
       setLoading(true);
-      const response = await api.get(`/careers/${careerId}/download-pdf`, {
-        responseType: 'blob'
-      });
+      const response = await API.careers.downloadPDF(careerId);
 
       // Create download link
       const url = window.URL.createObjectURL(new Blob([response.data]));
@@ -292,7 +292,13 @@ const CareerRecommendation = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#0a0a0f] py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Background Grid */}
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" style={{ opacity: 0.05, pointerEvents: 'none' }}></div>
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-900/10 rounded-full blur-[100px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-900/10 rounded-full blur-[100px]" />
+      </div>
       <SEO
         title="Career Recommendations"
         description="Get personalized career recommendations based on your skills. Discover career paths that match your profile with AI-powered analysis."
@@ -312,15 +318,15 @@ const CareerRecommendation = () => {
 
         {/* Step 1: Skills Selection */}
         {step === 1 && (
-          <div className="bg-gray-800 rounded-lg shadow-lg p-6">
+          <div className="glass-card p-6 animate-fade-in-up">
             {/* Search Bar */}
             <div className="mb-6">
-              <input
+              <Input
                 type="text"
                 placeholder="Search skills..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+                as="input"
               />
             </div>
 
@@ -388,8 +394,8 @@ const CareerRecommendation = () => {
                             <label
                               key={skill.id}
                               className={`flex items-center p-3 rounded-lg cursor-pointer transition-colors ${isSelected
-                                  ? 'bg-blue-100 dark:bg-blue-900/30 border-2 border-blue-500'
-                                  : 'bg-gray-50 dark:bg-gray-700 border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-600'
+                                ? 'bg-blue-100 dark:bg-blue-900/30 border-2 border-blue-500'
+                                : 'bg-gray-50 dark:bg-gray-700 border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-600'
                                 }`}
                             >
                               <input
@@ -412,13 +418,13 @@ const CareerRecommendation = () => {
 
               {/* Submit Button */}
               <div className="mt-6 flex justify-end">
-                <button
+                <Button
                   type="submit"
                   disabled={loading || selectedSkills.length === 0}
-                  className="px-8 py-3 bg-gradient-to-r from-emerald-400 to-blue-500 text-white font-semibold rounded-lg hover:shadow-lg transition-shadow disabled:opacity-50 disabled:cursor-not-allowed"
+                  isLoading={loading}
                 >
-                  {loading ? 'Generating...' : 'Get Recommendations'}
-                </button>
+                  Get Recommendations
+                </Button>
               </div>
             </form>
           </div>
@@ -428,16 +434,15 @@ const CareerRecommendation = () => {
         {step === 2 && (
           <div className="space-y-6">
             {recommendations.length === 0 ? (
-              <div className="bg-gray-800 rounded-lg shadow-lg p-12 text-center">
+              <div className="glass-card p-12 text-center animate-fade-in">
                 <p className="text-gray-400 mb-4">
                   No career matches found. Try adding more skills or adjusting proficiency levels.
                 </p>
-                <button
+                <Button
                   onClick={handleBackToRecommendations}
-                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                 >
                   Update Skills
-                </button>
+                </Button>
               </div>
             ) : (
               <>
@@ -482,7 +487,7 @@ const CareerRecommendation = () => {
                   return (
                     <div
                       key={career.id}
-                      className={`bg-gray-800 rounded-lg shadow-lg p-6 hover:shadow-xl transition-all ${isSelected ? 'ring-2 ring-blue-500' : ''
+                      className={`glass-card p-6 hover:border-indigo-500/50 transition-all ${isSelected ? 'ring-2 ring-indigo-500' : ''
                         }`}
                     >
                       <div className="flex items-start gap-4 mb-4">
@@ -506,8 +511,8 @@ const CareerRecommendation = () => {
                             <button
                               onClick={() => handleSaveCareer(career.id)}
                               className={`ml-auto text-2xl transition-all ${isSaved
-                                  ? 'text-orange-500 hover:text-orange-600'
-                                  : 'text-gray-300 hover:text-orange-500'
+                                ? 'text-orange-500 hover:text-orange-600'
+                                : 'text-gray-300 hover:text-orange-500'
                                 }`}
                               title={isSaved ? 'Remove bookmark' : 'Bookmark career'}
                             >
@@ -527,9 +532,9 @@ const CareerRecommendation = () => {
                             <div className="flex items-center gap-2">
                               <span className="text-gray-400">Demand:</span>
                               <span className={`px-2 py-1 rounded-full text-xs font-semibold ${career.demand_level === 'very_high' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
-                                  career.demand_level === 'high' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' :
-                                    career.demand_level === 'medium' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
-                                      'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
+                                career.demand_level === 'high' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' :
+                                  career.demand_level === 'medium' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
+                                    'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
                                 }`}>
                                 {career.demand_level.replace('_', ' ').toUpperCase()}
                               </span>
@@ -576,12 +581,13 @@ const CareerRecommendation = () => {
                         >
                           View Skill Gap
                         </button>
-                        <button
+                        <Button
                           onClick={() => navigate('/experts')}
-                          className="px-4 py-2 bg-gradient-to-r from-emerald-400 to-green-500 text-white rounded-lg hover:shadow-lg transition-all"
+                          variant="gradient"
+                          className="w-full justify-center"
                         >
                           👨‍🏫 Get Expert Guidance
-                        </button>
+                        </Button>
                         <button
                           onClick={() => navigate(`/careers/${career.id}`)}
                           className="px-4 py-2 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors"

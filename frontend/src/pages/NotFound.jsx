@@ -11,13 +11,19 @@ const NotFound = () => {
   const prefersReducedMotion = usePrefersReducedMotion();
 
   return (
-    <div className="not-found-page min-h-screen bg-gray-900 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+    <div className="not-found-page min-h-screen bg-[#0a0a0f] flex items-center justify-center px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Background Grid */}
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" style={{ opacity: 0.05, pointerEvents: 'none' }}></div>
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-900/10 rounded-full blur-[100px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-900/10 rounded-full blur-[100px]" />
+      </div>
       <SEO
         title="404 - Page Not Found"
         description="The page you're looking for doesn't exist or has been moved."
       />
       <motion.div
-        className="text-center max-w-2xl"
+        className="text-center max-w-2xl relative z-10"
         initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: prefersReducedMotion ? 0 : 0.6 }}
@@ -68,7 +74,7 @@ const NotFound = () => {
           </Link>
           <Link
             to="/contact"
-            className="inline-block px-8 py-4 bg-gray-800 text-gray-100 font-semibold rounded-lg border-2 border-gray-600 hover:border-blue-400 transition-colors duration-300"
+            className="inline-block px-8 py-4 bg-white/5 text-white font-semibold rounded-lg border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300"
           >
             Contact Support
           </Link>

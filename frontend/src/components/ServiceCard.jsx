@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion';
+import Button from './ui/Button';
 
 /**
  * ServiceCard component - displays service information with icon, description, and CTA
@@ -16,22 +17,22 @@ const ServiceCard = ({ service }) => {
   };
 
   const cardVariants = {
-    initial: { 
-      scale: 1, 
+    initial: {
+      scale: 1,
       y: 0,
       boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
     },
     hover: prefersReducedMotion
       ? {}
       : {
-          scale: 1.03,
-          y: -8,
-          boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-          transition: {
-            duration: 0.3,
-            ease: 'easeOut'
-          }
+        scale: 1.03,
+        y: -8,
+        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+        transition: {
+          duration: 0.3,
+          ease: 'easeOut'
         }
+      }
   };
 
   // Icon mapping based on service icon name
@@ -129,35 +130,35 @@ const ServiceCard = ({ service }) => {
 
   return (
     <motion.article
-      className="service-card bg-gray-800 rounded-lg p-6"
+      className="glass-card p-6 h-full flex flex-col"
       variants={cardVariants}
       initial="initial"
       whileHover="hover"
     >
       {/* Icon */}
-      <div className="flex items-center justify-center w-16 h-16 mb-4 rounded-lg bg-gradient-to-r from-emerald-400 to-blue-500 text-white">
+      <div className="flex items-center justify-center w-16 h-16 mb-6 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-blue-500/20 border border-emerald-500/20 text-emerald-400">
         {getIcon(service.icon)}
       </div>
 
       {/* Title */}
-      <h3 className="text-2xl font-bold text-gray-100 mb-3">
+      <h3 className="text-2xl font-bold text-white mb-3">
         {service.name}
       </h3>
 
       {/* Description */}
-      <p className="text-gray-300 mb-4">
+      <p className="text-gray-400 mb-6 flex-grow">
         {service.description}
       </p>
 
       {/* Bullets */}
-      <ul className="space-y-2 mb-6">
+      <ul className="space-y-3 mb-8">
         {service.bullets.map((bullet, index) => (
           <li
             key={index}
             className="flex items-start text-sm text-gray-300"
           >
             <svg
-              className="w-5 h-5 mr-2 mt-0.5 flex-shrink-0 text-emerald-500"
+              className="w-5 h-5 mr-3 mt-0.5 flex-shrink-0 text-emerald-500"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -175,10 +176,10 @@ const ServiceCard = ({ service }) => {
       </ul>
 
       {/* Timeline and Price */}
-      <div className="flex items-center justify-between mb-6 text-sm">
+      <div className="flex items-center justify-between mb-6 text-sm border-t border-white/5 pt-4">
         <div className="flex items-center text-gray-400">
           <svg
-            className="w-5 h-5 mr-1"
+            className="w-5 h-5 mr-2"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -194,23 +195,25 @@ const ServiceCard = ({ service }) => {
           </svg>
           <span>{service.timeline}</span>
         </div>
-        <div className={`font-semibold ${service.isFree ? 'text-green-600 dark:text-green-400 text-lg' : 'text-gray-100'}`}>
+        <div className={`font-bold ${service.isFree ? 'text-green-400 text-lg' : 'text-white'}`}>
           {service.priceRange}
         </div>
       </div>
 
       {/* CTA Button */}
-      <button
-        onClick={handleRequestQuote}
-        className={`w-full py-3 px-4 font-semibold rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 ${
-          service.isFree
-            ? 'bg-green-500 hover:bg-green-600 text-white'
-            : 'bg-gradient-to-r from-emerald-400 to-blue-500 hover:from-emerald-500 hover:to-blue-600 text-white'
-        }`}
-        aria-label={`${service.isFree ? 'Get started with' : 'Request quote for'} ${service.name}`}
-      >
-        {service.isFree ? 'Get Started Free' : 'Request Quote'}
-      </button>
+      <div className="mt-auto">
+        <Button
+          onClick={handleRequestQuote}
+          className="w-full justify-center"
+          variant={service.isFree ? 'primary' : 'gradient'} // Assuming 'gradient' variant exists or falls back to primary with gradient logic if implemented, or just use primary/outline
+        // Actually Button component usually has variants like 'primary', 'secondary', 'outline', 'ghost'.
+        // ServiceCard used custom gradient. Let's try to stick to Button usage or keep custom className.
+        // Button component in step 268 (Home) used without variant (default primary).
+        // Let's use className to override if needed or just use primary.
+        >
+          {service.isFree ? 'Get Started Free' : 'Request Quote'}
+        </Button>
+      </div>
     </motion.article>
   );
 };

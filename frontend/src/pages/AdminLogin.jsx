@@ -5,6 +5,9 @@ import * as Yup from 'yup'
 import { useAuth } from '../contexts/AuthContext'
 import { API } from '../lib/api'
 import Toast from '../components/Toast'
+import Input from '../components/ui/Input'
+import Button from '../components/ui/Button'
+import SEO from '../components/SEO'
 
 const AdminLogin = () => {
   const navigate = useNavigate()
@@ -27,15 +30,13 @@ const AdminLogin = () => {
     onSubmit: async (values, { setSubmitting }) => {
       setIsLoading(true)
       setSubmitting(true)
-      
+
       try {
-        console.log('Attempting admin login with:', { email: values.email })
         const response = await API.auth.login(values)
-        console.log('Admin login response:', response.data)
-        
+
         if (response.data.success) {
           const userData = response.data.user
-          
+
           // Check if user is admin
           if (!userData.is_admin) {
             setToast({
@@ -46,17 +47,17 @@ const AdminLogin = () => {
             setSubmitting(false)
             return
           }
-          
+
           login(userData, {
             access_token: response.data.access_token,
             refresh_token: response.data.refresh_token,
           })
-          
+
           setToast({
             type: 'success',
             message: 'Admin login successful!',
           })
-          
+
           setTimeout(() => {
             navigate('/admin/dashboard')
           }, 1000)
@@ -68,7 +69,6 @@ const AdminLogin = () => {
         }
       } catch (error) {
         console.error('Admin login error:', error)
-        console.error('Error response:', error.response?.data)
         setToast({
           type: 'error',
           message: error.response?.data?.error || 'Login failed. Please try again.',
@@ -81,86 +81,74 @@ const AdminLogin = () => {
   })
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-start to-primary-end py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-gray-800 p-8 rounded-lg shadow-xl">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
-            Admin Login
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-400">
-            Sign in to access the admin dashboard
+    <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Background Grid */}
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" style={{ opacity: 0.05, pointerEvents: 'none' }}></div>
+      <SEO title="Admin Login" description="Sign in to the Admin Dashboard" />
+
+      <div className="max-w-md w-full space-y-8 relative z-10">
+        <div className="text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-purple-500/20 to-pink-500/20 border border-white/10 mb-6 shadow-2xl backdrop-blur-sm">
+            <span className="text-3xl">🛡️</span>
+          </div>
+          <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 mb-2">
+            Admin Access
+          </h1>
+          <p className="text-sm text-gray-400">
+            Secure login for system administrators
           </p>
         </div>
-        
-        <form className="mt-8 space-y-6" onSubmit={(e) => {
-          e.preventDefault()
-          formik.handleSubmit(e)
-        }}>
-          <div className="rounded-md shadow-sm space-y-4">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
-                Email Address
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                className={`appearance-none relative block w-full px-3 py-2 border ${
-                  formik.touched.email && formik.errors.email
-                    ? 'border-red-500'
-                    : 'border-gray-600'
-                } placeholder-gray-500 dark:placeholder-gray-400 text-white rounded-md focus:outline-none focus:ring-accent focus:border-accent focus:z-10 sm:text-sm bg-white dark:bg-gray-700`}
-                placeholder="admin@example.com"
-                {...formik.getFieldProps('email')}
-              />
-              {formik.touched.email && formik.errors.email && (
-                <p className="mt-1 text-sm text-red-600">{formik.errors.email}</p>
-              )}
-            </div>
-            
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-1">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                className={`appearance-none relative block w-full px-3 py-2 border ${
-                  formik.touched.password && formik.errors.password
-                    ? 'border-red-500'
-                    : 'border-gray-600'
-                } placeholder-gray-500 dark:placeholder-gray-400 text-white rounded-md focus:outline-none focus:ring-accent focus:border-accent focus:z-10 sm:text-sm bg-white dark:bg-gray-700`}
-                placeholder="Password"
-                {...formik.getFieldProps('password')}
-              />
-              {formik.touched.password && formik.errors.password && (
-                <p className="mt-1 text-sm text-red-600">{formik.errors.password}</p>
-              )}
-            </div>
-          </div>
 
-          <div>
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-primary-start to-primary-end hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isLoading ? 'Signing in...' : 'Sign in as Admin'}
-            </button>
-          </div>
-          
-          <div className="text-center">
-            <Link
-              to="/login"
-              className="text-sm text-accent hover:text-accent-dark"
-            >
-              Back to regular login
-            </Link>
-          </div>
-        </form>
+        <div className="glass-card p-8 animate-fade-in-up">
+          <form className="space-y-6" onSubmit={(e) => {
+            e.preventDefault()
+            formik.handleSubmit(e)
+          }}>
+
+            <Input
+              label="Email Address"
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              placeholder="admin@example.com"
+              {...formik.getFieldProps('email')}
+              error={formik.touched.email && formik.errors.email}
+            />
+
+            <Input
+              label="Password"
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              placeholder="Password"
+              {...formik.getFieldProps('password')}
+              error={formik.touched.password && formik.errors.password}
+            />
+
+            <div>
+              <Button
+                type="submit"
+                disabled={isLoading}
+                isLoading={isLoading}
+                loadingText="Verifying..."
+                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 border-purple-500/30 shadow-lg shadow-purple-500/20"
+              >
+                Sign in as Admin
+              </Button>
+            </div>
+
+            <div className="mt-6 text-center">
+              <Link
+                to="/login"
+                className="text-sm text-gray-400 hover:text-white transition-colors"
+              >
+                Back to regular login
+              </Link>
+            </div>
+          </form>
+        </div>
       </div>
 
       {toast && (

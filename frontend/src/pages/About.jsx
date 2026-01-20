@@ -97,12 +97,18 @@ const About = () => {
   };
 
   return (
-    <div className="about-page min-h-screen bg-gray-900 py-16 px-4 sm:px-6 lg:px-8">
+    <div className="about-page min-h-screen bg-[#0a0a0f] py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Background Grid */}
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" style={{ opacity: 0.05, pointerEvents: 'none' }}></div>
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-900/10 rounded-full blur-[100px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-900/10 rounded-full blur-[100px]" />
+      </div>
       <SEO
         title="About Us"
         description="Learn about CarrerPortal's mission to democratize access to quality career guidance through technology and expert mentorship."
       />
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* Page Header */}
         <motion.header
           className="text-center mb-16"
@@ -125,27 +131,27 @@ const About = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: prefersReducedMotion ? 0 : 0.6, delay: 0.2 }}
         >
-          <div className="bg-gray-800 rounded-2xl p-8 md:p-12 shadow-lg">
+          <div className="glass-card rounded-2xl p-8 md:p-12 shadow-lg">
             <h2 className="text-3xl font-bold text-gray-100 mb-6">
               Our Story
             </h2>
             <p className="text-lg text-gray-300 mb-6 leading-relaxed">
-              CarrerPortal was born from a simple observation: talented individuals often struggle to find 
-              the right career path that matches their unique skills and aspirations. We saw countless 
-              professionals feeling lost in their career journey, unsure of which direction to take or 
+              CarrerPortal was born from a simple observation: talented individuals often struggle to find
+              the right career path that matches their unique skills and aspirations. We saw countless
+              professionals feeling lost in their career journey, unsure of which direction to take or
               how to bridge the gap between where they are and where they want to be.
             </p>
             <p className="text-lg text-gray-300 mb-6 leading-relaxed">
-              Founded by a team of technologists and career development experts, we set out to create 
-              a platform that combines cutting-edge AI technology with human expertise to provide 
+              Founded by a team of technologists and career development experts, we set out to create
+              a platform that combines cutting-edge AI technology with human expertise to provide
               personalized career guidance at scale.
             </p>
             <h3 className="text-2xl font-bold text-gray-100 mb-4 mt-8">
               Our Mission
             </h3>
             <p className="text-lg text-gray-300 leading-relaxed">
-              To democratize access to quality career guidance by leveraging technology and connecting 
-              individuals with the right resources, mentors, and opportunities to achieve their 
+              To democratize access to quality career guidance by leveraging technology and connecting
+              individuals with the right resources, mentors, and opportunities to achieve their
               professional goals.
             </p>
             <h3 className="text-2xl font-bold text-gray-100 mb-4 mt-8">
@@ -189,7 +195,7 @@ const About = () => {
                 variants={itemVariants}
                 className="relative"
               >
-                <div className="bg-gray-800 rounded-xl p-6 shadow-lg text-center h-full">
+                <div className="glass-card rounded-xl p-6 shadow-lg text-center h-full hover:border-indigo-500/50 transition-colors">
                   <div className="text-5xl mb-4">{phase.icon}</div>
                   <h3 className="text-xl font-bold text-gray-100 mb-3">
                     {phase.phase}
@@ -233,7 +239,7 @@ const About = () => {
               <motion.div
                 key={index}
                 variants={itemVariants}
-                className="bg-gray-800 rounded-xl p-8 shadow-lg text-center"
+                className="glass-card rounded-xl p-8 shadow-lg text-center hover:scale-105 transition-transform duration-300"
               >
                 <img
                   src={member.image}
@@ -268,7 +274,7 @@ const About = () => {
               <motion.div
                 key={index}
                 variants={itemVariants}
-                className="bg-gradient-to-br from-emerald-400 to-blue-500 rounded-xl p-6 text-white text-center shadow-lg"
+                className="bg-gradient-to-br from-emerald-500/10 to-blue-500/10 border border-emerald-500/20 rounded-xl p-6 text-white text-center shadow-lg backdrop-blur-sm"
               >
                 <div className="text-5xl mb-4">{achievement.icon}</div>
                 <div className="text-3xl font-bold mb-2">{achievement.label}</div>

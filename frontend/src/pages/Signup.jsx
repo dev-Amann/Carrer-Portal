@@ -4,6 +4,8 @@ import { useAuth } from '../contexts/AuthContext';
 import { authAPI } from '../lib/api';
 import SEO from '../components/SEO';
 import Toast from '../components/Toast';
+import Input from '../components/ui/Input';
+import Button from '../components/ui/Button';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -132,183 +134,166 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Background Grid */}
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" style={{ opacity: 0.05, pointerEvents: 'none' }}></div>
       <SEO
         title="Create Account"
         description="Create your CarrerPortal account to get personalized career recommendations and connect with industry experts."
       />
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
-            Create your account
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-400">
-            Already have an account?{' '}
-            <Link to="/login" className="font-medium text-blue-600 hover:text-blue-500">
-              Sign in
-            </Link>
+
+      <div className="max-w-md w-full space-y-8 relative z-10">
+        <div className="text-center">
+          <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-indigo-500 mb-2">
+            Join Today
+          </h1>
+          <p className="text-sm text-gray-400">
+            Start your journey to a better career
           </p>
         </div>
 
-        <div className="bg-gray-800 py-8 px-4 shadow sm:rounded-lg sm:px-10">
+        <div className="glass-card p-8 animate-fade-in-up">
           {/* Progress Indicator */}
-          <div className="mb-8">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
-                  step >= 1 ? 'bg-blue-600 text-white' : 'bg-gray-300 text-gray-600'
-                }`}>
+          <div className="mb-8 px-4">
+            <div className="flex items-center justify-between relative">
+              {/* Connecting Line */}
+              <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-full h-1 bg-white/10 rounded-full z-0"></div>
+              <div
+                className="absolute left-0 top-1/2 transform -translate-y-1/2 h-1 bg-gradient-to-r from-teal-400 to-indigo-500 rounded-full z-0 transition-all duration-500"
+                style={{ width: step === 1 ? '50%' : '100%' }}
+              ></div>
+
+              <div className="relative z-10 flex flex-col items-center">
+                <div className={`flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all duration-300 ${step >= 1 ? 'bg-[#0a0a0f] border-teal-400 text-teal-400 shadow-[0_0_10px_rgba(45,212,191,0.5)]' : 'bg-[#0a0a0f] border-gray-600 text-gray-600'
+                  }`}>
                   1
                 </div>
-                <span className="ml-2 text-sm font-medium text-white">Details</span>
+                <span className={`mt-2 text-xs font-medium transition-colors duration-300 ${step >= 1 ? 'text-teal-400' : 'text-gray-600'
+                  }`}>Details</span>
               </div>
-              <div className={`flex-1 h-1 mx-4 ${step >= 2 ? 'bg-blue-600' : 'bg-gray-300'}`}></div>
-              <div className="flex items-center">
-                <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
-                  step >= 2 ? 'bg-blue-600 text-white' : 'bg-gray-300 text-gray-600'
-                }`}>
+
+              <div className="relative z-10 flex flex-col items-center">
+                <div className={`flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all duration-300 ${step >= 2 ? 'bg-[#0a0a0f] border-indigo-500 text-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.5)]' : 'bg-[#0a0a0f] border-gray-600 text-gray-600'
+                  }`}>
                   2
                 </div>
-                <span className="ml-2 text-sm font-medium text-white">Verify</span>
+                <span className={`mt-2 text-xs font-medium transition-colors duration-300 ${step >= 2 ? 'text-indigo-500' : 'text-gray-600'
+                  }`}>Verify</span>
               </div>
             </div>
           </div>
 
           {/* Step 1: Enter Details */}
           {step === 1 && (
-            <form className="space-y-6" onSubmit={handleSendOTP}>
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-300">
-                  Full Name
-                </label>
-                <div className="mt-1">
-                  <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="appearance-none block w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-                    placeholder="John Doe"
-                  />
-                </div>
-              </div>
+            <form className="space-y-5 animate-fade-in" onSubmit={handleSendOTP}>
+              <Input
+                label="Full Name"
+                id="name"
+                name="name"
+                type="text"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="John Doe"
+                required
+              />
+
+              <Input
+                label="Email address"
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="you@example.com"
+                required
+              />
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-300">
-                  Email address
-                </label>
-                <div className="mt-1">
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="appearance-none block w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-                    placeholder="you@example.com"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-300">
-                  Password
-                </label>
-                <div className="mt-1">
-                  <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    required
-                    value={formData.password}
-                    onChange={handleChange}
-                    className="appearance-none block w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-                    placeholder="••••••••"
-                  />
-                </div>
+                <Input
+                  label="Password"
+                  id="password"
+                  name="password"
+                  type="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="••••••••"
+                  required
+                />
                 <p className="mt-1 text-xs text-gray-400">
                   At least 8 characters with letters and numbers
                 </p>
               </div>
 
-              <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-300">
-                  Confirm Password
-                </label>
-                <div className="mt-1">
-                  <input
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    type="password"
-                    required
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    className="appearance-none block w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-                    placeholder="••••••••"
-                  />
-                </div>
-              </div>
+              <Input
+                label="Confirm Password"
+                id="confirmPassword"
+                name="confirmPassword"
+                type="password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                placeholder="••••••••"
+                required
+              />
 
-              <div>
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-emerald-400 to-blue-500 hover:from-emerald-500 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {loading ? 'Sending OTP...' : 'Continue'}
-                </button>
-              </div>
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full"
+                isLoading={loading}
+                loadingText="Sending OTP..."
+              >
+                Continue
+              </Button>
             </form>
           )}
 
           {/* Step 2: Verify OTP */}
           {step === 2 && (
-            <form className="space-y-6" onSubmit={handleSubmit}>
-              <div>
-                <p className="text-sm text-gray-400 mb-4">
-                  We've sent a 6-digit verification code to <strong>{formData.email}</strong>
+            <form className="space-y-6 animate-fade-in" onSubmit={handleSubmit}>
+              <div className="text-center">
+                <p className="text-sm text-gray-400 mb-6 bg-white/5 p-4 rounded-lg border border-white/10">
+                  We've sent a 6-digit verification code to <br />
+                  <strong className="text-white block mt-1">{formData.email}</strong>
                 </p>
-                <label htmlFor="otp" className="block text-sm font-medium text-gray-300">
-                  Verification Code
-                </label>
-                <div className="mt-1">
-                  <input
-                    id="otp"
-                    name="otp"
-                    type="text"
-                    maxLength="6"
-                    required
-                    value={formData.otp}
-                    onChange={handleChange}
-                    className="appearance-none block w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white sm:text-sm text-center text-2xl tracking-widest"
-                    placeholder="000000"
-                    autoFocus
-                  />
-                </div>
-                <p className="mt-2 text-xs text-gray-400">
+
+                <Input
+                  label="Verification Code"
+                  id="otp"
+                  name="otp"
+                  type="text"
+                  maxLength="6"
+                  value={formData.otp}
+                  onChange={handleChange}
+                  placeholder="000000"
+                  className="text-center text-2xl tracking-[0.5em] font-mono h-14"
+                  autoFocus
+                  required
+                />
+
+                <p className="mt-2 text-xs text-gray-500">
                   Code expires in 10 minutes
                 </p>
               </div>
 
               <div className="flex gap-3">
-                <button
+                <Button
                   type="button"
+                  variant="outline"
                   onClick={() => setStep(1)}
-                  className="flex-1 py-2 px-4 border border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-300 bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  className="flex-1"
                 >
                   Back
-                </button>
-                <button
+                </Button>
+                <Button
                   type="submit"
                   disabled={loading}
-                  className="flex-1 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-emerald-400 to-blue-500 hover:from-emerald-500 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                  isLoading={loading}
+                  loadingText="Creating..."
+                  className="flex-1"
                 >
-                  {loading ? 'Verifying...' : 'Create Account'}
-                </button>
+                  Create Account
+                </Button>
               </div>
 
               <div className="text-center">
@@ -316,7 +301,7 @@ const Signup = () => {
                   type="button"
                   onClick={handleSendOTP}
                   disabled={loading}
-                  className="text-sm font-medium text-blue-600 hover:text-blue-500 disabled:text-gray-400"
+                  className="text-xs font-medium text-teal-400 hover:text-teal-300 disabled:text-gray-600 transition-colors"
                 >
                   Resend OTP
                 </button>
@@ -324,48 +309,43 @@ const Signup = () => {
             </form>
           )}
 
+          <div className="mt-6 text-center">
+            <p className="text-sm text-gray-400">
+              Already have an account?{' '}
+              <Link to="/login" className="font-medium text-teal-400 hover:text-teal-300 transition-colors">
+                Sign in
+              </Link>
+            </p>
+          </div>
+
           {/* Admin and Expert Login Links */}
           {step === 1 && (
-            <div className="mt-6 pt-6 border-t border-gray-700">
-              <p className="text-center text-sm text-gray-400 mb-3">
-                Already have special access?
+            <div className="mt-8 pt-6 border-t border-white/10">
+              <p className="text-center text-xs text-gray-500 mb-4 uppercase tracking-wider font-semibold">
+                Special Access
               </p>
               <div className="grid grid-cols-2 gap-3 mb-3">
                 <Link
                   to="/admin/login"
-                  className="flex items-center justify-center px-4 py-2 border border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-300 bg-gray-700 hover:bg-gray-600 transition-colors"
+                  className="flex items-center justify-center px-4 py-2 border border-white/10 rounded-lg text-xs font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-all bg-[#0a0a0f]/30"
                 >
-                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
-                  Admin Login
+                  <span className="mr-1.5">🔒</span> Admin
                 </Link>
                 <Link
                   to="/expert/login"
-                  className="flex items-center justify-center px-4 py-2 border border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-300 bg-gray-700 hover:bg-gray-600 transition-colors"
+                  className="flex items-center justify-center px-4 py-2 border border-white/10 rounded-lg text-xs font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-all bg-[#0a0a0f]/30"
                 >
-                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                  Expert Login
+                  <span className="mr-1.5">🎓</span> Expert
                 </Link>
               </div>
-              
+
               {/* Expert Registration CTA */}
-              <div className="text-center">
-                <p className="text-xs text-gray-400 mb-2">
-                  Want to share your expertise?
-                </p>
-                <Link
-                  to="/expert/register"
-                  className="flex items-center justify-center w-full px-4 py-3 border-2 border-accent rounded-md shadow-sm text-sm font-semibold text-accent bg-accent/10 hover:bg-accent/20 transition-colors"
-                >
-                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-                  </svg>
-                  Become an Expert - Register Now
-                </Link>
-              </div>
+              <Link
+                to="/expert/register"
+                className="flex items-center justify-center w-full px-4 py-2.5 border border-indigo-500/30 rounded-lg text-xs font-semibold text-indigo-400 bg-indigo-500/10 hover:bg-indigo-500/20 hover:text-indigo-300 transition-all"
+              >
+                Become an Expert - Register Now
+              </Link>
             </div>
           )}
         </div>

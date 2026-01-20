@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import api from '../lib/api';
+import { API } from '../lib/api';
 import Toast from './Toast';
+import Modal from './ui/Modal';
+import DateTimeSelection from './booking/DateTimeSelection';
+import BookingSummary from './booking/BookingSummary';
+import PaymentHandler from './booking/PaymentHandler';
 
 const BookingModal = ({ expert, onClose, onSuccess }) => {
   const { user } = useAuth();
@@ -24,6 +28,7 @@ const BookingModal = ({ expert, onClose, onSuccess }) => {
     try {
       setLoading(true);
       // Generate time slots from 9 AM to 6 PM
+      // In a real app, this would fetch from API based on expert's availability
       const slots = [];
       for (let hour = 9; hour <= 18; hour++) {
         slots.push(`${hour.toString().padStart(2, '0')}:00`);
@@ -43,28 +48,8 @@ const BookingModal = ({ expert, onClose, onSuccess }) => {
     setToast({ show: true, message, type });
   };
 
-  const getMinDate = () => {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    return tomorrow.toISOString().split('T')[0];
-  };
-
-  const getMaxDate = () => {
-    const maxDate = new Date();
-    maxDate.setDate(maxDate.getDate() + 30); // 30 days from now
-    return maxDate.toISOString().split('T')[0];
-  };
-
   const calculateTotal = () => {
     return expert.rate_per_hour * duration;
-  };
-
-  const handleDateTimeSubmit = () => {
-    if (!selectedDate || !selectedTime) {
-      showToast('Please select both date and time', 'error');
-      return;
-    }
-    setStep(2);
   };
 
   const handleConfirmBooking = async () => {
@@ -75,7 +60,7 @@ const BookingModal = ({ expert, onClose, onSuccess }) => {
       const slotStart = new Date(`${selectedDate}T${selectedTime}`);
       const slotEnd = new Date(slotStart.getTime() + duration * 60 * 60 * 1000);
 
-      const response = await api.post('/bookings/create', {
+      const response = await API.bookings.create({
         expert_id: expert.id,
         slot_start: slotStart.toISOString(),
         slot_end: slotEnd.toISOString()
@@ -97,7 +82,7 @@ const BookingModal = ({ expert, onClose, onSuccess }) => {
       setLoading(true);
 
       // Create payment order
-      const response = await api.post('/payments/create-order', {
+      const response = await API.payments.createOrder({
         booking_id: bookingData.id,
         amount: calculateTotal()
       });
@@ -105,9 +90,18 @@ const BookingModal = ({ expert, onClose, onSuccess }) => {
       if (response.data.success) {
         const { order_id, amount, currency, key_id } = response.data;
 
+        // Verify key (fallback to env if not from backend)
+        const razorpayKey = key_id || import.meta.env.VITE_RAZORPAY_KEY_ID;
+
+        if (!razorpayKey) {
+          showToast('Payment configuration missing. Please contact support.', 'error');
+          setLoading(false);
+          return;
+        }
+
         // Options for Razorpay
         const options = {
-          key: key_id || import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_dummy',
+          key: razorpayKey,
           amount: amount,
           currency: currency,
           name: 'Career Portal',
@@ -116,7 +110,7 @@ const BookingModal = ({ expert, onClose, onSuccess }) => {
           handler: async function (response) {
             try {
               // Verify payment
-              const verifyResponse = await api.post('/payments/verify', {
+              const verifyResponse = await API.payments.verify({
                 razorpay_order_id: response.razorpay_order_id,
                 razorpay_payment_id: response.razorpay_payment_id,
                 razorpay_signature: response.razorpay_signature
@@ -139,10 +133,10 @@ const BookingModal = ({ expert, onClose, onSuccess }) => {
           prefill: {
             name: user?.name || '',
             email: user?.email || '',
-            contact: user?.phone || '' // Assuming user has phone, if not it's optional
+            contact: user?.phone || ''
           },
           theme: {
-            color: '#3B82F6'
+            color: '#6366f1' // Indigo-500
           },
           modal: {
             ondismiss: function () {
@@ -167,235 +161,58 @@ const BookingModal = ({ expert, onClose, onSuccess }) => {
     }
   };
 
-  const formatDate = (dateStr) => {
-    const date = new Date(dateStr);
-    return date.toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  };
-
-  const formatTime = (timeStr) => {
-    const [hours, minutes] = timeStr.split(':');
-    const hour = parseInt(hours);
-    const ampm = hour >= 12 ? 'PM' : 'AM';
-    const displayHour = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour;
-    return `${displayHour}:${minutes} ${ampm}`;
+  const getStepTitle = () => {
+    switch (step) {
+      case 1: return 'Select Date & Time';
+      case 2: return 'Confirm Booking';
+      case 3: return 'Complete Payment';
+      default: return 'Booking';
+    }
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-gray-800 rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        {/* Header */}
-        <div className="sticky top-0 bg-gray-800 border-b border-gray-700 p-6 flex items-center justify-between">
-          <div>
-            <h2 className="text-2xl font-bold text-white">
-              Book Consultation
-            </h2>
-            <p className="text-sm text-gray-400 mt-1">
-              with {expert.name}
-            </p>
-          </div>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-200"
-          >
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
+    <>
+      <Modal
+        isOpen={true}
+        onClose={onClose}
+        title={getStepTitle()}
+        size="md"
+      >
+        {step === 1 && (
+          <DateTimeSelection
+            selectedDate={selectedDate}
+            setSelectedDate={setSelectedDate}
+            selectedTime={selectedTime}
+            setSelectedTime={setSelectedTime}
+            duration={duration}
+            setDuration={setDuration}
+            expert={expert}
+            availableSlots={availableSlots}
+            loading={loading}
+            onNext={() => setStep(2)}
+          />
+        )}
 
-        {/* Progress Steps */}
-        <div className="px-6 py-4 bg-gray-900/50">
-          <div className="flex items-center justify-between">
-            {['Select Time', 'Confirm', 'Payment'].map((label, index) => (
-              <div key={index} className="flex items-center">
-                <div className={`flex items-center justify-center w-8 h-8 rounded-full ${step > index + 1 ? 'bg-green-500 text-white' :
-                  step === index + 1 ? 'bg-blue-500 text-white' :
-                    'bg-gray-300 dark:bg-gray-600 text-gray-400'
-                  }`}>
-                  {step > index + 1 ? '✓' : index + 1}
-                </div>
-                <span className={`ml-2 text-sm font-medium ${step >= index + 1 ? 'text-white' : 'text-gray-400'
-                  }`}>
-                  {label}
-                </span>
-                {index < 2 && (
-                  <div className={`w-12 h-0.5 mx-2 ${step > index + 1 ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'
-                    }`} />
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
+        {step === 2 && (
+          <BookingSummary
+            expert={expert}
+            date={selectedDate}
+            time={selectedTime}
+            duration={duration}
+            onConfirm={handleConfirmBooking}
+            onBack={() => setStep(1)}
+            loading={loading}
+          />
+        )}
 
-        {/* Content */}
-        <div className="p-6">
-          {/* Step 1: Date & Time Selection */}
-          {step === 1 && (
-            <div className="space-y-6">
-              {/* Duration Selection */}
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Session Duration
-                </label>
-                <div className="grid grid-cols-3 gap-3">
-                  {[1, 2, 3].map((hours) => (
-                    <button
-                      key={hours}
-                      onClick={() => setDuration(hours)}
-                      className={`p-3 rounded-lg border-2 transition-colors ${duration === hours
-                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
-                        : 'border-gray-600 hover:border-blue-300'
-                        }`}
-                    >
-                      <div className="font-semibold text-white">{hours} Hour{hours > 1 ? 's' : ''}</div>
-                      <div className="text-sm text-gray-400">₹{expert.rate_per_hour * hours}</div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Date Selection */}
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Select Date
-                </label>
-                <input
-                  type="date"
-                  value={selectedDate}
-                  onChange={(e) => setSelectedDate(e.target.value)}
-                  min={getMinDate()}
-                  max={getMaxDate()}
-                  className="w-full px-4 py-3 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-                />
-              </div>
-
-              {/* Time Selection */}
-              {selectedDate && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Select Time Slot
-                  </label>
-                  {loading ? (
-                    <div className="text-center py-8">
-                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto"></div>
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-4 gap-2 max-h-64 overflow-y-auto">
-                      {availableSlots.map((slot) => (
-                        <button
-                          key={slot}
-                          onClick={() => setSelectedTime(slot)}
-                          className={`p-2 rounded-lg border transition-colors text-sm ${selectedTime === slot
-                            ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300'
-                            : 'border-gray-600 hover:border-blue-300 text-gray-300'
-                            }`}
-                        >
-                          {formatTime(slot)}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
-
-              <button
-                onClick={handleDateTimeSubmit}
-                disabled={!selectedDate || !selectedTime}
-                className="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                Continue to Confirmation
-              </button>
-            </div>
-          )}
-
-          {/* Step 2: Confirmation */}
-          {step === 2 && (
-            <div className="space-y-6">
-              <div className="bg-gray-900/50 rounded-lg p-4 space-y-3">
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Expert:</span>
-                  <span className="font-semibold text-white">{expert.name}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Date:</span>
-                  <span className="font-semibold text-white">{formatDate(selectedDate)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Time:</span>
-                  <span className="font-semibold text-white">{formatTime(selectedTime)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Duration:</span>
-                  <span className="font-semibold text-white">{duration} Hour{duration > 1 ? 's' : ''}</span>
-                </div>
-                <div className="border-t border-gray-600 pt-3 flex justify-between">
-                  <span className="text-lg font-semibold text-white">Total:</span>
-                  <span className="text-2xl font-bold text-blue-400">₹{calculateTotal()}</span>
-                </div>
-              </div>
-
-              <div className="flex gap-3">
-                <button
-                  onClick={() => setStep(1)}
-                  className="flex-1 py-3 border border-gray-600 text-gray-300 font-semibold rounded-lg hover:bg-gray-700"
-                >
-                  Back
-                </button>
-                <button
-                  onClick={handleConfirmBooking}
-                  disabled={loading}
-                  className="flex-1 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 disabled:opacity-50"
-                >
-                  {loading ? 'Processing...' : 'Confirm Booking'}
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Step 3: Payment */}
-          {step === 3 && (
-            <div className="space-y-6">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold text-white mb-2">
-                  Booking Created Successfully!
-                </h3>
-                <p className="text-gray-400">
-                  Complete the payment to confirm your consultation
-                </p>
-              </div>
-
-              <div className="bg-gray-900/50 rounded-lg p-4">
-                <div className="flex justify-between mb-2">
-                  <span className="text-gray-400">Amount to Pay:</span>
-                  <span className="text-2xl font-bold text-white">₹{calculateTotal()}</span>
-                </div>
-              </div>
-
-              <button
-                onClick={handlePayment}
-                disabled={loading}
-                className="w-full py-3 bg-gradient-to-r from-emerald-400 to-blue-500 text-white font-semibold rounded-lg hover:shadow-lg disabled:opacity-50"
-              >
-                {loading ? 'Processing...' : 'Proceed to Payment'}
-              </button>
-
-              <p className="text-xs text-center text-gray-400">
-                Secure payment powered by Razorpay
-              </p>
-            </div>
-          )}
-        </div>
-      </div>
+        {step === 3 && (
+          <PaymentHandler
+            amount={calculateTotal()}
+            onPay={handlePayment}
+            loading={loading}
+          />
+        )}
+      </Modal>
 
       {toast.show && (
         <Toast
@@ -404,7 +221,7 @@ const BookingModal = ({ expert, onClose, onSuccess }) => {
           onClose={() => setToast({ ...toast, show: false })}
         />
       )}
-    </div>
+    </>
   );
 };
 
