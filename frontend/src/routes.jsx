@@ -6,12 +6,9 @@ import PageTransition from './components/PageTransition'
 
 // Lazy load page components
 const Home = lazy(() => import('./pages/Home'))
-const Services = lazy(() => import('./pages/Services'))
 const Experts = lazy(() => import('./pages/Experts'))
 
 const About = lazy(() => import('./pages/About'))
-const Blog = lazy(() => import('./pages/Blog'))
-const PostPage = lazy(() => import('./pages/PostPage'))
 const Contact = lazy(() => import('./pages/Contact'))
 const Bookings = lazy(() => import('./pages/Bookings'))
 const Login = lazy(() => import('./pages/Login'))
@@ -66,12 +63,9 @@ const AppRoutes = () => {
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={withPageTransition(Home)} />
-          <Route path="/services" element={withPageTransition(Services)} />
           <Route path="/experts" element={withPageTransition(Experts)} />
 
           <Route path="/about" element={withPageTransition(About)} />
-          <Route path="/blog" element={withPageTransition(Blog)} />
-          <Route path="/blog/:slug" element={withPageTransition(PostPage)} />
           <Route path="/contact" element={withPageTransition(Contact)} />
           <Route path="/login" element={withPageTransition(Login)} />
           <Route path="/signup" element={withPageTransition(Signup)} />

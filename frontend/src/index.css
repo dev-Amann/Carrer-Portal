@@ -9,28 +9,36 @@
 
   color-scheme: dark;
 
-  /* Premium Palette - Dark Mode Defaults */
+  /* Premium Dark Palette */
   --bg-primary: #0a0a0f;
-  /* Deepest black/blue */
-  --bg-secondary: #13131f;
-  /* Slightly lighter for cards */
-  --bg-input: #1c1c2e;
+  --bg-secondary: #0f172a;
+  --bg-input: #1e1e2d;
+  --border-light: #2d2d3f;
 
-  --primary-glow: #6366f1;
-  /* Indigo */
-  --secondary-glow: #a855f7;
-  /* Purple */
+  --primary-glow: #4f46e5;
+  /* Indigo-600 */
+  --secondary-glow: #8b5cf6;
+  /* Violet-500 */
   --accent-glow: #ec4899;
-  /* Pink/Rose */
+  /* Pink-500 */
 
-  --text-primary: #f3f4f6;
-  --text-secondary: #9ca3af;
-  --text-muted: #6b7280;
+  --text-primary: #f9fafb;
+  /* Gray-50 */
+  --text-secondary: #d1d5db;
+  /* Gray-300 */
+  --text-muted: #9ca3af;
+  /* Gray-400 */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: rgba(99, 102, 241, 0.3);
+  /* Indigo-500 selection */
+  color: #ffffff;
 }
 
 body {
@@ -40,8 +48,8 @@ body {
   color: var(--text-primary);
   overflow-x: hidden;
   background-image:
-    radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.08), transparent 25%),
-    radial-gradient(circle at 85% 30%, rgba(168, 85, 247, 0.08), transparent 25%);
+    radial-gradient(circle at 10% 20%, rgba(79, 70, 229, 0.08), transparent 20%),
+    radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.08), transparent 20%);
 }
 
 @layer utilities {
@@ -52,17 +60,20 @@ body {
   }
 
   .text-gradient {
-    @apply bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400;
+    @apply bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400;
   }
 
+  /* Glassmorphism Utilities - Dark Mode */
   .glass-panel {
-    @apply bg-opacity-70 backdrop-blur-lg border border-white/10 shadow-xl;
-    background-color: rgba(19, 19, 31, 0.6);
+    @apply bg-white/5 backdrop-blur-lg border border-white/10 shadow-xl;
   }
 
   .glass-card {
-    @apply bg-opacity-40 backdrop-blur-md border border-white/5 transition-all duration-300 hover:border-white/10 hover:shadow-lg hover:shadow-indigo-500/10;
-    background-color: rgba(28, 28, 46, 0.4);
+    @apply bg-white/5 backdrop-blur-md border border-white/5 shadow-lg transition-all duration-300 hover:bg-white/10 hover:border-white/10;
+  }
+
+  .glass-input {
+    @apply bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-all duration-300;
   }
 }
 
@@ -81,6 +92,22 @@ body {
 
 .animate-fade-in {
   animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
 }
 
 /* Hero blob animations */
@@ -112,20 +139,30 @@ body {
   animation-delay: 4s;
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbar - Dark Theme */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-primary);
+  background: #0a0a0f;
 }
 
 ::-webkit-scrollbar-thumb {
   background: #374151;
+  /* Gray-700 */
   border-radius: 4px;
+  transition: background 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: #4b5563;
+  /* Gray-600 */
+}
+
+/* Firefox Scrollbar support */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #374151 #0a0a0f;
 }

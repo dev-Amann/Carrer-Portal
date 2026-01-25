@@ -416,6 +416,10 @@ def get_skill_gap(career_id):
                 skill_info['current_level'] = current_level
                 
                 try:
+                    if not current_level:
+                         # Handle None proficiency as 'beginner' or treat as missing
+                         current_level = 'beginner'
+                    
                     # Check if user meets requirement
                     current_index = proficiency_order.index(current_level.lower())
                     required_index = proficiency_order.index(cs.required_level.lower())
@@ -425,10 +429,11 @@ def get_skill_gap(career_id):
                         met_requirements.append(skill_info)
                     else:
                         skill_info['status'] = 'insufficient'
-                        skill_info['gap'] = proficiency_order[required_index] - proficiency_order[current_index]
+                        # Fix: Subtract indices, not strings
+                        skill_info['gap'] = required_index - current_index
                         gaps.append(skill_info)
-                except ValueError as ve:
-                    logger.error(f"Proficiency error: {ve}. Current: {current_level}, Required: {cs.required_level}")
+                except (ValueError, AttributeError) as e:
+                    logger.error(f"Proficiency error: {e}. Current: {current_level}, Required: {cs.required_level}")
                     skill_info['status'] = 'error'
                     skill_info['error'] = 'Invalid proficiency level'
                     gaps.append(skill_info)
@@ -466,7 +471,7 @@ def get_skill_gap(career_id):
         logger.error(f"Unexpected error in get_skill_gap: {str(e)}")
         return jsonify({
             'success': False,
-            'error': 'An unexpected error occurred',
+            'error': f'An unexpected error occurred: {str(e)}',
             'code': 'UNEXPECTED_ERROR'
         }), 500
 

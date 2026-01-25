@@ -92,28 +92,10 @@ const NotFound = () => {
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Link
-              to="/services"
-              className="text-blue-400 hover:underline"
-            >
-              Services
-            </Link>
-            <Link
-              to="/portfolio"
-              className="text-blue-400 hover:underline"
-            >
-              Portfolio
-            </Link>
-            <Link
               to="/about"
               className="text-blue-400 hover:underline"
             >
               About Us
-            </Link>
-            <Link
-              to="/blog"
-              className="text-blue-400 hover:underline"
-            >
-              Blog
             </Link>
           </div>
         </motion.div>

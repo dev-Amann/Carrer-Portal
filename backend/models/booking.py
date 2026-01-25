@@ -55,7 +55,9 @@ class Booking(Base):
                 data['expert'] = {
                     'name': self.expert.user.name,
                     'bio': self.expert.bio,
-                    'rate_per_hour': float(self.expert.rate_per_hour) if self.expert.rate_per_hour else None
+                    'rate_per_hour': float(self.expert.rate_per_hour) if self.expert.rate_per_hour else None,
+                    'specialization': self.expert.specialization,
+                    'years_of_experience': self.expert.years_of_experience
                 }
         
         return data

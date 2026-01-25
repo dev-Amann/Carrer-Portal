@@ -52,7 +52,7 @@ const Hero = () => {
         {/* Badge */}
         <motion.div variants={itemVariants} className="mb-8">
           <span className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-medium text-indigo-300 backdrop-blur-md shadow-xl">
-            ✨ Revolutionizing Career Growth with AI
+            ✨ Revolutionizing Career Growth
           </span>
         </motion.div>
 
@@ -61,9 +61,11 @@ const Hero = () => {
           className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white mb-8 leading-tight"
           variants={itemVariants}
         >
-          Your Future, <br />
-          <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-blue-400 bg-clip-text text-transparent drop-shadow-sm">
-            Designed by AI
+          <span className="block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 mb-2">
+            CareerPortal
+          </span>
+          <span className="block text-4xl sm:text-5xl md:text-6xl text-gray-300 font-medium">
+            Your Future is Developed by You
           </span>
         </motion.h1>
 
@@ -82,7 +84,7 @@ const Hero = () => {
           variants={itemVariants}
         >
           <Button
-            onClick={() => navigate('/services')}
+            onClick={() => navigate('/career-recommendation')}
             size="lg"
             className="w-full sm:w-auto shadow-xl shadow-indigo-500/20 hover:shadow-indigo-500/40 transition-all text-lg px-8 py-6 h-auto"
           >

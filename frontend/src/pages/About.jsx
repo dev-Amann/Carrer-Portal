@@ -9,69 +9,12 @@ import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion';
 const About = () => {
   const prefersReducedMotion = usePrefersReducedMotion();
 
-  const workflowPhases = [
-    {
-      phase: 'Discovery',
-      description: 'We dive deep into understanding your goals, challenges, and vision',
-      icon: '🔍'
-    },
-    {
-      phase: 'Design',
-      description: 'Crafting intuitive solutions that align with your objectives',
-      icon: '🎨'
-    },
-    {
-      phase: 'Build',
-      description: 'Developing robust, scalable solutions with cutting-edge technology',
-      icon: '🔨'
-    },
-    {
-      phase: 'Deliver',
-      description: 'Launching your solution with comprehensive testing and support',
-      icon: '🚀'
-    },
-    {
-      phase: 'Support',
-      description: 'Ongoing maintenance, updates, and continuous improvement',
-      icon: '🛠️'
-    }
-  ];
-
   const teamMembers = [
     {
       name: 'Aman',
       role: 'Full Stack & AI',
       description: 'Expert in building scalable web applications and AI-powered solutions',
       image: 'https://picsum.photos/seed/aman/400/400'
-    },
-    {
-      name: 'Partner',
-      role: 'Mobile Apps & UI',
-      description: 'Specialist in creating beautiful, user-friendly mobile experiences',
-      image: 'https://picsum.photos/seed/partner/400/400'
-    }
-  ];
-
-  const achievements = [
-    {
-      label: '50+ Projects',
-      description: 'Successfully delivered',
-      icon: '📊'
-    },
-    {
-      label: '98% Satisfaction',
-      description: 'Client satisfaction rate',
-      icon: '⭐'
-    },
-    {
-      label: '5+ Years',
-      description: 'Industry experience',
-      icon: '🏆'
-    },
-    {
-      label: '24/7 Support',
-      description: 'Always here to help',
-      icon: '💬'
     }
   ];
 
@@ -178,52 +121,6 @@ const About = () => {
           </div>
         </motion.section>
 
-        {/* Workflow Timeline */}
-        <motion.section
-          className="mb-20"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <h2 className="text-3xl font-bold text-gray-100 mb-12 text-center">
-            Our Workflow
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
-            {workflowPhases.map((phase, index) => (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                className="relative"
-              >
-                <div className="glass-card rounded-xl p-6 shadow-lg text-center h-full hover:border-indigo-500/50 transition-colors">
-                  <div className="text-5xl mb-4">{phase.icon}</div>
-                  <h3 className="text-xl font-bold text-gray-100 mb-3">
-                    {phase.phase}
-                  </h3>
-                  <p className="text-gray-400 text-sm">
-                    {phase.description}
-                  </p>
-                </div>
-                {index < workflowPhases.length - 1 && (
-                  <div className="hidden md:block absolute top-1/2 -right-3 transform -translate-y-1/2 z-10">
-                    <svg
-                      className="w-6 h-6 text-blue-500"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                )}
-              </motion.div>
-            ))}
-          </div>
-        </motion.section>
-
         {/* Team Members */}
         <motion.section
           className="mb-20"
@@ -234,12 +131,12 @@ const About = () => {
           <h2 className="text-3xl font-bold text-gray-100 mb-12 text-center">
             Meet Our Team
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="flex justify-center max-w-4xl mx-auto">
             {teamMembers.map((member, index) => (
               <motion.div
                 key={index}
                 variants={itemVariants}
-                className="glass-card rounded-xl p-8 shadow-lg text-center hover:scale-105 transition-transform duration-300"
+                className="glass-card rounded-xl p-8 shadow-lg text-center hover:scale-105 transition-transform duration-300 w-full max-w-md"
               >
                 <img
                   src={member.image}
@@ -255,30 +152,6 @@ const About = () => {
                 <p className="text-gray-400">
                   {member.description}
                 </p>
-              </motion.div>
-            ))}
-          </div>
-        </motion.section>
-
-        {/* Achievement Badges */}
-        <motion.section
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <h2 className="text-3xl font-bold text-gray-100 mb-12 text-center">
-            Our Achievements
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {achievements.map((achievement, index) => (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                className="bg-gradient-to-br from-emerald-500/10 to-blue-500/10 border border-emerald-500/20 rounded-xl p-6 text-white text-center shadow-lg backdrop-blur-sm"
-              >
-                <div className="text-5xl mb-4">{achievement.icon}</div>
-                <div className="text-3xl font-bold mb-2">{achievement.label}</div>
-                <div className="text-sm opacity-90">{achievement.description}</div>
               </motion.div>
             ))}
           </div>

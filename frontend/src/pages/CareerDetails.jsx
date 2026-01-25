@@ -1,10 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useParams, useNavigate } from 'react-router-dom';
 import { API } from '../lib/api';
 import Toast from '../components/Toast';
 import SEO from '../components/SEO';
 import Button from '../components/ui/Button';
+import { motion } from 'framer-motion';
+
+// Components
+import CareerHeader from '../components/career-details/CareerHeader';
+import CareerInfo from '../components/career-details/CareerInfo';
+import RequiredSkillsList from '../components/career-details/RequiredSkillsList';
 
 const CareerDetails = () => {
   const { careerId } = useParams();
@@ -36,7 +41,10 @@ const CareerDetails = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500"></div>
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-16 h-16 border-4 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin"></div>
+          <p className="text-indigo-400 font-medium animate-pulse">Loading Career Details...</p>
+        </div>
       </div>
     );
   }
@@ -44,12 +52,14 @@ const CareerDetails = () => {
   if (!career) {
     return (
       <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-gray-400 mb-4">Career not found</p>
+        <div className="text-center glass-card p-12">
+          <div className="text-6xl mb-4">😕</div>
+          <p className="text-gray-400 mb-6 text-xl">Career not found</p>
           <Button
             onClick={() => navigate('/career-recommendation')}
+            variant="outline"
           >
-            Back to Recommendations
+            Return to Recommendations
           </Button>
         </div>
       </div>
@@ -57,96 +67,58 @@ const CareerDetails = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="min-h-screen bg-[#0a0a0f] py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden transition-colors duration-500">
       <SEO title={career.title} description={career.description} />
-      {/* Background Grid */}
-      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" style={{ opacity: 0.05, pointerEvents: 'none' }}></div>
-      <div className="max-w-4xl mx-auto relative z-10">
+
+      {/* Dynamic Background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-20%] right-[-20%] w-[60%] h-[60%] bg-indigo-900/10 rounded-full blur-[120px] animate-blob" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[60%] bg-purple-900/10 rounded-full blur-[120px] animate-blob animation-delay-2000" />
+        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" style={{ opacity: 0.03 }}></div>
+      </div>
+
+      <div className="max-w-5xl mx-auto relative z-10">
         <button
           onClick={() => navigate('/career-recommendation')}
-          className="mb-6 text-indigo-400 hover:text-indigo-300 hover:underline flex items-center gap-2 transition-colors"
+          className="mb-8 text-gray-400 hover:text-white flex items-center gap-2 transition-colors group"
         >
-          ← Back to Recommendations
+          <span className="group-hover:-translate-x-1 transition-transform">←</span> Back to Recommendations
         </button>
 
-        <div className="glass-card p-8 animate-fade-in-up">
-          <h1 className="text-4xl font-bold text-white mb-4">
-            {career.title}
-          </h1>
+        <CareerHeader
+          title={career.title}
+          salaryRange={career.salary_range}
+          demandLevel={career.demand_level}
+        />
 
-          <div className="flex flex-wrap gap-4 mb-6">
-            <div className="flex items-center gap-2">
-              <span className="text-gray-400">Salary:</span>
-              <span className="font-semibold text-white">
-                {career.salary_range || 'N/A'}
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-gray-400">Demand:</span>
-              <span className={`px-3 py-1 rounded-full text-sm font-semibold ${career.demand_level === 'very_high' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' :
-                  career.demand_level === 'high' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' :
-                    career.demand_level === 'medium' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' :
-                      'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
-                }`}>
-                {career.demand_level?.replace('_', ' ').toUpperCase()}
-              </span>
-            </div>
-          </div>
+        <CareerInfo
+          description={career.description}
+          roadmap={career.roadmap}
+        />
 
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold text-white mb-3">Description</h2>
-            <p className="text-gray-300 leading-relaxed">
-              {career.description}
-            </p>
-          </div>
+        <RequiredSkillsList skills={career.required_skills} />
 
-          {career.roadmap && (
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold text-white mb-3">Learning Roadmap</h2>
-              <p className="text-gray-300 leading-relaxed">
-                {career.roadmap}
-              </p>
-            </div>
-          )}
-
-          {career.required_skills && career.required_skills.length > 0 && (
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold text-white mb-4">Required Skills</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {career.required_skills.map((skill, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between p-4 bg-white/5 border border-white/10 rounded-lg"
-                  >
-                    <div>
-                      <h3 className="font-semibold text-white">{skill.skill_name}</h3>
-                      <p className="text-sm text-gray-400 capitalize">{skill.category}</p>
-                    </div>
-                    <span className="px-3 py-1 bg-blue-900 text-blue-200 rounded-full text-sm font-semibold capitalize">
-                      {skill.required_level}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          <div className="flex gap-4">
-            <Button
-              onClick={() => navigate(`/skill-gap/${career.id}`)}
-              variant="gradient"
-              className="flex-1 justify-center"
-            >
-              View Skill Gap Analysis
-            </Button>
-            <Button
-              onClick={() => navigate('/experts')}
-              variant="outline"
-            >
-              Find Expert
-            </Button>
-          </div>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="flex flex-col sm:flex-row gap-4 pt-8 border-t border-white/5"
+        >
+          <Button
+            onClick={() => navigate(`/skill-gap/${career.id}`)}
+            variant="gradient"
+            className="flex-1 justify-center py-4 text-lg shadow-lg shadow-indigo-500/20"
+          >
+            🎯 Analyze Skill Gap
+          </Button>
+          <Button
+            onClick={() => navigate('/experts')}
+            variant="outline"
+            className="flex-1 justify-center py-4 text-lg"
+          >
+            👨‍🏫 Find Expert Mentor
+          </Button>
+        </motion.div>
       </div>
 
       {toast.show && (
@@ -161,3 +133,4 @@ const CareerDetails = () => {
 };
 
 export default CareerDetails;
+

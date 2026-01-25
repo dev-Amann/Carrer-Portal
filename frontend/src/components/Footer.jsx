@@ -1,26 +1,11 @@
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Button from './ui/Button'
 
 const Footer = () => {
-  const [email, setEmail] = useState('')
-  const [subscribeMessage, setSubscribeMessage] = useState('')
-
-  const handleNewsletterSubmit = (e) => {
-    e.preventDefault()
-    if (email) {
-      setSubscribeMessage('Thanks for subscribing!')
-      setEmail('')
-      setTimeout(() => setSubscribeMessage(''), 3000)
-    }
-  }
-
   const quickLinks = [
     { name: 'Home', path: '/' },
-    { name: 'Services', path: '/services' },
     { name: 'Experts', path: '/experts' },
     { name: 'About', path: '/about' },
-    { name: 'Blog', path: '/blog' },
     { name: 'Contact', path: '/contact' },
   ]
 
@@ -63,7 +48,7 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand Section */}
-          <div className="space-y-6">
+          <div className="space-y-6 lg:col-span-2">
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
                 <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -74,7 +59,7 @@ const Footer = () => {
                 CareerPortal
               </span>
             </div>
-            <p className="text-sm text-gray-400 leading-relaxed">
+            <p className="text-sm text-gray-400 leading-relaxed max-w-sm">
               Empowering your career journey with AI-driven recommendations and top-tier expert guidance. Build your future today.
             </p>
           </div>
@@ -122,53 +107,27 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Newsletter */}
-          <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-6">
-              Stay Updated
-            </h3>
-            <form onSubmit={handleNewsletterSubmit} className="space-y-3">
-              <div className="relative">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all text-sm"
-                  required
-                />
-              </div>
-              <Button type="submit" variant="primary" className="w-full">
-                Subscribe
-              </Button>
-              {subscribeMessage && (
-                <p className="text-xs text-emerald-400 animate-fade-in">
-                  {subscribeMessage}
-                </p>
-              )}
-            </form>
-          </div>
         </div>
+      </div>
 
-        {/* Social & Copyright */}
-        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-gray-500">
-            © {new Date().getFullYear()} CareerPortal. All rights reserved.
-          </p>
-          <div className="flex space-x-6">
-            {socialLinks.map((social) => (
-              <a
-                key={social.name}
-                href={social.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-500 hover:text-white transition-colors"
-                aria-label={social.name}
-              >
-                {social.icon}
-              </a>
-            ))}
-          </div>
+      {/* Social & Copyright */}
+      <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+        <p className="text-sm text-gray-500">
+          © {new Date().getFullYear()} CareerPortal. All rights reserved.
+        </p>
+        <div className="flex space-x-6">
+          {socialLinks.map((social) => (
+            <a
+              key={social.name}
+              href={social.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-500 hover:text-white transition-colors"
+              aria-label={social.name}
+            >
+              {social.icon}
+            </a>
+          ))}
         </div>
       </div>
     </footer>

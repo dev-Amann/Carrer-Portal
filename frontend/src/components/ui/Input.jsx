@@ -19,10 +19,9 @@ const Input = ({ label, id, error, as = 'input', className = '', icon, ...props 
                 <Component
                     id={id}
                     className={`
-            w-full ${icon ? 'pl-10' : 'px-4'} py-2.5 bg-[#13131f] border border-gray-700/50 rounded-lg 
-            text-gray-100 placeholder-gray-500
-            focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500/50
-            transition-all duration-200
+            w-full ${icon ? 'pl-10' : 'px-4'} py-2.5 rounded-lg 
+            glass-input text-gray-100 placeholder-gray-500
+            focus:outline-none
             disabled:opacity-50 disabled:bg-gray-800
             ${error ? 'border-red-500/50 focus:ring-red-500/50 focus:border-red-500/50' : ''}
             ${className}
