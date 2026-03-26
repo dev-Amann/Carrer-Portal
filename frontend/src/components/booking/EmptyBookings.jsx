@@ -1,18 +1,11 @@
-import { motion } from 'framer-motion';
 import Button from '../ui/Button';
 
 const EmptyBookings = ({ onBrowseExperts }) => {
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="glass-card rounded-2xl p-12 text-center max-w-2xl mx-auto relative overflow-hidden"
-        >
-            <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/5 rounded-full blur-3xl" />
-
-            <div className="bg-white/5 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+        <div className="bg-white rounded-2xl p-12 text-center max-w-lg mx-auto border border-dashed border-slate-300">
+            <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
                 <svg
-                    className="h-10 w-10 text-gray-400"
+                    className="h-10 w-10 text-slate-400"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -26,21 +19,21 @@ const EmptyBookings = ({ onBrowseExperts }) => {
                 </svg>
             </div>
 
-            <h3 className="text-2xl font-bold text-white mb-3">
-                No bookings yet
+            <h3 className="text-xl font-bold text-slate-900 mb-2">
+                No bookings found
             </h3>
-            <p className="text-gray-400 mb-8 text-lg">
-                Book a consultation with an expert to accelerate your career growth.
+            <p className="text-slate-500 mb-8 max-w-sm mx-auto">
+                You haven't booked any consultations yet. Find an expert to get started.
             </p>
 
             <Button
                 onClick={onBrowseExperts}
-                variant="gradient"
-                className="px-8 shadow-lg shadow-indigo-500/20"
+                variant="primary"
+                className="bg-indigo-600 hover:bg-indigo-700"
             >
                 Browse Experts
             </Button>
-        </motion.div>
+        </div>
     );
 };
 

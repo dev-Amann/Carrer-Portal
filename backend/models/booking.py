@@ -59,6 +59,15 @@ class Booking(Base):
                     'specialization': self.expert.specialization,
                     'years_of_experience': self.expert.years_of_experience
                 }
+            
+            # Include feedback if available
+            if self.feedbacks:
+                # We assume one feedback per user per booking for now, or just take the most recent
+                # Since feedbacks is a list, we check if it's not empty
+                data['has_feedback'] = True
+                data['feedback'] = self.feedbacks[0].to_dict()
+            else:
+                data['has_feedback'] = False
         
         return data
     

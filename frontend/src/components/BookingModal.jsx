@@ -139,8 +139,15 @@ const BookingModal = ({ expert, onClose, onSuccess }) => {
             color: '#6366f1' // Indigo-500
           },
           modal: {
-            ondismiss: function () {
+            ondismiss: async function () {
               setLoading(false);
+              // Cancel booking if payment modal is closed without payment
+              try {
+                await API.payments.cancelBooking(bookingData.id);
+                console.log('Booking cancelled due to modal dismissal');
+              } catch (err) {
+                console.error('Error cancelling booking:', err);
+              }
             }
           }
         };
@@ -148,9 +155,16 @@ const BookingModal = ({ expert, onClose, onSuccess }) => {
         const razorpay = new window.Razorpay(options);
         razorpay.open();
 
-        razorpay.on('payment.failed', function (response) {
+        razorpay.on('payment.failed', async function (response) {
           showToast(response.error.description || 'Payment failed', 'error');
           setLoading(false);
+          // Cancel booking on payment failure
+          try {
+            await API.payments.cancelBooking(bookingData.id);
+            console.log('Booking cancelled due to payment failure');
+          } catch (err) {
+            console.error('Error cancelling booking:', err);
+          }
         });
 
       }

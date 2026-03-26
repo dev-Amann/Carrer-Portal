@@ -1,16 +1,16 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { authAPI } from '../lib/api';
-import SEO from '../components/SEO';
-import Toast from '../components/Toast';
-import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
+import SEO from '../components/SEO';
 
 const Signup = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
-  const [step, setStep] = useState(1); // 1: Enter details, 2: Verify OTP
+  const { signup, sendOTP } = useAuth();
+
+  // Steps: 'details' -> 'otp'
+  const [step, setStep] = useState('details');
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -18,346 +18,258 @@ const Signup = () => {
     confirmPassword: '',
     otp: ''
   });
-  const [loading, setLoading] = useState(false);
-  const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
 
-  const showToast = (message, type = 'success') => {
-    setToast({ show: true, message, type });
-  };
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
+    setError('');
   };
 
-  const validateStep1 = () => {
-    if (!formData.name.trim()) {
-      showToast('Please enter your name', 'error');
-      return false;
-    }
+  const handleVerifyEmail = async (e) => {
+    e.preventDefault();
+    setError('');
 
-    if (!formData.email.trim()) {
-      showToast('Please enter your email', 'error');
-      return false;
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      showToast('Please enter a valid email', 'error');
-      return false;
-    }
-
-    if (!formData.password) {
-      showToast('Please enter a password', 'error');
-      return false;
+    if (formData.password !== formData.confirmPassword) {
+      return setError('Passwords do not match');
     }
 
     if (formData.password.length < 8) {
-      showToast('Password must be at least 8 characters', 'error');
-      return false;
+      return setError('Password must be at least 8 characters');
     }
 
     if (!/[A-Za-z]/.test(formData.password)) {
-      showToast('Password must contain at least one letter', 'error');
-      return false;
+      return setError('Password must contain at least one letter');
     }
 
     if (!/\d/.test(formData.password)) {
-      showToast('Password must contain at least one number', 'error');
-      return false;
+      return setError('Password must contain at least one number');
     }
 
-    if (formData.password !== formData.confirmPassword) {
-      showToast('Passwords do not match', 'error');
-      return false;
-    }
-
-    return true;
-  };
-
-  const handleSendOTP = async (e) => {
-    e.preventDefault();
-
-    if (!validateStep1()) {
-      return;
-    }
+    setLoading(true);
 
     try {
-      setLoading(true);
-      await authAPI.sendOTP({ email: formData.email, purpose: 'verification' });
-      setStep(2);
-      showToast('OTP sent to your email', 'success');
-    } catch (error) {
-      showToast(error.response?.data?.error || 'Failed to send OTP', 'error');
+      // Send OTP to email
+      await sendOTP(formData.email, 'verification');
+      setStep('otp');
+    } catch (err) {
+      setError(err.response?.data?.error || 'Failed to send OTP code. Please check your email.');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-
-    if (!formData.otp) {
-      showToast('Please enter the OTP', 'error');
-      return;
-    }
-
-    if (formData.otp.length !== 6) {
-      showToast('OTP must be 6 digits', 'error');
-      return;
-    }
+    setError('');
+    setLoading(true);
 
     try {
-      setLoading(true);
-      const response = await authAPI.register({
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-        otp: formData.otp
-      });
-
-      if (response.data.success) {
-        login(response.data.user, {
-          access_token: response.data.access_token,
-          refresh_token: response.data.refresh_token
-        });
-        showToast('Account created successfully!', 'success');
-        setTimeout(() => navigate('/career-recommendation'), 1000);
+      // Call register with OTP
+      await signup(formData.name, formData.email, formData.password, formData.otp);
+      navigate('/dashboard');
+    } catch (err) {
+      // If error is "Email already registered" (409), user might want to go back or login
+      if (err.response?.status === 409) {
+        setError("Email is already registered. Please login.");
+      } else {
+        setError(err.response?.data?.error || 'Failed to verify OTP and create account.');
       }
-    } catch (error) {
-      showToast(error.response?.data?.error || 'Registration failed', 'error');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Background Grid */}
-      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" style={{ opacity: 0.05, pointerEvents: 'none' }}></div>
-      <SEO
-        title="Create Account"
-        description="Create your CarrerPortal account to get personalized career recommendations and connect with industry experts."
-      />
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <SEO title="Sign Up" description="Create your CareerPortal account" />
 
-      <div className="max-w-md w-full space-y-8 relative z-10">
+      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
         <div className="text-center">
-          <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-indigo-500 mb-2">
-            Join Today
-          </h1>
-          <p className="text-sm text-gray-400">
-            Start your journey to a better career
+          <div className="mx-auto h-12 w-12 bg-indigo-100 rounded-xl flex items-center justify-center">
+            <svg className="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+            </svg>
+          </div>
+          <h2 className="mt-6 text-3xl font-extrabold text-slate-900">
+            {step === 'details' ? 'Create an account' : 'Verify Email'}
+          </h2>
+          <p className="mt-2 text-sm text-slate-500">
+            {step === 'details' ? (
+              <>
+                Already have an account?{' '}
+                <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
+                  Sign in here
+                </Link>
+              </>
+            ) : (
+              <>
+                Please enter the verification code sent to <br />
+                <span className="font-medium text-slate-900">{formData.email}</span>
+              </>
+            )}
           </p>
         </div>
 
-        <div className="glass-card p-8 animate-fade-in-up">
-          {/* Progress Indicator */}
-          <div className="mb-8 px-4">
-            <div className="flex items-center justify-between relative">
-              {/* Connecting Line */}
-              <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-full h-1 bg-white/10 rounded-full z-0"></div>
-              <div
-                className="absolute left-0 top-1/2 transform -translate-y-1/2 h-1 bg-gradient-to-r from-teal-400 to-indigo-500 rounded-full z-0 transition-all duration-500"
-                style={{ width: step === 1 ? '50%' : '100%' }}
-              ></div>
-
-              <div className="relative z-10 flex flex-col items-center">
-                <div className={`flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all duration-300 ${step >= 1 ? 'bg-[#0a0a0f] border-teal-400 text-teal-400 shadow-[0_0_10px_rgba(45,212,191,0.5)]' : 'bg-[#0a0a0f] border-gray-600 text-gray-600'
-                  }`}>
-                  1
-                </div>
-                <span className={`mt-2 text-xs font-medium transition-colors duration-300 ${step >= 1 ? 'text-teal-400' : 'text-gray-600'
-                  }`}>Details</span>
-              </div>
-
-              <div className="relative z-10 flex flex-col items-center">
-                <div className={`flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all duration-300 ${step >= 2 ? 'bg-[#0a0a0f] border-indigo-500 text-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.5)]' : 'bg-[#0a0a0f] border-gray-600 text-gray-600'
-                  }`}>
-                  2
-                </div>
-                <span className={`mt-2 text-xs font-medium transition-colors duration-300 ${step >= 2 ? 'text-indigo-500' : 'text-gray-600'
-                  }`}>Verify</span>
-              </div>
-            </div>
+        {error && (
+          <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg text-sm flex items-center gap-2">
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            {error}
           </div>
+        )}
 
-          {/* Step 1: Enter Details */}
-          {step === 1 && (
-            <form className="space-y-5 animate-fade-in" onSubmit={handleSendOTP}>
-              <Input
-                label="Full Name"
-                id="name"
-                name="name"
-                type="text"
-                value={formData.name}
-                onChange={handleChange}
-                placeholder="John Doe"
-                required
-              />
-
-              <Input
-                label="Email address"
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="you@example.com"
-                required
-              />
-
+        {step === 'details' ? (
+          <form className="mt-8 space-y-6" onSubmit={handleVerifyEmail}>
+            <div className="space-y-4">
               <div>
-                <Input
-                  label="Password"
+                <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-1">
+                  Full Name
+                </label>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  autoComplete="name"
+                  required
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="appearance-none relative block w-full px-3 py-2 border border-slate-300 placeholder-slate-400 text-slate-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  placeholder="Enter your full name"
+                />
+              </div>
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-1">
+                  Email address
+                </label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="appearance-none relative block w-full px-3 py-2 border border-slate-300 placeholder-slate-400 text-slate-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  placeholder="Enter your email"
+                />
+              </div>
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-1">
+                  Password
+                </label>
+                <input
                   id="password"
                   name="password"
                   type="password"
+                  autoComplete="new-password"
+                  required
                   value={formData.password}
                   onChange={handleChange}
-                  placeholder="••••••••"
-                  required
+                  className="appearance-none relative block w-full px-3 py-2 border border-slate-300 placeholder-slate-400 text-slate-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  placeholder="Create a password"
                 />
-                <p className="mt-1 text-xs text-gray-400">
-                  At least 8 characters with letters and numbers
-                </p>
               </div>
+              <div>
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-700 mb-1">
+                  Confirm Password
+                </label>
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  autoComplete="new-password"
+                  required
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  className="appearance-none relative block w-full px-3 py-2 border border-slate-300 placeholder-slate-400 text-slate-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  placeholder="Confirm your password"
+                />
+              </div>
+            </div>
 
-              <Input
-                label="Confirm Password"
-                id="confirmPassword"
-                name="confirmPassword"
-                type="password"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                placeholder="••••••••"
+            <div className="flex items-center">
+              <input
+                id="terms"
+                name="terms"
+                type="checkbox"
                 required
+                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 rounded"
               />
+              <label htmlFor="terms" className="ml-2 block text-sm text-slate-600">
+                I agree to the <Link to="/terms" className="text-indigo-600 hover:text-indigo-500">Terms</Link> and <Link to="/privacy" className="text-indigo-600 hover:text-indigo-500">Privacy Policy</Link>
+              </label>
+            </div>
 
-              <Button
-                type="submit"
-                disabled={loading}
-                className="w-full"
-                isLoading={loading}
-                loadingText="Sending OTP..."
-              >
-                Continue
-              </Button>
-            </form>
-          )}
-
-          {/* Step 2: Verify OTP */}
-          {step === 2 && (
-            <form className="space-y-6 animate-fade-in" onSubmit={handleSubmit}>
-              <div className="text-center">
-                <p className="text-sm text-gray-400 mb-6 bg-white/5 p-4 rounded-lg border border-white/10">
-                  We've sent a 6-digit verification code to <br />
-                  <strong className="text-white block mt-1">{formData.email}</strong>
-                </p>
-
-                <Input
-                  label="Verification Code"
+            <Button
+              type="submit"
+              loading={loading}
+              className="w-full justify-center bg-indigo-600 hover:bg-indigo-700"
+            >
+              Continue to Verification
+            </Button>
+          </form>
+        ) : (
+          <form className="mt-8 space-y-6" onSubmit={handleRegister}>
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="otp" className="block text-sm font-medium text-slate-700 mb-1">
+                  Enter Verification Code
+                </label>
+                <input
                   id="otp"
                   name="otp"
                   type="text"
+                  required
                   maxLength="6"
                   value={formData.otp}
                   onChange={handleChange}
+                  className="appearance-none relative block w-full px-3 py-2 border border-slate-300 placeholder-slate-400 text-slate-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm tracking-widest text-center text-lg" // Center align and larger text for OTP
                   placeholder="000000"
-                  className="text-center text-2xl tracking-[0.5em] font-mono h-14"
-                  autoFocus
-                  required
                 />
-
-                <p className="mt-2 text-xs text-gray-500">
-                  Code expires in 10 minutes
+                <p className="mt-2 text-xs text-center text-slate-500">
+                  Did not receive code? <button type="button" onClick={() => handleVerifyEmail({ preventDefault: () => { } })} className="text-indigo-600 hover:text-indigo-500 font-medium">Resend</button>
                 </p>
               </div>
+            </div>
 
-              <div className="flex gap-3">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setStep(1)}
-                  className="flex-1"
-                >
-                  Back
-                </Button>
-                <Button
-                  type="submit"
-                  disabled={loading}
-                  isLoading={loading}
-                  loadingText="Creating..."
-                  className="flex-1"
-                >
-                  Create Account
-                </Button>
-              </div>
+            <div className="flex flex-col gap-3">
+              <Button
+                type="submit"
+                loading={loading}
+                className="w-full justify-center bg-indigo-600 hover:bg-indigo-700"
+              >
+                Create Account
+              </Button>
 
-              <div className="text-center">
-                <button
-                  type="button"
-                  onClick={handleSendOTP}
-                  disabled={loading}
-                  className="text-xs font-medium text-teal-400 hover:text-teal-300 disabled:text-gray-600 transition-colors"
-                >
-                  Resend OTP
-                </button>
-              </div>
-            </form>
-          )}
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => setStep('details')}
+                className="w-full justify-center"
+              >
+                Back to Details
+              </Button>
+            </div>
+          </form>
+        )}
 
+        {step === 'details' && (
           <div className="mt-6 text-center">
-            <p className="text-sm text-gray-400">
-              Already have an account?{' '}
-              <Link to="/login" className="font-medium text-teal-400 hover:text-teal-300 transition-colors">
-                Sign in
+            <p className="text-sm text-slate-500">
+              Want to become a mentor?{' '}
+              <Link to="/expert/register" className="font-medium text-indigo-600 hover:text-indigo-500">
+                Apply as Expert
               </Link>
             </p>
           </div>
-
-          {/* Admin and Expert Login Links */}
-          {step === 1 && (
-            <div className="mt-8 pt-6 border-t border-white/10">
-              <p className="text-center text-xs text-gray-500 mb-4 uppercase tracking-wider font-semibold">
-                Special Access
-              </p>
-              <div className="grid grid-cols-2 gap-3 mb-3">
-                <Link
-                  to="/admin/login"
-                  className="flex items-center justify-center px-4 py-2 border border-white/10 rounded-lg text-xs font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-all bg-[#0a0a0f]/30"
-                >
-                  <span className="mr-1.5">🔒</span> Admin
-                </Link>
-                <Link
-                  to="/expert/login"
-                  className="flex items-center justify-center px-4 py-2 border border-white/10 rounded-lg text-xs font-medium text-gray-400 hover:text-white hover:bg-white/5 transition-all bg-[#0a0a0f]/30"
-                >
-                  <span className="mr-1.5">🎓</span> Expert
-                </Link>
-              </div>
-
-              {/* Expert Registration CTA */}
-              <Link
-                to="/expert/register"
-                className="flex items-center justify-center w-full px-4 py-2.5 border border-indigo-500/30 rounded-lg text-xs font-semibold text-indigo-400 bg-indigo-500/10 hover:bg-indigo-500/20 hover:text-indigo-300 transition-all"
-              >
-                Become an Expert - Register Now
-              </Link>
-            </div>
-          )}
-        </div>
+        )}
       </div>
-
-      {toast.show && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast({ ...toast, show: false })}
-        />
-      )}
     </div>
   );
 };

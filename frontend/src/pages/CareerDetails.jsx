@@ -4,7 +4,6 @@ import { API } from '../lib/api';
 import Toast from '../components/Toast';
 import SEO from '../components/SEO';
 import Button from '../components/ui/Button';
-import { motion } from 'framer-motion';
 
 // Components
 import CareerHeader from '../components/career-details/CareerHeader';
@@ -40,10 +39,10 @@ const CareerDetails = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-16 h-16 border-4 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin"></div>
-          <p className="text-indigo-400 font-medium animate-pulse">Loading Career Details...</p>
+          <div className="w-12 h-12 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin"></div>
+          <p className="text-slate-500 font-medium">Loading Career Details...</p>
         </div>
       </div>
     );
@@ -51,13 +50,19 @@ const CareerDetails = () => {
 
   if (!career) {
     return (
-      <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center">
-        <div className="text-center glass-card p-12">
-          <div className="text-6xl mb-4">😕</div>
-          <p className="text-gray-400 mb-6 text-xl">Career not found</p>
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center p-12 max-w-md">
+          <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg className="w-8 h-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-bold text-slate-900 mb-2">Career Not Found</h2>
+          <p className="text-slate-500 mb-6">We couldn't find the career path you're looking for.</p>
           <Button
             onClick={() => navigate('/career-recommendation')}
             variant="outline"
+            className="w-full justify-center"
           >
             Return to Recommendations
           </Button>
@@ -67,20 +72,13 @@ const CareerDetails = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden transition-colors duration-500">
+    <div className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       <SEO title={career.title} description={career.description} />
-
-      {/* Dynamic Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-20%] right-[-20%] w-[60%] h-[60%] bg-indigo-900/10 rounded-full blur-[120px] animate-blob" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[60%] h-[60%] bg-purple-900/10 rounded-full blur-[120px] animate-blob animation-delay-2000" />
-        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" style={{ opacity: 0.03 }}></div>
-      </div>
 
       <div className="max-w-5xl mx-auto relative z-10">
         <button
           onClick={() => navigate('/career-recommendation')}
-          className="mb-8 text-gray-400 hover:text-white flex items-center gap-2 transition-colors group"
+          className="mb-8 text-slate-500 hover:text-indigo-600 flex items-center gap-2 transition-colors group text-sm font-medium"
         >
           <span className="group-hover:-translate-x-1 transition-transform">←</span> Back to Recommendations
         </button>
@@ -94,31 +92,32 @@ const CareerDetails = () => {
         <CareerInfo
           description={career.description}
           roadmap={career.roadmap}
+          learningResources={career.learning_resources || []}
         />
 
         <RequiredSkillsList skills={career.required_skills} />
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="flex flex-col sm:flex-row gap-4 pt-8 border-t border-white/5"
-        >
+        <div className="flex flex-col sm:flex-row gap-4 pt-8 border-t border-slate-100 mt-8">
           <Button
             onClick={() => navigate(`/skill-gap/${career.id}`)}
-            variant="gradient"
-            className="flex-1 justify-center py-4 text-lg shadow-lg shadow-indigo-500/20"
+            className="flex-1 justify-center py-4 text-base bg-indigo-600 text-white hover:bg-indigo-700 flex items-center gap-2"
           >
-            🎯 Analyze Skill Gap
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+            Analyze Skill Gap
           </Button>
           <Button
             onClick={() => navigate('/experts')}
             variant="outline"
-            className="flex-1 justify-center py-4 text-lg"
+            className="flex-1 justify-center py-4 text-base border-slate-300 text-slate-700 hover:bg-slate-50 flex items-center gap-2"
           >
-            👨‍🏫 Find Expert Mentor
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            Find Expert Mentor
           </Button>
-        </motion.div>
+        </div>
       </div>
 
       {toast.show && (
@@ -133,4 +132,3 @@ const CareerDetails = () => {
 };
 
 export default CareerDetails;
-

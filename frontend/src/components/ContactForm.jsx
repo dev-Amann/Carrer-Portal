@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
-import * as Yup from 'yup'
 import { contactAPI } from '../lib/api'
 import Toast from './Toast'
+import { contactValidationSchema, getInitialValues } from './contactFormSchema'
 
 /**
  * ContactForm component with Formik validation
@@ -12,46 +12,8 @@ import Toast from './Toast'
  */
 const ContactForm = ({ prefilledService = '' }) => {
   const [toast, setToast] = useState(null)
-
-  // Yup validation schema
-  const validationSchema = Yup.object({
-    fullName: Yup.string()
-      .required('Full name is required')
-      .min(2, 'Name must be at least 2 characters')
-      .max(100, 'Name must be less than 100 characters'),
-    businessName: Yup.string()
-      .max(100, 'Business name must be less than 100 characters'),
-    email: Yup.string()
-      .required('Email is required')
-      .email('Invalid email address'),
-    phone: Yup.string()
-      .matches(/^[0-9+\-\s()]*$/, 'Invalid phone number format')
-      .min(10, 'Phone number must be at least 10 digits')
-      .max(20, 'Phone number must be less than 20 characters'),
-    budgetRange: Yup.string()
-      .required('Budget range is required'),
-    interestedService: Yup.string()
-      .required('Please select a service'),
-    message: Yup.string()
-      .required('Message is required')
-      .min(10, 'Message must be at least 10 characters')
-      .max(1000, 'Message must be less than 1000 characters'),
-    consent: Yup.boolean()
-      .oneOf([true], 'You must accept the terms and conditions'),
-    website: Yup.string() // Honeypot field - should remain empty
-  })
-
-  const initialValues = {
-    fullName: '',
-    businessName: '',
-    email: '',
-    phone: '',
-    budgetRange: '',
-    interestedService: prefilledService,
-    message: '',
-    consent: false,
-    website: '' // Honeypot field
-  }
+  const validationSchema = contactValidationSchema
+  const initialValues = getInitialValues(prefilledService)
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
@@ -113,7 +75,7 @@ const ContactForm = ({ prefilledService = '' }) => {
             <div>
               <label
                 htmlFor="fullName"
-                className="block text-sm font-medium text-gray-300 mb-2"
+                className="block text-sm font-medium text-slate-700 mb-2"
               >
                 Full Name <span className="text-red-500">*</span>
               </label>
@@ -121,17 +83,16 @@ const ContactForm = ({ prefilledService = '' }) => {
                 type="text"
                 id="fullName"
                 name="fullName"
-                className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-800 dark:text-white ${
-                  errors.fullName && touched.fullName
-                    ? 'border-red-500'
-                    : 'border-gray-600'
-                }`}
+                className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-slate-900 ${errors.fullName && touched.fullName
+                  ? 'border-red-500'
+                  : 'border-slate-300'
+                  }`}
                 placeholder="John Doe"
               />
               <ErrorMessage
                 name="fullName"
                 component="div"
-                className="mt-1 text-sm text-red-400"
+                className="mt-1 text-sm text-red-500"
               />
             </div>
 
@@ -139,7 +100,7 @@ const ContactForm = ({ prefilledService = '' }) => {
             <div>
               <label
                 htmlFor="businessName"
-                className="block text-sm font-medium text-gray-300 mb-2"
+                className="block text-sm font-medium text-slate-700 mb-2"
               >
                 Business Name
               </label>
@@ -147,13 +108,13 @@ const ContactForm = ({ prefilledService = '' }) => {
                 type="text"
                 id="businessName"
                 name="businessName"
-                className="w-full px-4 py-2 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-800 dark:text-white"
+                className="w-full px-4 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-slate-900"
                 placeholder="Your Company"
               />
               <ErrorMessage
                 name="businessName"
                 component="div"
-                className="mt-1 text-sm text-red-400"
+                className="mt-1 text-sm text-red-500"
               />
             </div>
 
@@ -161,7 +122,7 @@ const ContactForm = ({ prefilledService = '' }) => {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-300 mb-2"
+                className="block text-sm font-medium text-slate-700 mb-2"
               >
                 Email <span className="text-red-500">*</span>
               </label>
@@ -169,17 +130,16 @@ const ContactForm = ({ prefilledService = '' }) => {
                 type="email"
                 id="email"
                 name="email"
-                className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-800 dark:text-white ${
-                  errors.email && touched.email
-                    ? 'border-red-500'
-                    : 'border-gray-600'
-                }`}
+                className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-slate-900 ${errors.email && touched.email
+                  ? 'border-red-500'
+                  : 'border-slate-300'
+                  }`}
                 placeholder="john@example.com"
               />
               <ErrorMessage
                 name="email"
                 component="div"
-                className="mt-1 text-sm text-red-400"
+                className="mt-1 text-sm text-red-500"
               />
             </div>
 
@@ -187,7 +147,7 @@ const ContactForm = ({ prefilledService = '' }) => {
             <div>
               <label
                 htmlFor="phone"
-                className="block text-sm font-medium text-gray-300 mb-2"
+                className="block text-sm font-medium text-slate-700 mb-2"
               >
                 Phone
               </label>
@@ -195,17 +155,16 @@ const ContactForm = ({ prefilledService = '' }) => {
                 type="tel"
                 id="phone"
                 name="phone"
-                className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-800 dark:text-white ${
-                  errors.phone && touched.phone
-                    ? 'border-red-500'
-                    : 'border-gray-600'
-                }`}
+                className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-slate-900 ${errors.phone && touched.phone
+                  ? 'border-red-500'
+                  : 'border-slate-300'
+                  }`}
                 placeholder="+1 (555) 123-4567"
               />
               <ErrorMessage
                 name="phone"
                 component="div"
-                className="mt-1 text-sm text-red-400"
+                className="mt-1 text-sm text-red-500"
               />
             </div>
 
@@ -213,7 +172,7 @@ const ContactForm = ({ prefilledService = '' }) => {
             <div>
               <label
                 htmlFor="budgetRange"
-                className="block text-sm font-medium text-gray-300 mb-2"
+                className="block text-sm font-medium text-slate-700 mb-2"
               >
                 Budget Range <span className="text-red-500">*</span>
               </label>
@@ -221,11 +180,10 @@ const ContactForm = ({ prefilledService = '' }) => {
                 as="select"
                 id="budgetRange"
                 name="budgetRange"
-                className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-800 dark:text-white ${
-                  errors.budgetRange && touched.budgetRange
-                    ? 'border-red-500'
-                    : 'border-gray-600'
-                }`}
+                className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-slate-900 ${errors.budgetRange && touched.budgetRange
+                  ? 'border-red-500'
+                  : 'border-slate-300'
+                  }`}
               >
                 <option value="">Select budget range</option>
                 <option value="<5000">Less than $5,000</option>
@@ -237,7 +195,7 @@ const ContactForm = ({ prefilledService = '' }) => {
               <ErrorMessage
                 name="budgetRange"
                 component="div"
-                className="mt-1 text-sm text-red-400"
+                className="mt-1 text-sm text-red-500"
               />
             </div>
 
@@ -245,7 +203,7 @@ const ContactForm = ({ prefilledService = '' }) => {
             <div>
               <label
                 htmlFor="interestedService"
-                className="block text-sm font-medium text-gray-300 mb-2"
+                className="block text-sm font-medium text-slate-700 mb-2"
               >
                 Interested Service <span className="text-red-500">*</span>
               </label>
@@ -253,11 +211,10 @@ const ContactForm = ({ prefilledService = '' }) => {
                 as="select"
                 id="interestedService"
                 name="interestedService"
-                className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-800 dark:text-white ${
-                  errors.interestedService && touched.interestedService
-                    ? 'border-red-500'
-                    : 'border-gray-600'
-                }`}
+                className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-slate-900 ${errors.interestedService && touched.interestedService
+                  ? 'border-red-500'
+                  : 'border-slate-300'
+                  }`}
               >
                 <option value="">Select a service</option>
                 <option value="Career Recommendation">Career Recommendation</option>
@@ -270,7 +227,7 @@ const ContactForm = ({ prefilledService = '' }) => {
               <ErrorMessage
                 name="interestedService"
                 component="div"
-                className="mt-1 text-sm text-red-400"
+                className="mt-1 text-sm text-red-500"
               />
             </div>
 
@@ -278,7 +235,7 @@ const ContactForm = ({ prefilledService = '' }) => {
             <div>
               <label
                 htmlFor="message"
-                className="block text-sm font-medium text-gray-300 mb-2"
+                className="block text-sm font-medium text-slate-700 mb-2"
               >
                 Message <span className="text-red-500">*</span>
               </label>
@@ -287,17 +244,16 @@ const ContactForm = ({ prefilledService = '' }) => {
                 id="message"
                 name="message"
                 rows="5"
-                className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-800 dark:text-white ${
-                  errors.message && touched.message
-                    ? 'border-red-500'
-                    : 'border-gray-600'
-                }`}
+                className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-slate-900 ${errors.message && touched.message
+                  ? 'border-red-500'
+                  : 'border-slate-300'
+                  }`}
                 placeholder="Tell us about your project or inquiry..."
               />
               <ErrorMessage
                 name="message"
                 component="div"
-                className="mt-1 text-sm text-red-400"
+                className="mt-1 text-sm text-red-500"
               />
             </div>
 
@@ -319,13 +275,12 @@ const ContactForm = ({ prefilledService = '' }) => {
                 type="checkbox"
                 id="consent"
                 name="consent"
-                className={`mt-1 h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded ${
-                  errors.consent && touched.consent ? 'border-red-500' : ''
-                }`}
+                className={`mt-1 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 rounded ${errors.consent && touched.consent ? 'border-red-500' : ''
+                  }`}
               />
               <label
                 htmlFor="consent"
-                className="ml-2 block text-sm text-gray-300"
+                className="ml-2 block text-sm text-slate-600"
               >
                 I agree to the terms and conditions and privacy policy{' '}
                 <span className="text-red-500">*</span>
@@ -334,14 +289,14 @@ const ContactForm = ({ prefilledService = '' }) => {
             <ErrorMessage
               name="consent"
               component="div"
-              className="text-sm text-red-400"
+              className="text-sm text-red-500"
             />
 
             {/* Submit Button */}
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full px-6 py-3 bg-gradient-to-r from-green-400 to-blue-500 text-white font-semibold rounded-md hover:shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+              className="w-full px-6 py-3 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 hover:shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 shadow-md"
             >
               {isSubmitting ? 'Sending...' : 'Send Message'}
             </button>

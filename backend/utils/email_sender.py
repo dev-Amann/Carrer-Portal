@@ -332,7 +332,6 @@ def send_booking_confirmation_email(user_email, user_name, expert_name, slot_sta
     """
     try:
         frontend_url = current_app.config.get('FRONTEND_URL', 'http://localhost:5173')
-        meeting_url = f"https://meet.jit.si/{jitsi_room}"
         dashboard_url = f"{frontend_url}/dashboard"
         
         # Format datetime
@@ -361,7 +360,6 @@ def send_booking_confirmation_email(user_email, user_name, expert_name, slot_sta
             'formatted_start_time': formatted_start_time,
             'formatted_end_time': formatted_end_time,
             'booking_id': booking_id,
-            'meeting_url': meeting_url,
             'dashboard_url': dashboard_url,
             'razorpay_payment_id': razorpay_payment_id
         }
@@ -373,7 +371,7 @@ def send_booking_confirmation_email(user_email, user_name, expert_name, slot_sta
         except Exception as e:
             logger.warning(f"Failed to render booking confirmation templates: {str(e)}")
             # Fallback to basic text
-            msg.body = f"Booking confirmed with {expert_name} on {formatted_date} at {formatted_start_time}. Meeting: {meeting_url}"
+            msg.body = f"Booking confirmed with {expert_name} on {formatted_date} at {formatted_start_time}. Please join via your dashboard: {dashboard_url}"
         
         # Send email
         mail.send(msg)
@@ -404,7 +402,6 @@ def send_expert_booking_notification_email(expert_email, expert_name, user_name,
     """
     try:
         frontend_url = current_app.config.get('FRONTEND_URL', 'http://localhost:5173')
-        meeting_url = f"https://meet.jit.si/{jitsi_room}"
         dashboard_url = f"{frontend_url}/expert/dashboard"
         
         # Format datetime
@@ -433,7 +430,6 @@ def send_expert_booking_notification_email(expert_email, expert_name, user_name,
             'formatted_start_time': formatted_start_time,
             'formatted_end_time': formatted_end_time,
             'booking_id': booking_id,
-            'meeting_url': meeting_url,
             'dashboard_url': dashboard_url
         }
         
@@ -444,7 +440,7 @@ def send_expert_booking_notification_email(expert_email, expert_name, user_name,
         except Exception as e:
             logger.warning(f"Failed to render expert booking notification templates: {str(e)}")
             # Fallback to basic text
-            msg.body = f"New booking from {user_name} on {formatted_date} at {formatted_start_time}. Meeting: {meeting_url}"
+            msg.body = f"New booking from {user_name} on {formatted_date} at {formatted_start_time}. Please join via your dashboard: {dashboard_url}"
         
         # Send email
         mail.send(msg)
@@ -455,4 +451,47 @@ def send_expert_booking_notification_email(expert_email, expert_name, user_name,
         error_msg = f"Failed to send expert booking notification email: {str(e)}"
         logger.error(error_msg, exc_info=True)
         return False, error_msg
+
+
+def send_email_with_attachment(recipient, subject, body, attachment_file, attachment_filename="report.pdf"):
+    """
+    Send email with a single PDF attachment
+    
+    Args:
+        recipient (str): Email address of recipient
+        subject (str): Email subject
+        body (str): Email body text
+        attachment_file (BytesIO or bytes): File object or bytes content
+        attachment_filename (str): Name of the attachment file
+    
+    Returns:
+        bool: True if successful, False otherwise
+    """
+    try:
+        msg = Message(
+            subject=subject,
+            sender=current_app.config.get('MAIL_DEFAULT_SENDER'),
+            recipients=[recipient],
+            body=body
+        )
+        
+        # Read file content if it's a file object
+        if hasattr(attachment_file, 'read'):
+            attachment_file.seek(0)
+            data = attachment_file.read()
+        else:
+            data = attachment_file
+            
+        msg.attach(
+            filename=attachment_filename,
+            content_type="application/pdf",
+            data=data
+        )
+        
+        mail.send(msg)
+        logger.info(f"Email with attachment sent using Flask-Mail to {recipient}")
+        return True
+    except Exception as e:
+        logger.error(f"Failed to send email with attachment: {str(e)}")
+        return False
 

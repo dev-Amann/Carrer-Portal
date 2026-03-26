@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,36 +14,43 @@
             margin: 0;
             padding: 0;
         }
+
         .container {
             max-width: 600px;
             margin: 20px auto;
             background: white;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
+
         .header {
             background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
             color: white;
             padding: 30px;
             text-align: center;
         }
+
         .header h1 {
             margin: 0;
             font-size: 28px;
         }
+
         .header p {
             margin: 10px 0 0 0;
             font-size: 16px;
             opacity: 0.95;
         }
+
         .content {
             padding: 30px;
         }
+
         .content h2 {
             color: #111827;
             margin-top: 0;
         }
+
         .booking-details {
             background: #f9f9f9;
             border-left: 4px solid #8B5CF6;
@@ -50,27 +58,33 @@
             margin: 20px 0;
             border-radius: 4px;
         }
+
         .booking-details h3 {
             margin-top: 0;
             color: #111827;
         }
+
         .detail-row {
             margin: 10px 0;
             display: flex;
             align-items: baseline;
         }
+
         .label {
             font-weight: bold;
             color: #555;
             min-width: 120px;
         }
+
         .value {
             color: #333;
         }
+
         .button-container {
             text-align: center;
             margin: 30px 0;
         }
+
         .meeting-link {
             background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
             color: white;
@@ -81,9 +95,11 @@
             font-weight: bold;
             font-size: 16px;
         }
+
         .meeting-link:hover {
             opacity: 0.9;
         }
+
         .footer {
             background: #f9f9f9;
             padding: 20px;
@@ -92,29 +108,33 @@
             color: #666;
             border-top: 1px solid #e5e7eb;
         }
+
         .footer p {
             margin: 5px 0;
         }
+
         a {
             color: #3B82F6;
             text-decoration: none;
         }
+
         a:hover {
             text-decoration: underline;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
             <h1>📅 New Booking Received</h1>
             <p>You have a new consultation session</p>
         </div>
-        
+
         <div class="content">
             <h2>Hello {{ expert_name }}!</h2>
             <p>You have received a new booking from <strong>{{ user_name }}</strong>. Payment has been confirmed.</p>
-            
+
             <div class="booking-details">
                 <h3>📋 Session Details</h3>
                 <div class="detail-row">
@@ -134,24 +154,27 @@
                     <span class="value">#{{ booking_id }}</span>
                 </div>
             </div>
-            
+
             <div class="button-container">
-                <a href="{{ meeting_url }}" class="meeting-link">Join Video Meeting</a>
+                <a href="{{ dashboard_url }}" class="meeting-link">Go to Expert Dashboard</a>
             </div>
-            
-            <p>You can view all your bookings and manage your schedule from your <a href="{{ dashboard_url }}">expert dashboard</a>.</p>
-            
-            <p><strong>Meeting Link:</strong> <a href="{{ meeting_url }}">{{ meeting_url }}</a></p>
-            
+
+            <p>You can view all your bookings and join the meeting from your <a href="{{ dashboard_url }}">expert
+                    dashboard</a>.</p>
+
+            <p><strong>To Join:</strong> Log in to your dashboard and look for the "Join" button next to this booking.
+            </p>
+
             <p>Please be available at the scheduled time to provide the best experience for your client.</p>
-            
+
             <p>Best regards,<br>The CarrerPortal Team</p>
         </div>
-        
+
         <div class="footer">
             <p>© 2024 CarrerPortal. All rights reserved.</p>
             <p>This is an automated email. Please do not reply.</p>
         </div>
     </div>
 </body>
+
 </html>

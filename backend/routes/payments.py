@@ -16,6 +16,36 @@ logger = logging.getLogger(__name__)
 payments_bp = Blueprint('payments', __name__)
 
 
+@payments_bp.route('/bookings/<int:booking_id>', methods=['DELETE'])
+@verify_token()
+def cancel_pending_booking(booking_id):
+    try:
+        user_id = g.user_id
+        booking = db.query(Booking).filter_by(id=booking_id, user_id=user_id).first()
+        
+        if not booking:
+            return jsonify({'success': False, 'error': 'Booking not found or unauthorized'}), 404
+            
+        if booking.status != 'pending':
+            return jsonify({'success': False, 'error': 'Cannot cancel non-pending booking via this route'}), 400
+            
+        # Delete associated transaction(s)
+        transactions = db.query(Transaction).filter_by(booking_id=booking_id).all()
+        for t in transactions:
+            if t.status == 'completed':
+                 return jsonify({'success': False, 'error': 'Cannot nuke booking with completed transaction'}), 400
+            db.delete(t)
+            
+        db.delete(booking)
+        db.commit()
+        
+        return jsonify({'success': True, 'message': 'Pending booking cancelled and removed'}), 200
+        
+    except Exception as e:
+        logger.error(f"Error cancelling booking: {str(e)}")
+        db.rollback()
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 @payments_bp.route('/create-order', methods=['POST'])
 @verify_token()
 def create_order():
@@ -113,6 +143,7 @@ def verify_payment():
         payment_id = data['razorpay_payment_id']
         signature = data['razorpay_signature']
         
+        
         transaction = db.query(Transaction).filter_by(razorpay_order_id=order_id).first()
         if not transaction:
             return jsonify({'success': False, 'error': 'Transaction not found'}), 404
@@ -156,10 +187,10 @@ def verify_payment():
                 
             return jsonify({'success': True, 'message': 'Payment verified'}), 200
         else:
-            transaction.status = 'failed'
-            transaction.razorpay_payment_id = payment_id
-            transaction.razorpay_signature = signature
+            # Delete the failed transaction to keep DB clean
+            db.delete(transaction)
             db.commit()
+            logger.warning(f"Payment verification failed for order {order_id}. Transaction deleted.")
             return jsonify({'success': False, 'error': 'Invalid signature'}), 400
 
     except Exception as e:

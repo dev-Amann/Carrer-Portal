@@ -30,19 +30,19 @@ const Modal = ({
   };
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto overflow-x-hidden backdrop-blur-sm bg-black/60 animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto overflow-x-hidden backdrop-blur-sm bg-black/40 animate-fade-in">
       {/* Backdrop overlay for closing */}
       <div className="fixed inset-0 transition-opacity" onClick={onClose} aria-hidden="true" />
 
-      <div className={`relative w-full ${maxWidthClasses[size]} transform rounded-2xl bg-[#13131f] border border-white/10 shadow-2xl transition-all flex flex-col max-h-[90vh]`}>
+      <div className={`relative w-full ${maxWidthClasses[size]} transform rounded-2xl bg-white border border-slate-200 shadow-2xl transition-all flex flex-col max-h-[90vh]`}>
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/5 sticky top-0 bg-[#13131f] z-10 rounded-t-2xl">
-          <h3 className="text-xl font-semibold text-white tracking-tight">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 sticky top-0 bg-white z-10 rounded-t-2xl">
+          <h3 className="text-xl font-semibold text-slate-900 tracking-tight">
             {title}
           </h3>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-white transition-colors p-1 rounded-lg hover:bg-white/5 focus:outline-none"
+            className="text-slate-400 hover:text-slate-600 transition-colors p-1 rounded-lg hover:bg-slate-100 focus:outline-none"
           >
             <span className="sr-only">Close</span>
             <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -52,13 +52,13 @@ const Modal = ({
         </div>
 
         {/* Content */}
-        <div className="p-6 overflow-y-auto custom-scrollbar">
+        <div className="p-6 overflow-y-auto custom-scrollbar text-slate-700">
           {children}
         </div>
 
         {/* Footer */}
         {footer && (
-          <div className="px-6 py-4 border-t border-white/5 bg-[#0a0a0f]/50 rounded-b-2xl sticky bottom-0">
+          <div className="px-6 py-4 border-t border-slate-200 bg-slate-50 rounded-b-2xl sticky bottom-0">
             {footer}
           </div>
         )}

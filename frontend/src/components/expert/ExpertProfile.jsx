@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import Button from '../ui/Button';
 import Input from '../ui/Input';
 
@@ -10,9 +9,6 @@ const ExpertProfile = ({ profile, onSave }) => {
         rate_per_hour: profile?.rate_per_hour || ''
     });
     const [saving, setSaving] = useState(false);
-
-    // If we wanted to manage 'saving' state in parent, we could pass it down.
-    // Assuming onSave returns a promise.
 
     const handleEdit = () => {
         setEditForm({
@@ -42,22 +38,23 @@ const ExpertProfile = ({ profile, onSave }) => {
     if (!profile) return null;
 
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="glass-card p-8 max-w-3xl mx-auto relative overflow-hidden"
-        >
-            <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none translate-x-1/3 -translate-y-1/3" />
+        <div className="bg-white border border-slate-200 rounded-xl p-8 max-w-3xl mx-auto relative overflow-hidden shadow-sm">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-50 rounded-full blur-3xl pointer-events-none translate-x-1/3 -translate-y-1/3" />
 
             <div className="flex justify-between items-center mb-8 relative z-10">
-                <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                    <span>👤</span> Expert Profile
+                <h3 className="text-xl font-bold text-slate-900 flex items-center gap-3">
+                    <div className="p-2 bg-indigo-50 rounded-lg text-indigo-600">
+                        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                    </div>
+                    Expert Profile
                 </h3>
                 {!isEditing && (
                     <Button
                         onClick={handleEdit}
                         variant="primary"
-                        className="shadow-lg shadow-indigo-500/20"
+                        className="shadow-md"
                     >
                         Edit Profile
                     </Button>
@@ -67,33 +64,33 @@ const ExpertProfile = ({ profile, onSave }) => {
             {!isEditing ? (
                 <div className="space-y-8 relative z-10">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="bg-white/5 p-4 rounded-xl border border-white/5">
-                            <p className="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">Name</p>
-                            <p className="text-lg text-white font-medium">{profile.name}</p>
+                        <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <p className="text-xs text-slate-500 uppercase tracking-wider font-bold mb-1">Name</p>
+                            <p className="text-lg text-slate-900 font-medium">{profile.user?.name || profile.name}</p>
                         </div>
-                        <div className="bg-white/5 p-4 rounded-xl border border-white/5">
-                            <p className="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">Email</p>
-                            <p className="text-lg text-white font-medium">{profile.email}</p>
+                        <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <p className="text-xs text-slate-500 uppercase tracking-wider font-bold mb-1">Email</p>
+                            <p className="text-lg text-slate-900 font-medium">{profile.user?.email || profile.email}</p>
                         </div>
                     </div>
 
-                    <div className="bg-white/5 p-6 rounded-xl border border-white/5">
-                        <p className="text-xs text-gray-500 uppercase tracking-wider font-bold mb-3">Bio</p>
-                        <div className="text-gray-300 leading-relaxed whitespace-pre-wrap">
-                            {profile.bio || <span className="text-gray-500 italic">No bio added yet.</span>}
+                    <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                        <p className="text-xs text-slate-500 uppercase tracking-wider font-bold mb-3">Bio</p>
+                        <div className="text-slate-700 leading-relaxed whitespace-pre-wrap">
+                            {profile.bio || <span className="text-slate-400 italic">No bio added yet.</span>}
                         </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="bg-white/5 p-4 rounded-xl border border-white/5">
-                            <p className="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">Rate per Hour</p>
-                            <p className="text-2xl text-white font-bold text-indigo-400">₹{profile.rate_per_hour}</p>
+                        <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <p className="text-xs text-slate-500 uppercase tracking-wider font-bold mb-1">Rate per Hour</p>
+                            <p className="text-2xl font-bold text-indigo-600">₹{profile.rate_per_hour}</p>
                         </div>
-                        <div className="bg-white/5 p-4 rounded-xl border border-white/5">
-                            <p className="text-xs text-gray-500 uppercase tracking-wider font-bold mb-2">Status</p>
-                            <span className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full border ${profile.status === 'approved' ? 'bg-green-500/10 text-green-400 border-green-500/20' :
-                                profile.status === 'pending' ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20' :
-                                    'bg-red-500/10 text-red-400 border-red-500/20'
+                        <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <p className="text-xs text-slate-500 uppercase tracking-wider font-bold mb-2">Status</p>
+                            <span className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full border ${profile.status === 'approved' ? 'bg-green-100 text-green-700 border-green-200' :
+                                profile.status === 'pending' ? 'bg-yellow-100 text-yellow-700 border-yellow-200' :
+                                    'bg-red-100 text-red-700 border-red-200'
                                 }`}>
                                 {profile.status}
                             </span>
@@ -101,13 +98,13 @@ const ExpertProfile = ({ profile, onSave }) => {
                     </div>
 
                     {profile.resume_url && (
-                        <div className="pt-4 border-t border-white/5">
-                            <p className="text-xs text-gray-500 uppercase tracking-wider font-bold mb-3">Documents</p>
+                        <div className="pt-4 border-t border-slate-200">
+                            <p className="text-xs text-slate-500 uppercase tracking-wider font-bold mb-3">Documents</p>
                             <a
                                 href={profile.resume_url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 text-indigo-300 hover:text-white transition-all bg-indigo-500/10 px-5 py-3 rounded-xl border border-indigo-500/20 hover:bg-indigo-500/30 group"
+                                className="inline-flex items-center gap-2 text-indigo-700 hover:text-indigo-900 transition-all bg-indigo-50 px-5 py-3 rounded-xl border border-indigo-100 hover:bg-indigo-100 group"
                             >
                                 <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -128,8 +125,9 @@ const ExpertProfile = ({ profile, onSave }) => {
                             rows={6}
                             maxLength={1000}
                             placeholder="Tell clients about your expertise and experience..."
+                            className="text-slate-900 bg-white border-slate-300 focus:border-indigo-500"
                         />
-                        <p className="mt-2 text-xs text-gray-500 text-right">
+                        <p className="mt-2 text-xs text-slate-500 text-right">
                             {editForm.bio.length}/1000 characters
                         </p>
                     </div>
@@ -144,18 +142,20 @@ const ExpertProfile = ({ profile, onSave }) => {
                             max="100000"
                             step="50"
                             placeholder="1500"
-                            icon={<span className="text-gray-400 font-bold">₹</span>}
+                            icon={<span className="text-slate-400 font-bold">₹</span>}
+                            className="text-slate-900 bg-white border-slate-300 focus:border-indigo-500"
                         />
-                        <p className="mt-2 text-xs text-gray-500">
+                        <p className="mt-2 text-xs text-slate-500">
                             Set your hourly consultation rate
                         </p>
                     </div>
 
-                    <div className="flex gap-4 pt-6 mt-8 border-t border-white/10 justify-end">
+                    <div className="flex gap-4 pt-6 mt-8 border-t border-slate-200 justify-end">
                         <Button
                             onClick={handleCancel}
                             variant="outline"
                             disabled={saving}
+                            className="text-slate-700 border-slate-300 hover:bg-slate-50"
                         >
                             Cancel
                         </Button>
@@ -169,7 +169,7 @@ const ExpertProfile = ({ profile, onSave }) => {
                     </div>
                 </div>
             )}
-        </motion.div>
+        </div>
     );
 };
 

@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { API } from '../lib/api';
-import { motion, AnimatePresence } from 'framer-motion';
 import Toast from '../components/Toast';
 import SEO from '../components/SEO';
 import Button from '../components/ui/Button';
@@ -89,62 +88,115 @@ const ExpertDashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center">
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-indigo-500 mx-auto mb-4"></div>
-          <p className="text-gray-400 font-medium">Loading dashboard...</p>
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+          <p className="text-slate-500 font-medium">Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Check expert status
+  if (profile && profile.status === 'pending') {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
+        <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8 text-center border border-slate-200">
+          <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg className="w-8 h-8 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-bold text-slate-900 mb-2">Verification in Progress</h2>
+          <p className="text-slate-600 mb-6">
+            Your expert profile is currently under review by our admin team. This process usually takes 24-48 hours.
+          </p>
+          <div className="bg-slate-50 rounded-lg p-4 mb-6 text-sm text-slate-500">
+            <p>We'll notify you via email once your profile is approved and live.</p>
+          </div>
+          <Button
+            onClick={handleLogout}
+            variant="outline"
+            className="w-full"
+          >
+            Logout
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (profile && profile.status === 'rejected') {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
+        <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8 text-center border border-red-200">
+          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg className="w-8 h-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-bold text-slate-900 mb-2">Application Rejected</h2>
+          <p className="text-slate-600 mb-6">
+            Unfortunately, your expert application could not be approved at this time.
+          </p>
+          <div className="bg-red-50 rounded-lg p-4 mb-6 text-sm text-red-700">
+            <p>Please contact support for more information or to submit a new application.</p>
+          </div>
+          <Button
+            onClick={handleLogout}
+            variant="outline"
+            className="w-full text-red-600 hover:bg-red-50 hover:text-red-700 border-red-200"
+          >
+            Logout
+          </Button>
         </div>
       </div>
     );
   }
 
   const tabs = [
-    { id: 'overview', label: 'Overview', icon: '📊' },
-    { id: 'bookings', label: 'Bookings', icon: '📅' },
-    { id: 'earnings', label: 'Earnings', icon: '💰' },
-    { id: 'profile', label: 'Profile', icon: '👤' },
+    { id: 'overview', label: 'Overview', icon: 'M4 6h16M4 10h16M4 14h16M4 18h16' },
+    { id: 'bookings', label: 'Bookings', icon: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z' },
+    { id: 'earnings', label: 'Earnings', icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z' },
+    { id: 'profile', label: 'Profile', icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z' },
   ];
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] py-24 relative overflow-hidden transition-colors duration-500">
+    <div className="min-h-screen bg-slate-50/50">
       <SEO title="Expert Dashboard" description="Manage your expert profile and bookings" />
 
-      {/* Dynamic Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-20%] left-[-20%] w-[60%] h-[60%] bg-indigo-900/10 rounded-full blur-[100px] animate-blob" />
-        <div className="absolute bottom-[-20%] right-[-20%] w-[60%] h-[60%] bg-purple-900/10 rounded-full blur-[100px] animate-blob animation-delay-4000" />
-        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" style={{ opacity: 0.03 }}></div>
-      </div>
-
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#0a0a0f]/80 backdrop-blur-xl transition-all duration-300">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-indigo-500/30">
-                {user?.name?.[0] || 'E'}
+      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-sm">
+                {user?.name?.[0]}
               </div>
               <div>
-                <h1 className="text-xl font-bold text-white tracking-tight">
-                  Expert Dashboard
+                <h1 className="text-lg font-bold text-slate-900 tracking-tight leading-tight">
+                  Expert Panel
                 </h1>
-                <p className="text-sm text-gray-400">
-                  Welcome back, {user?.name}
+                <p className="text-xs text-slate-500 font-medium">
+                  {user?.name}
                 </p>
               </div>
             </div>
+
             <div className="flex items-center gap-4">
-              <div className="hidden md:flex items-center gap-2 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-xs font-medium text-emerald-400">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                Status: {profile?.status || 'Active'}
-              </div>
+              {profile && (
+                <div className="hidden sm:flex items-center gap-2 px-3 py-1 bg-slate-50 rounded-full border border-slate-200">
+                  <span className={`w-2 h-2 rounded-full ${profile.status === 'approved' ? 'bg-emerald-500' : 'bg-amber-500'}`} />
+                  <span className="text-xs font-medium text-slate-600 capitalize">{profile.status}</span>
+                </div>
+              )}
               <Button
                 onClick={handleLogout}
-                variant="outline"
+                variant="ghost"
+                className="text-slate-500 hover:text-red-600 hover:bg-red-50"
                 size="sm"
-                className="text-red-400 border-red-500/20 hover:bg-red-500/10 hover:border-red-500/40 hover:text-red-300"
               >
-                Logout
+                Sign out
               </Button>
             </div>
           </div>
@@ -152,88 +204,70 @@ const ExpertDashboard = () => {
       </header>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10 pt-20">
-
-        {/* Tab Navigation */}
-        <div className="flex flex-wrap gap-2 mb-8 bg-white/5 p-1.5 rounded-2xl w-full sm:w-auto inline-flex">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`relative flex items-center gap-2 px-6 py-2.5 text-sm font-medium rounded-xl transition-all duration-300 ${activeTab === tab.id
-                  ? 'text-white'
-                  : 'text-gray-400 hover:text-white hover:bg-white/5'
-                }`}
-            >
-              {activeTab === tab.id && (
-                <motion.div
-                  layoutId="activeTab"
-                  className="absolute inset-0 bg-indigo-600 rounded-xl shadow-lg shadow-indigo-500/20"
-                  initial={false}
-                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                />
-              )}
-              <span className="relative z-10">{tab.icon}</span>
-              <span className="relative z-10">{tab.label}</span>
-            </button>
-          ))}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Greeting Section */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
+            Welcome back, {user?.name?.split(' ')[0]} 👋
+          </h2>
+          <p className="text-slate-500 mt-1">Here's what's happening with your sessions today.</p>
         </div>
 
-        <AnimatePresence mode="wait">
+        {/* Tab Navigation */}
+        <div className="mb-8 overflow-x-auto pb-2">
+          <nav className="flex space-x-1 bg-white p-1 rounded-xl border border-slate-200 shadow-sm min-w-max">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${activeTab === tab.id
+                    ? 'bg-indigo-50 text-indigo-700 shadow-sm'
+                    : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
+                  }`}
+              >
+                <svg className={`w-4 h-4 ${activeTab === tab.id ? 'text-indigo-600' : 'text-slate-400'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={tab.icon} />
+                </svg>
+                {tab.label}
+                {tab.id === 'bookings' && bookings.some(b => b.status === 'confirmed') && (
+                  <span className="ml-1.5 flex h-2 w-2 relative">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                  </span>
+                )}
+              </button>
+            ))}
+          </nav>
+        </div>
+
+        <div className="animate-fade-in space-y-6">
           {activeTab === 'overview' && earnings && (
-            <motion.div
-              key="overview"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-              className="space-y-8"
-            >
+            <>
               <ExpertStats earnings={earnings} />
               <UpcomingSessions bookings={bookings} />
-            </motion.div>
+            </>
           )}
 
           {activeTab === 'bookings' && (
-            <motion.div
-              key="bookings"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-            >
-              <BookingsTable
-                bookings={bookings}
-                filter={bookingFilter}
-                onFilterChange={setBookingFilter}
-              />
-            </motion.div>
+            <BookingsTable
+              bookings={bookings}
+              filter={bookingFilter}
+              onFilterChange={setBookingFilter}
+            />
           )}
 
           {activeTab === 'earnings' && (
-            <motion.div
-              key="earnings"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-            >
-              <EarningsSummary earnings={earnings} />
-            </motion.div>
+            <EarningsSummary earnings={earnings} />
           )}
 
           {activeTab === 'profile' && profile && (
-            <motion.div
-              key="profile"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-            >
-              <ExpertProfile
-                profile={profile}
-                onSave={handleSaveProfile}
-              />
-            </motion.div>
+            <ExpertProfile
+              profile={profile}
+              onSave={handleSaveProfile}
+            />
           )}
-        </AnimatePresence>
-      </div>
+        </div>
+      </main>
 
       {toast && (
         <Toast
@@ -247,4 +281,3 @@ const ExpertDashboard = () => {
 };
 
 export default ExpertDashboard;
-

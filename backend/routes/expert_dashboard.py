@@ -6,61 +6,20 @@ from flask import Blueprint, request, jsonify, g
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import func
 from datetime import datetime
-from models import Expert, Booking, Transaction
+from models import Expert, Booking, Transaction, Feedback
 from utils.jwt_utils import verify_token
+from routes.expert_helpers import verify_expert
 import logging
 
 logger = logging.getLogger(__name__)
 
 expert_dashboard_bp = Blueprint('expert_dashboard', __name__)
 
+from utils.booking_helper import update_booking_statuses
 
 
-def verify_expert():
-    """Decorator to verify expert access"""
-    def decorator(f):
-        def wrapper(*args, **kwargs):
-            # First verify token
-            verify_token()(lambda: None)()
-            
-            # Check if expert_id is in token (set by verify_token)
-            if not getattr(g, 'expert_id', None):
-                # Fallback: Check if user has an expert profile via user_id
-                # This handles cases where token might be old or logic needs fallback
-                # But user preferred using expert_id. 
-                # If we want to force re-login for better security/performance:
-                # return jsonify({'success': False, 'error': 'Expert access required. Please login again.'}), 403
-                
-                # Let's support both for now, but prioritize expert_id
-                db = g.db
-                expert = db.query(Expert).filter_by(user_id=g.user_id).first()
-            else:
-                # Use expert_id from token
-                db = g.db
-                expert = db.query(Expert).filter_by(id=g.expert_id).first()
-            
-            if not expert:
-                return jsonify({
-                    'success': False,
-                    'error': 'Expert profile not found',
-                    'code': 'NOT_EXPERT'
-                }), 403
-            
-            # Additional check: If verifying by ID, ensure it matches the user (sanity check)
-            if expert.user_id != g.user_id:
-                 return jsonify({
-                    'success': False,
-                    'error': 'Expert profile mismatch',
-                    'code': 'INVALID_TOKEN'
-                }), 403
 
-            # Store expert in g for use in route
-            g.expert = expert
-            
-            return f(*args, **kwargs)
-        wrapper.__name__ = f.__name__
-        return wrapper
-    return decorator
+
 
 
 
@@ -81,6 +40,9 @@ def get_expert_bookings():
     try:
         db = g.db
         expert = g.expert
+        
+        # Auto-update completed bookings
+        update_booking_statuses(db, expert_id=expert.id)
         
         # Get query parameters
         status_filter = request.args.get('status')
@@ -128,6 +90,19 @@ def get_expert_bookings():
                     'status': transaction.status,
                     'razorpay_payment_id': transaction.razorpay_payment_id
                 }
+
+            # Add feedback information
+            if booking.feedbacks:
+                # Assuming one feedback per booking or taking the latest
+                latest_feedback = booking.feedbacks[0]
+                booking_data['feedback'] = {
+                    'rating': latest_feedback.rating,
+                    'comment': latest_feedback.comment,
+                    'created_at': latest_feedback.created_at.isoformat() if latest_feedback.created_at else None
+                }
+                booking_data['has_feedback'] = True
+            else:
+                booking_data['has_feedback'] = False
             
             bookings_list.append(booking_data)
         
@@ -169,25 +144,30 @@ def get_expert_earnings():
         db = g.db
         expert = g.expert
         
-        # Get all completed bookings for this expert
-        completed_bookings = db.query(Booking).filter_by(
-            expert_id=expert.id,
-            status='completed'
+        # Auto-update completed bookings
+        update_booking_statuses(db, expert_id=expert.id)
+        
+        # Get all relevant bookings (confirmed and completed)
+        relevant_bookings = db.query(Booking).filter(
+            Booking.expert_id == expert.id,
+            Booking.status.in_(['confirmed', 'completed'])
         ).all()
         
-        # Calculate total earnings from completed transactions
+        # Calculate earnings
         total_earnings = 0
-        completed_transactions = 0
         pending_earnings = 0
+        completed_transactions = 0
         
-        for booking in completed_bookings:
+        for booking in relevant_bookings:
             transaction = db.query(Transaction).filter_by(booking_id=booking.id).first()
-            if transaction:
-                if transaction.status == 'completed':
-                    total_earnings += float(transaction.amount)
+            if transaction and transaction.status == 'completed':
+                amount = float(transaction.amount)
+                
+                if booking.status == 'completed':
+                    total_earnings += amount
                     completed_transactions += 1
-                elif transaction.status == 'created':
-                    pending_earnings += float(transaction.amount)
+                elif booking.status == 'confirmed':
+                    pending_earnings += amount
         
         # Get total number of bookings
         total_bookings = db.query(func.count(Booking.id)).filter_by(expert_id=expert.id).scalar()

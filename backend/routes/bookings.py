@@ -8,6 +8,7 @@ from datetime import datetime
 from models import Booking, Expert, User
 from utils.jwt_utils import verify_token
 from utils.jitsi_helper import generate_jitsi_room
+from utils.booking_helper import update_booking_statuses
 import logging
 
 logger = logging.getLogger(__name__)
@@ -190,6 +191,9 @@ def get_user_bookings():
     try:
         db = g.db
         user_id = g.user_id
+        
+        # Auto-update completed bookings for this user
+        update_booking_statuses(db, user_id=user_id)
         
         # Get status filter from query parameters
         status_filter = request.args.get('status')

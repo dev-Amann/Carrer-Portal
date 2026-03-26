@@ -131,6 +131,7 @@ export const bookingsAPI = {
 export const paymentsAPI = {
   createOrder: (data) => api.post('/payments/create-order', data),
   verify: (data) => api.post('/payments/verify', data),
+  cancelBooking: (bookingId) => api.delete(`/payments/bookings/${bookingId}`),
 }
 
 // Contact endpoint
@@ -145,6 +146,7 @@ export const adminAPI = {
   getPendingExperts: () => api.get('/admin/experts/pending'),
   approveExpert: (expertId) => api.post(`/admin/experts/${expertId}/approve`),
   rejectExpert: (expertId) => api.post(`/admin/experts/${expertId}/reject`),
+  deleteUser: (userId) => api.delete(`/admin/users/${userId}`),
 }
 
 // Expert Dashboard endpoints
@@ -155,6 +157,13 @@ export const expertDashboardAPI = {
   updateProfile: (data) => api.put('/expert-dashboard/profile', data),
 }
 
+// Feedback endpoints
+export const feedbackAPI = {
+  create: (data) => api.post('/feedback', data),
+  getExpertFeedback: (expertId) => api.get(`/feedback/expert/${expertId}`),
+  getBookingFeedback: (bookingId) => api.get(`/feedback/booking/${bookingId}`),
+}
+
 // Export organized API object
 export const API = {
   auth: authAPI,
@@ -163,6 +172,7 @@ export const API = {
   experts: expertsAPI,
   bookings: bookingsAPI,
   payments: paymentsAPI,
+  feedback: feedbackAPI,
   contact: contactAPI,
   admin: adminAPI,
   expertDashboard: expertDashboardAPI,

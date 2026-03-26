@@ -138,7 +138,8 @@ def health_check():
     try:
         if SessionLocal:
             db = SessionLocal()
-            db.execute('SELECT 1')
+            from sqlalchemy import text
+            db.execute(text('SELECT 1'))
             db.close()
     except Exception as e:
         db_status = f'disconnected: {str(e)}'
@@ -169,6 +170,19 @@ app.register_blueprint(bookings_bp, url_prefix='/api/bookings')
 app.register_blueprint(payments_bp, url_prefix='/api/payments')
 app.register_blueprint(admin_bp, url_prefix='/api/admin')
 app.register_blueprint(expert_dashboard_bp, url_prefix='/api/expert-dashboard')
+
+from routes.feedback import feedback_bp
+app.register_blueprint(feedback_bp, url_prefix='/api/feedback')
+
+
+@app.after_request
+def add_header(response):
+    """Add headers to both force latest IE rendering engine or Chrome Frame,
+    and also to cache the rendered page for 10 minutes."""
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
 
 
 if __name__ == '__main__':

@@ -5,37 +5,15 @@ Handles admin-specific operations like user management, expert approval, and sta
 from flask import Blueprint, request, jsonify, g
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import func, case
-from models import User, Expert, Booking, Transaction
+from models import User, Expert, Booking, Transaction, Feedback
 from utils.jwt_utils import verify_token
+from routes.admin_helpers import verify_admin, _update_all_completed_bookings
 import logging
 
 logger = logging.getLogger(__name__)
 
 admin_bp = Blueprint('admin', __name__)
 
-
-def verify_admin():
-    """Decorator to verify admin access"""
-    def decorator(f):
-        def wrapper(*args, **kwargs):
-            # First verify token
-            verify_token()(lambda: None)()
-            
-            # Check if user is admin
-            db = g.db
-            user = db.query(User).filter_by(id=g.user_id).first()
-            
-            if not user or not user.is_admin:
-                return jsonify({
-                    'success': False,
-                    'error': 'Admin access required',
-                    'code': 'FORBIDDEN'
-                }), 403
-            
-            return f(*args, **kwargs)
-        wrapper.__name__ = f.__name__
-        return wrapper
-    return decorator
 
 
 @admin_bp.route('/stats', methods=['GET'])
@@ -50,6 +28,9 @@ def get_admin_stats():
     """
     try:
         db = g.db
+        
+        # Auto-update all completed bookings
+        _update_all_completed_bookings()
         
         # Total users count
         total_users = db.query(func.count(User.id)).scalar()
@@ -169,6 +150,13 @@ def get_all_users():
                         'status': transaction.status,
                         'razorpay_payment_id': transaction.razorpay_payment_id
                     }
+                
+                # Get feedback info
+                if booking.feedbacks:
+                    booking_info['feedback'] = booking.feedbacks[0].to_dict()
+                    booking_info['has_feedback'] = True
+                else:
+                    booking_info['has_feedback'] = False
                 
                 bookings_data.append(booking_info)
             
@@ -372,6 +360,67 @@ def reject_expert(expert_id):
     except Exception as e:
         db.rollback()
         logger.error(f"Unexpected error in reject_expert: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': 'An unexpected error occurred',
+            'code': 'UNEXPECTED_ERROR'
+        }), 500
+@admin_bp.route('/users/<int:user_id>', methods=['DELETE'])
+@verify_token()
+@verify_admin()
+def delete_user(user_id):
+    """
+    Delete a user
+    
+    Args:
+        user_id: ID of the user to delete
+    
+    Returns:
+        JSON response with success status
+    """
+    try:
+        db = g.db
+        
+        # Prevent self-deletion
+        if user_id == g.user_id:
+            return jsonify({
+                'success': False,
+                'error': 'Cannot delete your own account',
+                'code': 'SELF_DELETION_PROHIBITED'
+            }), 400
+        
+        # Get user
+        user = db.query(User).filter_by(id=user_id).first()
+        
+        if not user:
+            return jsonify({
+                'success': False,
+                'error': 'User not found',
+                'code': 'USER_NOT_FOUND'
+            }), 404
+        
+        # Delete user (CASCADE should handle related records)
+        db.delete(user)
+        db.commit()
+        
+        logger.info(f"User {user_id} deleted by admin {g.user_id}")
+        
+        return jsonify({
+            'success': True,
+            'message': 'User deleted successfully'
+        }), 200
+        
+    except SQLAlchemyError as e:
+        db.rollback()
+        logger.error(f"Database error in delete_user: {str(e)}")
+        return jsonify({
+            'success': False,
+            'error': 'Failed to delete user',
+            'code': 'DATABASE_ERROR'
+        }), 500
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Unexpected error in delete_user: {str(e)}")
         return jsonify({
             'success': False,
             'error': 'An unexpected error occurred',

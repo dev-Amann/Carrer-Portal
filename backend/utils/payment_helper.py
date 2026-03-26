@@ -82,8 +82,8 @@ def verify_razorpay_signature(razorpay_order_id, razorpay_payment_id, razorpay_s
         client.utility.verify_payment_signature(params_dict)
         return True
         
-    except razorpay.errors.SignatureVerificationError:
-        logger.warning("Razorpay signature verification failed")
+    except razorpay.errors.SignatureVerificationError as e:
+        logger.warning(f"Razorpay signature verification failed: {str(e)}")
         return False
     except Exception as e:
         logger.error(f"Error verifying Razorpay signature: {str(e)}")

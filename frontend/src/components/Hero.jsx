@@ -1,92 +1,44 @@
-import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion';
 import Button from './ui/Button';
 
 const Hero = () => {
   const navigate = useNavigate();
-  const prefersReducedMotion = usePrefersReducedMotion();
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: prefersReducedMotion ? 0 : 0.2,
-        delayChildren: prefersReducedMotion ? 0 : 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: prefersReducedMotion ? 0 : 0.8,
-        ease: [0.22, 1, 0.36, 1]
-      }
-    }
-  };
 
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-20">
-      {/* Dynamic Background */}
-      <div className="absolute inset-0 bg-[#0a0a0f]">
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
-          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-purple-600/20 rounded-full blur-[120px] animate-pulse" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-600/20 rounded-full blur-[120px] animate-pulse delay-1000" />
-          <div className="absolute top-[40%] left-[40%] w-[30%] h-[30%] bg-indigo-500/10 rounded-full blur-[100px] animate-pulse delay-2000" />
-        </div>
-        {/* Grid Pattern Overlay */}
-        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" style={{ opacity: 0.1 }}></div>
-      </div>
+    <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden pt-20 bg-white">
+      {/* Simple Background */}
+      <div className="absolute inset-0 bg-slate-50/50" />
 
-      <motion.div
-        className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center"
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center">
         {/* Badge */}
-        <motion.div variants={itemVariants} className="mb-8">
-          <span className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-medium text-indigo-300 backdrop-blur-md shadow-xl">
-            ✨ Revolutionizing Career Growth
+        <div className="mb-6">
+          <span className="px-3 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-xs font-semibold text-indigo-600 uppercase tracking-wider">
+            Revolutionizing Career Growth
           </span>
-        </motion.div>
+        </div>
 
         {/* Heading */}
-        <motion.h1
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white mb-8 leading-tight"
-          variants={itemVariants}
-        >
-          <span className="block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 mb-2">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 mb-6 leading-tight">
+          <span className="block text-indigo-600 mb-2">
             CareerPortal
           </span>
-          <span className="block text-4xl sm:text-5xl md:text-6xl text-gray-300 font-medium">
+          <span className="block text-3xl sm:text-4xl md:text-5xl text-slate-700 font-bold">
             Your Future is Developed by You
           </span>
-        </motion.h1>
+        </h1>
 
         {/* Subtitle */}
-        <motion.p
-          className="text-lg sm:text-xl md:text-2xl text-gray-400 mb-10 max-w-3xl mx-auto leading-relaxed"
-          variants={itemVariants}
-        >
+        <p className="text-base sm:text-lg md:text-xl text-slate-600 mb-8 max-w-2xl mx-auto leading-relaxed">
           Discover your ideal career path with AI-powered recommendations.
           Connect with industry experts, bridge skill gaps, and accelerate your professional growth.
-        </motion.p>
+        </p>
 
         {/* CTA Buttons */}
-        <motion.div
-          className="flex flex-col sm:flex-row items-center justify-center gap-5 w-full sm:w-auto"
-          variants={itemVariants}
-        >
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
           <Button
             onClick={() => navigate('/career-recommendation')}
             size="lg"
-            className="w-full sm:w-auto shadow-xl shadow-indigo-500/20 hover:shadow-indigo-500/40 transition-all text-lg px-8 py-6 h-auto"
+            className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white transition-all shadow-md"
           >
             Get Started
             <svg className="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -98,17 +50,14 @@ const Hero = () => {
             onClick={() => navigate('/contact')}
             variant="outline"
             size="lg"
-            className="w-full sm:w-auto text-lg px-8 py-6 h-auto border-white/10 hover:bg-white/5"
+            className="w-full sm:w-auto text-slate-700 border-slate-200 hover:bg-slate-50"
           >
             Contact Sales
           </Button>
-        </motion.div>
+        </div>
 
-        {/* Stats / Social Proof */}
-        <motion.div
-          variants={itemVariants}
-          className="mt-20 pt-10 border-t border-white/5 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-16 opacity-80"
-        >
+        {/* Stats */}
+        <div className="mt-16 pt-8 border-t border-slate-100 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
           {[
             { label: 'Active Users', value: '10K+' },
             { label: 'Career Paths', value: '500+' },
@@ -116,12 +65,12 @@ const Hero = () => {
             { label: 'Success Rate', value: '94%' },
           ].map((stat, index) => (
             <div key={index} className="text-center">
-              <div className="text-3xl font-bold text-white mb-1">{stat.value}</div>
-              <div className="text-sm text-gray-400">{stat.label}</div>
+              <div className="text-2xl font-bold text-slate-900 mb-1">{stat.value}</div>
+              <div className="text-xs font-medium text-slate-500 uppercase tracking-widest">{stat.label}</div>
             </div>
           ))}
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
     </section>
   );
 };

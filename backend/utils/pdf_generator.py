@@ -12,6 +12,8 @@ from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
 from io import BytesIO
 import logging
 
+from utils.pdf_styles import get_pdf_styles, COLORS
+
 logger = logging.getLogger(__name__)
 
 
@@ -44,47 +46,13 @@ def create_career_report_pdf(user_data, career_data, skill_gap_data):
         # Container for PDF elements
         elements = []
         
-        # Define styles
-        styles = getSampleStyleSheet()
-        
-        # Custom styles
-        title_style = ParagraphStyle(
-            'CustomTitle',
-            parent=styles['Heading1'],
-            fontSize=24,
-            textColor=colors.HexColor('#1e40af'),
-            spaceAfter=12,
-            alignment=TA_CENTER,
-            fontName='Helvetica-Bold'
-        )
-        
-        subtitle_style = ParagraphStyle(
-            'CustomSubtitle',
-            parent=styles['Normal'],
-            fontSize=12,
-            textColor=colors.HexColor('#666666'),
-            spaceAfter=20,
-            alignment=TA_CENTER
-        )
-        
-        heading_style = ParagraphStyle(
-            'CustomHeading',
-            parent=styles['Heading2'],
-            fontSize=16,
-            textColor=colors.HexColor('#1e40af'),
-            spaceAfter=10,
-            spaceBefore=15,
-            fontName='Helvetica-Bold'
-        )
-        
-        body_style = ParagraphStyle(
-            'CustomBody',
-            parent=styles['Normal'],
-            fontSize=11,
-            textColor=colors.HexColor('#333333'),
-            spaceAfter=10,
-            leading=16
-        )
+        # Get shared styles
+        pdf_styles = get_pdf_styles()
+        title_style = pdf_styles['title']
+        subtitle_style = pdf_styles['subtitle']
+        heading_style = pdf_styles['heading']
+        body_style = pdf_styles['body']
+        footer_style = pdf_styles['footer']
         
         # Header
         elements.append(Paragraph("🎯 Career Recommendation Report", title_style))
@@ -205,13 +173,6 @@ def create_career_report_pdf(user_data, career_data, skill_gap_data):
         
         # Footer
         elements.append(Spacer(1, 0.5*inch))
-        footer_style = ParagraphStyle(
-            'Footer',
-            parent=styles['Normal'],
-            fontSize=9,
-            textColor=colors.HexColor('#999999'),
-            alignment=TA_CENTER
-        )
         elements.append(Paragraph(
             "CareerPortal - Your Partner in Career Growth<br/>"
             "© 2025 CareerPortal. All rights reserved.",
@@ -259,46 +220,13 @@ def create_career_comparison_pdf(user_data, comparison_data):
         # Container for PDF elements
         elements = []
         
-        # Define styles
-        styles = getSampleStyleSheet()
-        
-        title_style = ParagraphStyle(
-            'CustomTitle',
-            parent=styles['Heading1'],
-            fontSize=24,
-            textColor=colors.HexColor('#1e40af'),
-            spaceAfter=12,
-            alignment=TA_CENTER,
-            fontName='Helvetica-Bold'
-        )
-        
-        subtitle_style = ParagraphStyle(
-            'CustomSubtitle',
-            parent=styles['Normal'],
-            fontSize=12,
-            textColor=colors.HexColor('#666666'),
-            spaceAfter=20,
-            alignment=TA_CENTER
-        )
-        
-        heading_style = ParagraphStyle(
-            'CustomHeading',
-            parent=styles['Heading2'],
-            fontSize=16,
-            textColor=colors.HexColor('#1e40af'),
-            spaceAfter=10,
-            spaceBefore=15,
-            fontName='Helvetica-Bold'
-        )
-        
-        body_style = ParagraphStyle(
-            'CustomBody',
-            parent=styles['Normal'],
-            fontSize=11,
-            textColor=colors.HexColor('#333333'),
-            spaceAfter=10,
-            leading=16
-        )
+        # Get shared styles
+        pdf_styles = get_pdf_styles()
+        title_style = pdf_styles['title']
+        subtitle_style = pdf_styles['subtitle']
+        heading_style = pdf_styles['heading']
+        body_style = pdf_styles['body']
+        footer_style = pdf_styles['footer']
         
         # Header
         elements.append(Paragraph("🎯 Career Comparison Report", title_style))
@@ -371,13 +299,6 @@ def create_career_comparison_pdf(user_data, comparison_data):
         
         # Footer
         elements.append(Spacer(1, 0.3*inch))
-        footer_style = ParagraphStyle(
-            'Footer',
-            parent=styles['Normal'],
-            fontSize=9,
-            textColor=colors.HexColor('#999999'),
-            alignment=TA_CENTER
-        )
         elements.append(Paragraph(
             "CareerPortal - Your Partner in Career Growth<br/>"
             "© 2025 CareerPortal. All rights reserved.",

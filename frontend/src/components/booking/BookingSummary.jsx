@@ -29,21 +29,21 @@ const BookingSummary = ({ expert, date, time, duration, onConfirm, onBack, loadi
 
     return (
         <div className="space-y-6 animate-fade-in">
-            <div className="bg-gradient-to-br from-indigo-900/20 to-purple-900/20 border border-indigo-500/20 rounded-2xl p-6 relative overflow-hidden">
+            <div className="bg-white border border-slate-200 rounded-2xl p-6 relative overflow-hidden shadow-sm">
                 {/* Background blobs */}
-                <div className="absolute top-0 right-0 -mr-10 -mt-10 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl"></div>
-                <div className="absolute bottom-0 left-0 -ml-10 -mb-10 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl"></div>
+                <div className="absolute top-0 right-0 -mr-10 -mt-10 w-32 h-32 bg-indigo-50 rounded-full blur-3xl"></div>
+                <div className="absolute bottom-0 left-0 -ml-10 -mb-10 w-32 h-32 bg-purple-50 rounded-full blur-3xl"></div>
 
                 <div className="relative space-y-4">
-                    <div className="flex items-start justify-between pb-4 border-b border-white/10">
+                    <div className="flex items-start justify-between pb-4 border-b border-slate-100">
                         <div>
-                            <p className="text-sm text-gray-400">Expert</p>
-                            <h4 className="text-xl font-bold text-white mt-1">{expert.name}</h4>
-                            <p className="text-sm text-indigo-400 mt-0.5">{expert.title || 'Career Consultant'}</p>
+                            <p className="text-sm text-slate-500">Expert</p>
+                            <h4 className="text-xl font-bold text-slate-900 mt-1">{expert.name}</h4>
+                            <p className="text-sm text-indigo-600 mt-0.5">{expert.title || 'Career Consultant'}</p>
                         </div>
-                        <div className="h-12 w-12 rounded-full bg-gray-700 overflow-hidden border-2 border-white/10">
+                        <div className="h-12 w-12 rounded-full bg-slate-200 overflow-hidden border-2 border-white shadow-sm">
                             {/* Avatar placeholder or image if available */}
-                            <div className="w-full h-full flex items-center justify-center text-lg font-bold text-gray-400">
+                            <div className="w-full h-full flex items-center justify-center text-lg font-bold text-slate-500">
                                 {expert.name ? expert.name.charAt(0) : 'E'}
                             </div>
                         </div>
@@ -51,20 +51,20 @@ const BookingSummary = ({ expert, date, time, duration, onConfirm, onBack, loadi
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Date</p>
-                            <p className="text-white font-medium">{formatDate(date)}</p>
+                            <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Date</p>
+                            <p className="text-slate-900 font-medium">{formatDate(date)}</p>
                         </div>
                         <div>
-                            <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Time</p>
-                            <p className="text-white font-medium">{formatTime(time)}</p>
+                            <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Time</p>
+                            <p className="text-slate-900 font-medium">{formatTime(time)}</p>
                         </div>
                         <div>
-                            <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Duration</p>
-                            <p className="text-white font-medium">{duration} Hour{duration > 1 ? 's' : ''}</p>
+                            <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Duration</p>
+                            <p className="text-slate-900 font-medium">{duration} Hour{duration > 1 ? 's' : ''}</p>
                         </div>
                         <div>
-                            <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">Total Amount</p>
-                            <p className="text-emerald-400 font-bold text-lg">₹{calculateTotal()}</p>
+                            <p className="text-xs text-slate-400 uppercase tracking-wider mb-1">Total Amount</p>
+                            <p className="text-emerald-600 font-bold text-lg">₹{calculateTotal()}</p>
                         </div>
                     </div>
                 </div>
@@ -74,7 +74,7 @@ const BookingSummary = ({ expert, date, time, duration, onConfirm, onBack, loadi
                 <Button
                     onClick={onBack}
                     variant="outline"
-                    className="flex-1"
+                    className="flex-1 border-slate-300 text-slate-700 hover:bg-slate-50"
                 >
                     Back
                 </Button>
@@ -82,7 +82,7 @@ const BookingSummary = ({ expert, date, time, duration, onConfirm, onBack, loadi
                     onClick={onConfirm}
                     loading={loading}
                     variant="primary"
-                    className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 hover:shadow-emerald-500/20"
+                    className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white shadow-md"
                 >
                     Confirm Booking
                 </Button>

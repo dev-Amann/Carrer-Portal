@@ -56,7 +56,7 @@ def store_otp(email, otp, purpose='verification', expiry_minutes=10):
         return False
 
 
-def verify_otp(email, otp, purpose='verification', max_attempts=3):
+def verify_otp(email, otp, purpose='verification', max_attempts=3, consume=True):
     """
     Verify OTP
     
@@ -65,6 +65,7 @@ def verify_otp(email, otp, purpose='verification', max_attempts=3):
         otp (str): OTP to verify
         purpose (str): Purpose of OTP
         max_attempts (int): Maximum verification attempts
+        consume (bool): Whether to delete OTP after successful verification
     
     Returns:
         tuple: (success: bool, message: str)
@@ -89,7 +90,8 @@ def verify_otp(email, otp, purpose='verification', max_attempts=3):
         
         # Verify OTP
         if stored_data['otp'] == otp:
-            del otp_storage[key]
+            if consume:
+                del otp_storage[key]
             logger.info(f"OTP verified successfully for {email}")
             return True, "OTP verified successfully"
         else:

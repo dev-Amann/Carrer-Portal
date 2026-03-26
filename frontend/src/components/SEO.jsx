@@ -7,7 +7,11 @@ import PropTypes from 'prop-types'
  */
 function SEO({ title, description, ogImage, url }) {
   const siteTitle = 'CarrerPortal'
-  const fullTitle = title ? `${title} | ${siteTitle}` : siteTitle
+
+  // Strip emojis from title if present
+  const cleanTitle = title ? title.replace(/[\u{1F300}-\u{1F9FF}]/gu, '').trim() : ''
+
+  const fullTitle = cleanTitle ? `${cleanTitle} | ${siteTitle}` : siteTitle
   const defaultDescription =
     'Skill-based career recommendations, expert consultations, and career development resources.'
   const metaDescription = description || defaultDescription

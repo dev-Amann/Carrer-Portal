@@ -1,20 +1,25 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { API } from '../lib/api';
 import Toast from '../components/Toast';
 import SEO from '../components/SEO';
-import { AnimatePresence } from 'framer-motion';
 
 // Components
-import VideoConsultation from '../components/booking/VideoConsultation';
 import EmptyBookings from '../components/booking/EmptyBookings';
+import FeedbackModal from '../components/feedback/FeedbackModal'; // Import FeedbackModal
+
 import BookingsList from '../components/booking/BookingsList';
 
 const Bookings = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [activeRoom, setActiveRoom] = useState(null);
   const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
+
+  // State for feedback modal
+  const [selectedBookingForFeedback, setSelectedBookingForFeedback] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchBookings();
@@ -41,63 +46,74 @@ const Bookings = () => {
 
   const handleJoinCall = (booking) => {
     if (booking.jitsi_room) {
-      setActiveRoom(booking.jitsi_room);
+      navigate(`/meeting/${booking.jitsi_room}`);
     } else {
       showToast('No video room available for this booking', 'error');
     }
   };
 
-  const handleLeaveCall = () => {
-    setActiveRoom(null);
-  };
-
-  // Active Video Call View
-  if (activeRoom) {
-    return (
-      <AnimatePresence>
-        <VideoConsultation
-          activeRoom={activeRoom}
-          onLeave={handleLeaveCall}
-        />
-      </AnimatePresence>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-[#0a0a0f] py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden transition-colors duration-500">
+    <div className="min-h-screen bg-slate-50 py-12 px-4 sm:px-6 lg:px-8">
       <SEO title="My Bookings" description="Manage your expert consultation sessions." />
 
-      {/* Dynamic Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-20%] left-[-20%] w-[50%] h-[50%] bg-blue-900/10 rounded-full blur-[100px] animate-blob" />
-        <div className="absolute bottom-[-20%] right-[-20%] w-[50%] h-[50%] bg-indigo-900/10 rounded-full blur-[100px] animate-blob animation-delay-2000" />
-        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" style={{ opacity: 0.03 }}></div>
-      </div>
-
-      <div className="max-w-6xl mx-auto relative z-10">
-        <div className="mb-10 text-center sm:text-left">
-          <h1 className="text-4xl font-bold text-white mb-2 tracking-tight">
-            My Bookings
-          </h1>
-          <p className="text-lg text-gray-400">
-            View and manage your upcoming expert consultation sessions.
-          </p>
+      <div className="max-w-6xl mx-auto">
+        <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-bold text-slate-900 tracking-tight">
+              My Consultations
+            </h1>
+            <p className="text-slate-500 mt-1">
+              Manage your upcoming sessions and history
+            </p>
+          </div>
+          <div className="flex gap-2">
+            {/* Potential filters can go here */}
+          </div>
         </div>
 
         {error && (
-          <div className="mb-6 p-4 bg-red-900/10 border border-red-500/20 rounded-xl text-center">
-            <p className="text-red-300">{error}</p>
+          <div className="mb-6 p-4 bg-rose-50 border border-rose-100 rounded-xl text-center">
+            <p className="text-rose-600 text-sm font-medium flex items-center justify-center gap-2">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {error}
+            </p>
           </div>
         )}
 
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <div className="w-16 h-16 border-4 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin"></div>
+            <div className="flex flex-col items-center">
+              <svg className="animate-spin h-10 w-10 text-indigo-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <p className="text-slate-500">Loading schedule...</p>
+            </div>
           </div>
         ) : bookings.length === 0 ? (
           <EmptyBookings onBrowseExperts={() => window.location.href = '/experts'} />
         ) : (
-          <BookingsList bookings={bookings} onJoinCall={handleJoinCall} />
+          <BookingsList
+            bookings={bookings}
+            onJoinCall={handleJoinCall}
+            onLeaveFeedback={(booking) => setSelectedBookingForFeedback(booking)}
+          />
+        )}
+
+        {/* Feedback Modal */}
+        {selectedBookingForFeedback && (
+          <FeedbackModal
+            booking={selectedBookingForFeedback}
+            onClose={() => setSelectedBookingForFeedback(null)}
+            onSuccess={() => {
+              showToast('Feedback submitted successfully!');
+              // Optionally refresh bookings to update UI if we were showing "Rated" status
+              // For now, strictly closing is enough, but refreshing ensures data consistency if we add "See Feedback" button later
+              fetchBookings();
+            }}
+          />
         )}
       </div>
 
@@ -113,4 +129,3 @@ const Bookings = () => {
 };
 
 export default Bookings;
-

@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react'
+import { API } from '../lib/api'
 
 const AuthContext = createContext(null)
 
@@ -34,17 +35,34 @@ export const AuthProvider = ({ children }) => {
     setUser(userData)
     setAccessToken(tokens.access_token)
     setRefreshToken(tokens.refresh_token)
-    
+
     localStorage.setItem('accessToken', tokens.access_token)
     localStorage.setItem('refreshToken', tokens.refresh_token)
     localStorage.setItem('user', JSON.stringify(userData))
+  }
+
+  const signup = async (name, email, password, otp) => {
+    const response = await API.auth.register({ name, email, password, otp })
+    if (response.data.success || response.data.access_token) {
+      if (response.data.access_token) {
+        login(response.data.user || { name, email }, {
+          access_token: response.data.access_token,
+          refresh_token: response.data.refresh_token
+        })
+      }
+    }
+    return response
+  }
+
+  const sendOTP = async (email, purpose = 'verification') => {
+    return await API.auth.sendOTP({ email, purpose })
   }
 
   const logout = () => {
     setUser(null)
     setAccessToken(null)
     setRefreshToken(null)
-    
+
     localStorage.removeItem('accessToken')
     localStorage.removeItem('refreshToken')
     localStorage.removeItem('user')
@@ -61,6 +79,8 @@ export const AuthProvider = ({ children }) => {
     refreshToken,
     loading,
     login,
+    signup,
+    sendOTP,
     logout,
     updateAccessToken,
     isAuthenticated: !!user && !!accessToken,

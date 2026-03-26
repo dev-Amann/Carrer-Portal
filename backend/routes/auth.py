@@ -4,48 +4,18 @@ Handles user registration, login, token refresh, and logout
 """
 from flask import Blueprint, request, jsonify, g
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
-import bcrypt
-import re
 import logging
 
 from models import User, Expert
 from utils.jwt_utils import create_access_token, create_refresh_token, verify_token
 from utils.otp_manager import generate_otp, store_otp, verify_otp, clear_otp
 from utils.email_sender import send_otp_email
+from routes.auth_validators import validate_email, validate_password_strength, hash_password, verify_password
 
 logger = logging.getLogger(__name__)
 
 # Create blueprint
 auth_bp = Blueprint('auth', __name__)
-
-
-def validate_email(email):
-    """Validate email format"""
-    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
-    return re.match(pattern, email) is not None
-
-
-def validate_password_strength(password):
-    """Validate password strength"""
-    if len(password) < 8:
-        return False, "Password must be at least 8 characters long"
-    if not re.search(r'[A-Za-z]', password):
-        return False, "Password must contain at least one letter"
-    if not re.search(r'\d', password):
-        return False, "Password must contain at least one number"
-    return True, ""
-
-
-def hash_password(password):
-    """Hash password using bcrypt"""
-    salt = bcrypt.gensalt(rounds=12)
-    hashed = bcrypt.hashpw(password.encode('utf-8'), salt)
-    return hashed.decode('utf-8')
-
-
-def verify_password(password, password_hash):
-    """Verify password against hash"""
-    return bcrypt.checkpw(password.encode('utf-8'), password_hash.encode('utf-8'))
 
 
 @auth_bp.route('/send-otp', methods=['POST'])
@@ -161,7 +131,7 @@ def verify_otp_endpoint():
             }), 400
         
         # Verify OTP
-        success, message = verify_otp(email, otp, purpose=purpose)
+        success, message = verify_otp(email, otp, purpose=purpose, consume=False)
         
         if not success:
             return jsonify({

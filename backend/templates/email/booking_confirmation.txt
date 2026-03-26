@@ -12,11 +12,11 @@ Time: {{ formatted_start_time }} - {{ formatted_end_time }}
 Booking ID: #{{ booking_id }}
 {% if razorpay_payment_id %}Transaction ID: {{ razorpay_payment_id }}{% endif %}
 
-IMPORTANT: Please join the meeting at the scheduled time using the link below.
+IMPORTANT: Please join the meeting at the scheduled time from your dashboard.
 
-Meeting Link: {{ meeting_url }}
+To Join: Log in to your dashboard and look for the "Join" button next to your confirmed booking.
 
-You can also access your booking details anytime from your dashboard: {{ dashboard_url }}
+Access your dashboard here: {{ dashboard_url }}
 
 If you have any questions or need to reschedule, please contact us through your dashboard.
 

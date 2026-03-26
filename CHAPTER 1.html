@@ -1,0 +1,1283 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Converted Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: #2c3e50;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+        p {
+            margin-bottom: 1em;
+        }
+        ul, ol {
+            margin-bottom: 1em;
+            padding-left: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 1em;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<p>CHAPTER 1 – INTRODUCTION</p>
+<ul><li>Background:</li></ul>
+<p>In today’s competitive world, choosing the right career has become a challenging task for students and job seekers. With the rapid growth of industries and the emergence of new professions, individuals often face confusion about which career path best matches their skills and interests. Many students complete their education without proper career guidance and later realize a mismatch between their abilities and the jobs they pursue.</p>
+<p>Traditional career counseling methods, though helpful, are often generic, time-consuming, and unable to provide personalized recommendations. This lack of proper guidance can lead to dissatisfaction, underutilization of skills, and limited career growth. At the same time, employers continuously seek candidates with the right skills and competencies, which creates a gap between job seekers and industry expectations.</p>
+<p>To overcome this challenge, there is a strong need for a system that can assist individuals in making informed career decisions. A skill-based recommendation approach addresses this by analyzing a person’s existing skills, highlighting areas of improvement, and suggesting suitable career paths. Such a solution not only helps students plan their future effectively but also empowers job seekers to upskill themselves and align with industry requirements.</p>
+<p>The Skill-Based Career Recommendation Portal is designed to fill this gap by providing a platform where users can explore personalized career options, understand their skill gaps, and gain proper guidance for professional growth.</p>
+<ul><li>Objective:</li></ul>
+<p>The main objective of the Skill-Based Career Recommendation Portal is to assist students and job seekers in making informed career choices by analyzing their skills and interests. The specific objectives are:</p>
+<p>To provide personalized career recommendations based on the user’s existing skills, interests, and background.</p>
+<p>To identify skill gaps by comparing user skills with the requirements of various career paths.</p>
+<p>To suggest relevant learning resources that can help users bridge their identified skill gaps.</p>
+<p>To enable career comparison so users can evaluate multiple options in terms of salary, growth opportunities, skill requirements, and demand levels.</p>
+<p>To allow bookmarking and report generation for saving and exporting career recommendations in a structured format.</p>
+<p>To facilitate expert consultations by connecting users with verified professionals for career guidance.</p>
+<p>To ensure secure and user-friendly interaction between users, experts, and administrators.</p>
+<p>To provide administrators with insights and statistics on career demand, skill gaps, and user engagement through reports and dashboards.</p>
+<ul><li>Need of Project:</li></ul>
+<p>1.3.1 Purpose:
+       The primary purpose of this project is to guide students and job seekers in making informed career choices by providing personalized recommendations based on their skills and interests. It aims to reduce confusion, bridge the gap between education and industry expectations, and help individuals identify suitable career paths along with the skills required to succeed in them.</p>
+<p>1.3.2 Scope:
+        The system provides users with career recommendations, skill gap analysis, and learning resources to enhance employability. It allows users to compare different careers, bookmark suitable options, and generate reports for future reference. Additionally, it enables consultation with verified experts to gain professional advice. The scope also extends to administrators, who can manage experts, monitor platform usage, and analyze trends through dashboards.</p>
+<p>1.3.3 Applicability:
+This portal can be applied in multiple domains:</p>
+<p>Educational Institutions: To support students in career planning and guidance.</p>
+<p>Training and Skill Development Centers: To suggest career-oriented learning paths.</p>
+<p>Job Seekers and Professionals: To explore new opportunities and identify required upskilling.</p>
+<p>Counseling and Career Services: As a modern tool to provide data-driven recommendations for career decisions.</p>
+<p>By addressing the needs of learners, professionals, and institutions, the system has wide applicability in both academic and professional environments.</p>
+<p>CHAPTER 2: SURVEY OF TECHNOLOGIES</p>
+<p>The development of the Skill-Based Career Recommendation Portal required a careful selection of modern, efficient, and scalable technologies. A web application of this nature is composed of several distinct layers: the frontend (client-side), the backend (server-side), the database, and various third-party services that provide specialized functionality. This chapter provides a comprehensive survey of the technologies chosen for each layer of the application, along with a comparative analysis and justification for their selection. The goal was to build a technology stack that is robust, maintainable, and well-suited to the project&#x27;s specific requirements.</p>
+<p>Frontend Technologies</p>
+<p>The frontend is the user-facing part of the application, responsible for rendering the user interface (UI) and managing user interactions. A dynamic and responsive UI is critical for engaging users.</p>
+<p>React.js</p>
+<p>React.js is a popular open-source JavaScript library developed by Facebook for building user interfaces, particularly for Single Page Applications (SPAs).</p>
+<p>Comparative Analysis: Other popular frontend frameworks include Angular and Vue.js. While Angular is a comprehensive MVC framework and Vue.js is known for its simplicity, React was chosen for its component-based architecture. This approach allows for the creation of reusable UI components (like forms, buttons, and career cards), which simplifies development and maintenance. React&#x27;s virtual DOM also ensures high performance by minimizing direct manipulation of the actual DOM, leading to a faster and smoother user experience, which is essential for a data-rich application like this portal.</p>
+<p>Justification: For a portal that requires dynamic updates—such as displaying career recommendations, filtering results, and updating charts in the admin dashboard—React&#x27;s state management and component lifecycle methods are highly effective. Its vast ecosystem, including libraries like Axios for API calls and Recharts for data visualization, made it the ideal choice.</p>
+<p>Tailwind CSS and Bootstrap 5</p>
+<p>Tailwind CSS is a utility-first CSS framework for rapidly building custom user interfaces, while Bootstrap is a component-based framework.</p>
+<p>Justification: This project leverages a hybrid approach. Bootstrap 5 was used for its pre-built components like modals and forms to quickly set up the basic structure and ensure responsiveness. Tailwind CSS was then used for fine-grained styling and creating a custom, modern design without writing extensive custom CSS files. This combination provides both speed of development and design flexibility.</p>
+<p>Backend Technologies</p>
+<p>The backend is the server-side logic that powers the application, handling everything from business logic and database interactions to security.</p>
+<p>Python and Flask</p>
+<p>Python is a high-level, interpreted programming language known for its readability and extensive libraries. Flask is a lightweight &quot;micro&quot; web framework for Python.</p>
+<p>Comparative Analysis: A major alternative to Flask is Django, another Python-based framework. Django is a &quot;batteries-included&quot; framework that provides an admin panel, ORM, and other features out of the box. However, for this project, which is primarily an API-driven service, Flask&#x27;s minimalism and flexibility were more suitable. It allows for the creation of a clean, custom backend API without unnecessary overhead.</p>
+<p>Justification: Python was the language of choice due to its strong data processing capabilities, making it perfect for implementing the career recommendation algorithm. Flask provides the necessary tools to build a secure and RESTful backend API that serves data to the React frontend. Extensions like Flask-CORS (for handling cross-origin requests) and Flask-Mail (for email functionality) are easily integrated, making it a powerful yet simple choice.</p>
+<p>Database Technology</p>
+<p>MySQL</p>
+<p>MySQL is a widely-used, open-source relational database management system (RDBMS).</p>
+<p>Comparative Analysis: Alternatives include other SQL databases like PostgreSQL or NoSQL databases like MongoDB. A NoSQL database might be suitable for unstructured data, but the data in this project—user profiles, skills, careers, and their relationships—is highly structured and relational.</p>
+<p>Justification: MySQL was chosen for its reliability, performance, and strong data integrity features. Using a relational model with foreign key constraints ensures that the relationships between users, their skills, and their bookmarked careers are consistently maintained. Its widespread adoption means excellent community support and compatibility with backend languages like Python through connectors.</p>
+<p>Third-Party Services and APIs</p>
+<p>To enhance functionality without building every feature from scratch, several third-party APIs were integrated.</p>
+<p>Jitsi Meet</p>
+<p>Jitsi Meet is an open-source video conferencing platform. It was chosen for the &quot;Expert Consultation&quot; feature because it can be easily and securely embedded into the web application via an iframe. This provides a seamless user experience, as neither the user nor the expert needs to create a separate account or install any software.</p>
+<p>Razorpay</p>
+<p>For processing consultation fees, the Razorpay API was selected. It is a leading payment gateway in India, known for its developer-friendly integration, robust security, and support for multiple payment methods. Its clear documentation allowed for a straightforward implementation of a secure payment workflow.</p>
+<p>Gmail SMTP with Flask-Mail</p>
+<p>For the &quot;Email Career Report&quot; feature, the standard Gmail SMTP server was used in conjunction with the Flask-Mail library. This is a cost-effective and highly reliable solution for sending automated emails from the application server, requiring minimal configuration.</p>
+<p>Supporting Libraries</p>
+<p>jsPDF / react-to-print: To enable the PDF download feature, a client-side library like jsPDF was chosen. This allows the user&#x27;s browser to generate the PDF directly, reducing the load on the server.</p>
+<p>Recharts: For the admin dashboard, Recharts was selected as the charting library. It is a composable charting library built on React components, making it incredibly easy to create interactive and visually appealing bar, pie, and line charts to display user engagement and other statistics.</p>
+<p>CHAPTER 3: REQUIREMENTS AND ANALYSIS</p>
+<p>This chapter lays the groundwork for the Skill-Based Career Recommendation Portal by thoroughly examining the project&#x27;s scope and objectives. It begins with a clear definition of the problem the portal aims to solve, followed by a detailed specification of the system&#x27;s requirements. A comprehensive project plan is presented through Gantt and PERT charts, followed by a list of necessary software and hardware. The chapter concludes with a preliminary product description, detailing the function of each individual module.</p>
+<p>3.1 Problem Definition</p>
+<p>In today&#x27;s dynamic and competitive job market, students and professionals often face significant hurdles in identifying and pursuing a suitable career path. The lack of a centralized, intelligent, and personalized guidance system leads to several critical problems that hinder effective career planning.</p>
+<p>The primary problems this project addresses are:</p>
+<p>Lack of Personalized Guidance: Career advice is often generic and fails to consider an individual&#x27;s unique skills, interests, and experience. This makes it difficult for users to find career paths that genuinely align with their profile.</p>
+<p>Unclear Skill Requirements: Many individuals are unaware of the specific skills needed to enter or progress in a particular field. This &quot;skill gap&quot; often becomes a significant barrier to employment and career growth.</p>
+<p>Fragmented Information: Key career-related information—such as salary benchmarks, market demand, required tools, and learning resources—is scattered across countless websites, making research a tedious and often incomplete process.</p>
+<p>Limited Access to Expert Advice: Direct, one-on-one mentorship from industry experts is a crucial but often unavailable or expensive resource, leaving many to navigate their career decisions without professional validation.</p>
+<p>This project aims to solve these issues by creating a unified web portal that provides data-driven career recommendations, performs skill gap analysis, suggests targeted learning resources, and facilitates direct connections with vetted experts.</p>
+<p>3.2 Requirements Specification</p>
+<p>The system requirements are divided into functional requirements (the system&#x27;s features) and non-functional requirements (the system&#x27;s performance and quality attributes).</p>
+<p>Functional Requirements:</p>
+<p>User Management: The system shall provide secure user registration, login, and profile management capabilities.</p>
+<p>Skills Input: Users must be able to input, save, and update their technical and soft skills, interests, and experience level.</p>
+<p>Recommendation Engine: The system must use a matching algorithm to analyze user input and generate a ranked list of career recommendations, each with a calculated match percentage.</p>
+<p>Career Details: The portal must display comprehensive details for each career, including job descriptions, salary data, market demand, required skills, and a typical career roadmap.</p>
+<p>Skill Gap Analysis: For each recommended career, the system must identify and clearly display the skills that the user is missing.</p>
+<p>Learning Resources: The system shall suggest relevant online courses, tutorials, and other learning materials to help users address their skill gaps.</p>
+<p>Career Management: Users must be able to bookmark careers, compare multiple bookmarked options side-by-side, and download their saved career list as a PDF.</p>
+<p>Email Reporting: The system must be able to send the user&#x27;s saved career report to their registered email address.</p>
+<p>Expert Vetting System:</p>
+<p>Experts must be able to register by submitting their professional details and credentials.</p>
+<p>An administrator must be able to review applications and approve or reject experts via a dashboard.</p>
+<p>Consultation Booking: Users must be able to book paid video consultation sessions with approved experts.</p>
+<p>Payment Gateway: The system must integrate the Razorpay API to securely process payments for consultation bookings.</p>
+<p>Video Conferencing: The system shall generate a unique Jitsi Meet video call link for each booking and embed the session within the portal.</p>
+<p>Admin Dashboard: An administrator must have access to a dashboard with interactive charts visualizing platform metrics like user engagement and popular careers.</p>
+<p>Non-Functional Requirements:</p>
+<p>Security: All user data must be encrypted and stored securely. The application must be protected against common web security threats (e.g., SQL Injection, Cross-Site Scripting).</p>
+<p>Performance: The career recommendation algorithm must provide results within 5 seconds. All web pages must load within 3 seconds under normal network conditions.</p>
+<p>Usability: The user interface must be intuitive, easy to navigate, and fully responsive across desktops, tablets, and mobile devices.</p>
+<p>Reliability: The system must maintain high availability (target 99.5% uptime) and ensure data consistency and integrity.</p>
+<p>Scalability: The system architecture must be designed to handle a growing number of users and an expanding database without performance degradation.</p>
+<p>3.3 Planning and Scheduling:</p>
+<p>3.3.1 Gantt Chart:</p>
+<p>3.3.2 Pert Chart:</p>
+<p>3.4 Software and Hardware Requirements</p>
+<p>The following resources are essential for the development, testing, and deployment of the portal.</p>
+<p>Software Requirements:</p>
+<p>Development Environment: Visual Studio Code</p>
+<p>Operating System: Windows 10/11, macOS, or Linux</p>
+<p>Frontend Technologies: React.js, Tailwind CSS, Bootstrap 5, Axios, Recharts</p>
+<p>Backend Technologies: Python 3.8+, Flask, Flask-CORS, Flask-Mail</p>
+<p>Database: MySQL Server, MySQL Connector for Python</p>
+<p>Third-Party APIs: Jitsi Meet, Razorpay API</p>
+<p>Hardware Requirements:</p>
+<p>Development Machine:</p>
+<p>Processor: Intel Core i5 / AMD Ryzen 5 or equivalent</p>
+<p>RAM: Minimum 8 GB (16 GB Recommended)</p>
+<p>Storage: 256 GB SSD or larger</p>
+<p>3.5 Preliminary Product Description (Module Description)</p>
+<p>The Skill-Based Career Recommendation Portal is composed of several distinct modules that work together to deliver a seamless user experience.</p>
+<p>User Skills &amp; Interests Form Module: This is the initial data collection interface where users input their skills, interests, and experience level. This data forms the basis for all personalized recommendations.</p>
+<p>Career Recommendation Logic Module: The intelligent core of the portal. This Python-based module implements a rule-based matching algorithm to compare user data against a comprehensive career database, ranking careers by suitability.</p>
+<p>Career Information Display Module: This module presents detailed information about each career, including descriptions, salary ranges, required tools, market demand, and typical career progression paths.</p>
+<p>Skill Gap Checker Module: An analytical feature that visualizes the disparity between a user&#x27;s current skills and the requirements of a recommended career, highlighting areas for development.</p>
+<p>Learning Resources Suggestion Module: To make the recommendations actionable, this module suggests relevant tutorials, courses, and roadmaps from trusted sources based on the identified skill gaps.</p>
+<p>Saved Careers &amp; PDF Download Module: This module allows users to bookmark interesting careers for future reference and export their saved selections into a well-formatted PDF document.</p>
+<p>Career Comparison Module: A decision-making tool that enables users to compare multiple careers side-by-side based on critical factors like salary, skill requirements, and growth opportunities.</p>
+<p>Secure Backend API Module: Built with Flask, this module handles all server-side logic, including data processing, user authentication, and serving data to the frontend via a secure RESTful API.</p>
+<p>MySQL Database Management Module: The backend database that securely stores all application data, including user profiles, career information, expert credentials, and booking details, using a normalized relational structure.</p>
+<p>Email Career Report Module: An automated system that uses Flask-Mail and Gmail SMTP to send career reports and other notifications directly to users&#x27; email inboxes.</p>
+<p>Expert Registration &amp; Approval System: A workflow module that allows experts to register and submit their credentials, which are then reviewed and approved by an administrator.</p>
+<p>Jitsi Video Call Integration: This module generates unique Jitsi Meet rooms for each consultation and securely embeds the video call interface within the application.</p>
+<p>Razorpay Payment Integration: This module securely handles all financial transactions for booking consultations by integrating Razorpay&#x27;s robust payment gateway.</p>
+<p>Admin Dashboard Features: An administrative interface built with Recharts that provides interactive charts and statistics on platform usage, helping the admin monitor and manage the portal effectively.</p>
+<p>3.6 Conceptual Models</p>
+<p>3.6.1 Event Table</p>
+<p>3.6.2 ER Model</p>
+<p>3.6.3 Use-Case Diagram</p>
+<p>3.6.4 Class Diagram:</p>
+<p>3.6.5 Sequence Diagram</p>
+<p>1. User Onboarding and career Exploration</p>
+<p>2. Expert Consultation Flow &amp; Live Consultation Occurs</p>
+<p>3. Admin &amp; Expert Management</p>
+<p>3.6.6 State Chart Diagram</p>
+<p>1. User Onboarding State Diagram</p>
+<p>2. Career Exploration State Diagram</p>
+<p>3. Expert Consultation State Diagram</p>
+<p>4. Expert Management State Diagram</p>
+<p>5. Admin Panel State Diagram</p>
+<p>3.6.7 Activity Diagram:</p>
+<p>CHAPTER 4: SYSTEM DESIGN</p>
+<p>The system design phase translates the requirements and analysis from the previous chapters into a detailed blueprint for the system&#x27;s development. This chapter outlines the architectural, data, and procedural design of the &quot;Skill-Based Career Recommendation Portal.&quot; It provides a comprehensive view of the system&#x27;s structure, components, and their interactions, serving as a guide for the implementation of the project.</p>
+<p>4.1 Basic Modules</p>
+<p>The system follows a modular, service-oriented architecture, designed for high cohesion within modules and loose coupling between them. Each module encapsulates specific responsibilities, handles its own validation, and exposes well-defined APIs for inter-module communication. The modules collectively support a full-stack workflow, from user input collection to advanced analytics, recommendations, real-time expert sessions, and secure payments.</p>
+<p>User Skills &amp; Interests Form Module: Handles the collection of user skills, interests, and experience level. It serves as the primary data input for personalized recommendations.</p>
+<p>Career Recommendation Logic Module: The core of the system, this module applies a rule-based matching algorithm to a user&#x27;s skills to generate a ranked list of suitable careers.</p>
+<p>Career Information Display Module: Renders comprehensive details about recommended careers, including salary, demand, tools, and job roadmaps, to the user interface.</p>
+<p>Skill Gap Checker Module: Analyzes a user&#x27;s skills against a recommended career&#x27;s requirements, highlighting deficiencies and displaying a visual representation of skill match percentage.</p>
+<p>Learning Resources Suggestion Module: Based on identified skill gaps, this module recommends relevant learning materials such as online courses and tutorials.</p>
+<p>Saved Careers &amp; PDF Download Module: Manages the user&#x27;s bookmarked careers and provides functionality to generate and download a PDF report of their saved recommendations.</p>
+<p>Career Comparison Module: Facilitates a side-by-side comparison of multiple careers based on key metrics like salary, skills required, and growth opportunities.</p>
+<p>Secure Backend API Module: A Flask-based API that serves as the central hub for data processing, management, and secure communication between the frontend and the database.</p>
+<p>MySQL Database Management Module: Responsible for the secure and structured storage of all system data, including user profiles, careers, skills, and booking information.</p>
+<p>Email Career Report Module: Utilizes Flask-Mail and Gmail SMTP to send well-formatted career reports directly to the user&#x27;s email address.</p>
+<p>Expert Registration &amp; Approval System: Manages the expert onboarding process, from profile submission to manual verification and approval by an admin.</p>
+<p>Jitsi Video Call Integration: A module for secure, real-time video consultations, embedding Jitsi Meet via an iframe to connect users with approved experts.</p>
+<p>Razorpay Payment Integration: Handles secure payment transactions for expert consultations via Razorpay&#x27;s payment gateway.</p>
+<p>Admin Dashboard Features: A dedicated panel for administrators to view system-wide analytics, including user engagement and popular career trends, presented with Recharts.</p>
+<p>4.2 Data Design</p>
+<p>The data design defines the logical and physical structure of the database.</p>
+<p>4.2.1 Schema Design with Data Integrity and Constraints</p>
+<p>The database is built on a normalized schema to ensure data integrity, consistency, and efficiency. The following tables and their key fields form the core of the database schema:</p>
+<p>-- CarrerPortal Database Schema (MySQL 8.0+)</p>
+<p>-- Users table</p>
+<p>CREATE TABLE users (</p>
+<p>id INT AUTO_INCREMENT PRIMARY KEY,</p>
+<p>name VARCHAR(255) NOT NULL,</p>
+<p>email VARCHAR(255) NOT NULL UNIQUE,</p>
+<p>password_hash VARCHAR(255) NOT NULL,</p>
+<p>is_admin BOOLEAN DEFAULT FALSE NOT NULL,</p>
+<p>created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,</p>
+<p>INDEX idx_users_email (email)</p>
+<p>) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;</p>
+<p>-- Skills table</p>
+<p>CREATE TABLE skills (</p>
+<p>id INT AUTO_INCREMENT PRIMARY KEY,</p>
+<p>name VARCHAR(255) NOT NULL,</p>
+<p>category VARCHAR(100) NOT NULL,</p>
+<p>created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,</p>
+<p>UNIQUE KEY unique_skill_name (name)</p>
+<p>) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;</p>
+<p>-- User Skills junction table</p>
+<p>CREATE TABLE user_skills (</p>
+<p>user_id INT NOT NULL,</p>
+<p>skill_id INT NOT NULL,</p>
+<p>proficiency ENUM(&#x27;beginner&#x27;,&#x27;intermediate&#x27;,&#x27;advanced&#x27;,&#x27;expert&#x27;) NOT NULL,</p>
+<p>PRIMARY KEY (user_id, skill_id),</p>
+<p>FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,</p>
+<p>FOREIGN KEY (skill_id) REFERENCES skills(id) ON DELETE CASCADE</p>
+<p>) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;</p>
+<p>-- Careers table</p>
+<p>CREATE TABLE careers (</p>
+<p>id INT AUTO_INCREMENT PRIMARY KEY,</p>
+<p>title VARCHAR(255) NOT NULL,</p>
+<p>description TEXT NOT NULL,</p>
+<p>salary_range VARCHAR(100),</p>
+<p>demand_level ENUM(&#x27;low&#x27;,&#x27;medium&#x27;,&#x27;high&#x27;,&#x27;very_high&#x27;) NOT NULL,</p>
+<p>roadmap TEXT,</p>
+<p>created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL</p>
+<p>) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;</p>
+<p>-- Career Skills junction table</p>
+<p>CREATE TABLE career_skills (</p>
+<p>career_id INT NOT NULL,</p>
+<p>skill_id INT NOT NULL,</p>
+<p>required_level ENUM(&#x27;beginner&#x27;,&#x27;intermediate&#x27;,&#x27;advanced&#x27;,&#x27;expert&#x27;) NOT NULL,</p>
+<p>PRIMARY KEY (career_id, skill_id),</p>
+<p>FOREIGN KEY (career_id) REFERENCES careers(id) ON DELETE CASCADE,</p>
+<p>FOREIGN KEY (skill_id) REFERENCES skills(id) ON DELETE CASCADE</p>
+<p>) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;</p>
+<p>-- Experts table</p>
+<p>CREATE TABLE experts (</p>
+<p>id INT AUTO_INCREMENT PRIMARY KEY,</p>
+<p>user_id INT NOT NULL UNIQUE,</p>
+<p>bio TEXT,</p>
+<p>specialization VARCHAR(255),</p>
+<p>years_of_experience INT,</p>
+<p>rate_per_hour DECIMAL(10,2),</p>
+<p>resume_url VARCHAR(500),</p>
+<p>certificate_urls JSON,</p>
+<p>linkedin_url VARCHAR(500),</p>
+<p>status ENUM(&#x27;pending&#x27;,&#x27;approved&#x27;,&#x27;rejected&#x27;) DEFAULT &#x27;pending&#x27; NOT NULL,</p>
+<p>created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,</p>
+<p>FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE</p>
+<p>) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;</p>
+<p>-- Bookings table</p>
+<p>CREATE TABLE bookings (</p>
+<p>id INT AUTO_INCREMENT PRIMARY KEY,</p>
+<p>user_id INT NOT NULL,</p>
+<p>expert_id INT NOT NULL,</p>
+<p>slot_start DATETIME NOT NULL,</p>
+<p>slot_end DATETIME NOT NULL,</p>
+<p>jitsi_room VARCHAR(255) NOT NULL,</p>
+<p>status ENUM(&#x27;pending&#x27;,&#x27;confirmed&#x27;,&#x27;completed&#x27;,&#x27;cancelled&#x27;) DEFAULT &#x27;pending&#x27; NOT NULL,</p>
+<p>created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,</p>
+<p>FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,</p>
+<p>FOREIGN KEY (expert_id) REFERENCES experts(id) ON DELETE CASCADE</p>
+<p>) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;</p>
+<p>-- Transactions table</p>
+<p>CREATE TABLE transactions (</p>
+<p>id INT AUTO_INCREMENT PRIMARY KEY,</p>
+<p>booking_id INT NOT NULL UNIQUE,</p>
+<p>razorpay_order_id VARCHAR(255),</p>
+<p>razorpay_payment_id VARCHAR(255),</p>
+<p>razorpay_signature VARCHAR(500),</p>
+<p>amount DECIMAL(10,2) NOT NULL,</p>
+<p>currency VARCHAR(10) DEFAULT &#x27;INR&#x27;,</p>
+<p>status ENUM(&#x27;pending&#x27;,&#x27;completed&#x27;,&#x27;failed&#x27;,&#x27;refunded&#x27;) DEFAULT &#x27;pending&#x27;,</p>
+<p>created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,</p>
+<p>FOREIGN KEY (booking_id) REFERENCES bookings(id) ON DELETE CASCADE</p>
+<p>) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;</p>
+<p>-- Feedbacks table</p>
+<p>CREATE TABLE feedbacks (</p>
+<p>id INT AUTO_INCREMENT PRIMARY KEY,</p>
+<p>booking_id INT NOT NULL,</p>
+<p>user_id INT NOT NULL,</p>
+<p>expert_id INT NOT NULL,</p>
+<p>rating INT NOT NULL CHECK (rating BETWEEN 1 AND 5),</p>
+<p>comment TEXT,</p>
+<p>created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,</p>
+<p>FOREIGN KEY (booking_id) REFERENCES bookings(id) ON DELETE CASCADE,</p>
+<p>FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,</p>
+<p>FOREIGN KEY (expert_id) REFERENCES experts(id) ON DELETE CASCADE</p>
+<p>) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;</p>
+<p>Data Integrity and Constraints</p>
+<p>4.2.2 Database Relationship Diagram</p>
+<p>4.2.3 Security Issues</p>
+<p>This section identifies potential security vulnerabilities in the Skill-Based Career Recommendation Portal and proposes detailed mitigation strategies to ensure data integrity, confidentiality, and the overall security posture of the application.</p>
+<p>1. SQL Injection (SQLi)</p>
+<p>Description: As the backend architecture relies on a MySQL database, the application is susceptible to SQL Injection attacks. This vulnerability arises when user-provided data—such as from skill input forms, login fields, or search parameters—is incorporated directly into SQL queries without proper sanitization. An attacker could submit crafted input (e.g., &#x27; OR &#x27;1&#x27;=&#x27;1&#x27; --) to manipulate the query logic. A successful attack could lead to unauthorized access to all data in the database, data modification or deletion, and in some cases, remote code execution on the database server.</p>
+<p>Mitigation:</p>
+<p>Use Parameterized Queries: The primary defense is to use parameterized queries (also known as prepared statements) with the mysql-connector-python library. This approach separates the SQL code from the data, ensuring that user input is always treated as literal data and not as executable code.</p>
+<p>Leverage an ORM: Implementing an Object-Relational Mapping (ORM) tool like SQLAlchemy is highly recommended. ORMs abstract database interactions and automatically use parameterized queries, significantly reducing the risk of SQLi.</p>
+<p>Strict Server-Side Validation: All user-supplied input must be validated on the server-side. This includes checking for expected data types, lengths, and formats. Client-side validation is useful for user experience but provides no security.</p>
+<p>2. Cross-Site Scripting (XSS)</p>
+<p>Description: The application displays user-generated content in various places, such as user profiles, expert details, and saved career notes. If this data is not properly encoded before being rendered, an attacker can inject malicious client-side scripts. These scripts would then execute in the browsers of other users who view the content, potentially leading to session hijacking, defacement of the website, or redirection to malicious sites. This is particularly critical for the expert profile section, where a malicious expert could inject a script that affects all users viewing their profile.</p>
+<p>Mitigation:</p>
+<p>Contextual Output Encoding: Ensure that React components properly escape all data rendered to the DOM. While JSX provides default encoding against XSS, developers must remain cautious when using properties like dangerouslySetInnerHTML, which should be avoided whenever possible.</p>
+<p>Implement a Content Security Policy (CSP): A strong CSP should be implemented via HTTP headers. This policy tells the browser which sources of content (scripts, styles, images) are trusted, effectively preventing the execution of unauthorized scripts.</p>
+<p>Backend Sanitization: Before storing any user input that will be displayed, use a library on the Flask backend (like bleach in Python) to sanitize the input, removing any potentially malicious HTML and script tags while allowing a safe subset if needed.</p>
+<p>3. Insecure Direct Object References (IDOR)</p>
+<p>Description: An IDOR vulnerability occurs when the application uses a direct reference to an object (like a user ID, booking ID, or saved career ID) and fails to verify if the current user is authorized to access it. For example, a user might access their saved career report via a URL like /api/reports/user/123. An attacker could manipulate this URL, changing 123 to 124, to potentially access the report of another user.</p>
+<p>Mitigation:</p>
+<p>Mandatory Access Control Checks: For every request that accesses a resource, the Flask backend API must perform a check to verify that the currently authenticated user has the necessary permissions. The logic should be: &quot;Does the resource with resource_id belong to the user_id associated with the current session?&quot;</p>
+<p>Use Indirect References: Avoid using direct database identifiers (like auto-incrementing integers) in URLs. Instead, use non-sequential, hard-to-guess identifiers like UUIDs (Universally Unique Identifiers) for each resource. This makes it computationally infeasible for an attacker to guess the IDs of other objects.</p>
+<p>4. Cross-Site Request Forgery (CSRF)</p>
+<p>Description: CSRF is an attack that tricks an authenticated user into submitting a malicious request to the application. If a user is logged into the portal, an attacker could lure them to a different, malicious website. This website could contain hidden code (e.g., an HTML form that auto-submits) that sends a request to your portal to perform a state-changing action, like changing the user&#x27;s password or booking an expert consultation, using the victim&#x27;s active session.</p>
+<p>Mitigation:</p>
+<p>Implement Anti-CSRF Tokens: The standard defense is the Synchronizer Token Pattern. The server generates a unique, secret token for each user session and embeds it in forms. When a request is submitted, the server verifies that the token included in the request matches the one stored for the session. Flask extensions like Flask-WTF can manage this process automatically. This ensures that only requests originating from the application&#x27;s own forms are processed.</p>
+<p>5. Insecure Third-Party Integrations</p>
+<p>Description: The portal integrates with external services like Razorpay for payments and Jitsi Meet for video calls. These integrations introduce potential risks. API keys or secrets hardcoded in the frontend React code could be easily discovered by an attacker. Furthermore, if the application blindly trusts callbacks or webhooks (e.g., payment success notifications from Razorpay), an attacker could spoof these requests to gain unauthorized access to services.</p>
+<p>Mitigation:</p>
+<p>Secure Credential Storage: All API keys, secrets, and other sensitive credentials must be stored exclusively on the backend server, ideally as environment variables or using a secrets management system. They must never be exposed to the client-side React application.</p>
+<p>Verify Webhook Signatures: For services like Razorpay that use webhooks, it is critical to verify the cryptographic signature included in each webhook request. This ensures that the request is authentic and originated from the trusted third party, not an imposter.</p>
+<p>6. Authentication and Session Management Weaknesses</p>
+<p>Description: Flaws in how user authentication and sessions are managed can lead to account takeovers. This includes not enforcing strong password policies, storing passwords insecurely, not properly invalidating sessions upon logout or password change, and having excessively long session timeouts.</p>
+<p>Mitigation:</p>
+<p>Strong Password Policies: Enforce minimum password length and complexity requirements on the client and server side.</p>
+<p>Secure Password Hashing: User passwords must never be stored in plaintext. Use a strong, salted, and adaptive hashing algorithm like bcrypt to store password hashes securely in the database.</p>
+<p>Robust Session Management: Use secure, HTTP-only session cookies to prevent access via client-side scripts. Sessions must be properly invalidated on the server-side during logout, and session identifiers should be regenerated after a user successfully authenticates to prevent session fixation attacks. Implement a reasonable session timeout period (e.g., 30 minutes of inactivity).</p>
+<p>Brute-Force Protection: Implement rate limiting and account lockout mechanisms on the login endpoint to thwart automated password-guessing attacks.</p>
+<h1>Chapter 5: Implementation and Testing</h1>
+<h2>5.1 Implementation Approaches</h2>
+<p>The project adopts a layered architecture emphasizing separation of concerns, ensuring modularity and maintainability. The core layers include:</p>
+<p>┌──────────────────────────────────────────┐</p>
+<p>│  Presentation Layer (React Components)   │  ← Frontend</p>
+<p>├──────────────────────────────────────────┤</p>
+<p>│  API Layer (Flask Routes / Blueprints)   │  ← Backend</p>
+<p>├──────────────────────────────────────────┤</p>
+<p>│  Service Layer (CareerService)           │  ← Business Logic</p>
+<p>├──────────────────────────────────────────┤</p>
+<p>│  Data Access Layer (SQLAlchemy Models)   │  ← ORM</p>
+<p>├──────────────────────────────────────────┤</p>
+<p>│  Database Layer (MySQL / InnoDB)         │  ← Storage</p>
+<p>└──────────────────────────────────────────┘</p>
+<p>Development Methodology: Incremental development with module-by-module implementation. Each module was developed, tested, and integrated before proceeding to the next.</p>
+<p>Key Architectural Decisions:</p>
+<p>Blueprint-based routing - Each feature module is a Flask Blueprint for modularity</p>
+<p>Scoped sessions - SQLAlchemy scoped_session for thread-safe database access</p>
+<p>Decorator-based auth - @verify_token() decorator for route protection</p>
+<p>Service layer - CareerService centralizes business logic separate from routes</p>
+<p>Context API - React AuthContext manages global auth state</p>
+<h2>5.2 Coding Details and Code Efficiency</h2>
+<h3>Authentication Module</h3>
+<p>The authentication module manages user registration, login, and token management. The registration process involves OTP verification, password hashing with bcrypt, and JWT token issuance.</p>
+<p>User Registration with OTP Verification:</p>
+<p>@auth_bp.route(&#x27;/register&#x27;, methods=[&#x27;POST&#x27;])</p>
+<p>def register():</p>
+<p>&quot;&quot;&quot;Register a new user (requires OTP verification first)&quot;&quot;&quot;</p>
+<p>data = request.get_json()</p>
+<p>name = data.get(&#x27;name&#x27;, &#x27;&#x27;).strip()</p>
+<p>email = data.get(&#x27;email&#x27;, &#x27;&#x27;).strip().lower()</p>
+<p>password = data.get(&#x27;password&#x27;, &#x27;&#x27;)</p>
+<p>otp = data.get(&#x27;otp&#x27;, &#x27;&#x27;).strip()</p>
+<p># Validate required fields</p>
+<p>if not name or not email or not password or not otp:</p>
+<p>return jsonify({&#x27;success&#x27;: False, &#x27;error&#x27;: &#x27;All fields are required&#x27;}), 400</p>
+<p># Validate email format</p>
+<p>if not validate_email(email):</p>
+<p>return jsonify({&#x27;success&#x27;: False, &#x27;error&#x27;: &#x27;Invalid email format&#x27;}), 400</p>
+<p># Validate password strength</p>
+<p>is_valid, error_message = validate_password_strength(password)</p>
+<p>if not is_valid:</p>
+<p>return jsonify({&#x27;success&#x27;: False, &#x27;error&#x27;: error_message}), 400</p>
+<p># Verify OTP</p>
+<p>otp_success, otp_message = verify_otp(email, otp, purpose=&#x27;verification&#x27;)</p>
+<p>if not otp_success:</p>
+<p>return jsonify({&#x27;success&#x27;: False, &#x27;error&#x27;: otp_message}), 400</p>
+<p># Hash password and create user</p>
+<p>password_hash = hash_password(password)</p>
+<p>new_user = User(name=name, email=email,</p>
+<p>password_hash=password_hash, is_admin=False)</p>
+<p>g.db.add(new_user)</p>
+<p>g.db.commit()</p>
+<p>g.db.refresh(new_user)</p>
+<p># Generate tokens</p>
+<p>access_token = create_access_token(new_user.id, new_user.is_admin)</p>
+<p>refresh_token = create_refresh_token(new_user.id)</p>
+<p>return jsonify({</p>
+<p>&#x27;success&#x27;: True, &#x27;message&#x27;: &#x27;User registered successfully&#x27;,</p>
+<p>&#x27;access_token&#x27;: access_token, &#x27;refresh_token&#x27;: refresh_token,</p>
+<p>&#x27;user&#x27;: new_user.to_dict()</p>
+<p>}), 201</p>
+<p>Password hashing utility:</p>
+<p>def hash_password(password):</p>
+<p>&quot;&quot;&quot;Hash password using bcrypt with 12 salt rounds&quot;&quot;&quot;</p>
+<p>salt = bcrypt.gensalt(rounds=12)</p>
+<p>hashed = bcrypt.hashpw(password.encode(&#x27;utf-8&#x27;), salt)</p>
+<p>return hashed.decode(&#x27;utf-8&#x27;)</p>
+<p>def verify_password(password, password_hash):</p>
+<p>&quot;&quot;&quot;Verify password against bcrypt hash&quot;&quot;&quot;</p>
+<p>return bcrypt.checkpw(password.encode(&#x27;utf-8&#x27;), password_hash.encode(&#x27;utf-8&#x27;))</p>
+<h3>JWT Token Verification</h3>
+<p>The verify_token decorator ensures route protection by decoding and validating JWT tokens, checking for expiry and privileges:</p>
+<p>def verify_token(required_admin=False):</p>
+<p>&quot;&quot;&quot;Decorator to verify JWT token and protect routes&quot;&quot;&quot;</p>
+<p>def decorator(f):</p>
+<p>@wraps(f)</p>
+<p>def decorated_function(*args, **kwargs):</p>
+<p>auth_header = request.headers.get(&#x27;Authorization&#x27;)</p>
+<p>if not auth_header:</p>
+<p>return jsonify({</p>
+<p>&#x27;success&#x27;: False, &#x27;error&#x27;: &#x27;Authorization header is missing&#x27;,</p>
+<p>&#x27;code&#x27;: &#x27;MISSING_TOKEN&#x27;</p>
+<p>}), 401</p>
+<p>parts = auth_header.split()</p>
+<p>if len(parts) != 2 or parts[0].lower() != &#x27;bearer&#x27;:</p>
+<p>return jsonify({</p>
+<p>&#x27;success&#x27;: False,</p>
+<p>&#x27;error&#x27;: &#x27;Invalid authorization header format&#x27;,</p>
+<p>&#x27;code&#x27;: &#x27;INVALID_HEADER&#x27;</p>
+<p>}), 401</p>
+<p>token = parts[1]</p>
+<p>payload = decode_token(token)</p>
+<p>if payload.get(&#x27;type&#x27;) != &#x27;access&#x27;:</p>
+<p>return jsonify({</p>
+<p>&#x27;success&#x27;: False, &#x27;error&#x27;: &#x27;Access token required&#x27;,</p>
+<p>&#x27;code&#x27;: &#x27;INVALID_TOKEN_TYPE&#x27;</p>
+<p>}), 401</p>
+<p>if required_admin and not payload.get(&#x27;is_admin&#x27;, False):</p>
+<p>return jsonify({</p>
+<p>&#x27;success&#x27;: False, &#x27;error&#x27;: &#x27;Admin privileges required&#x27;,</p>
+<p>&#x27;code&#x27;: &#x27;INSUFFICIENT_PRIVILEGES&#x27;</p>
+<p>}), 403</p>
+<p># Store user info in Flask&#x27;s g object</p>
+<p>g.user_id = payload.get(&#x27;user_id&#x27;)</p>
+<p>g.is_admin = payload.get(&#x27;is_admin&#x27;, False)</p>
+<p>g.expert_id = payload.get(&#x27;expert_id&#x27;)</p>
+<p>g.role = payload.get(&#x27;role&#x27;)</p>
+<p>return f(*args, **kwargs)</p>
+<p>return decorated_function</p>
+<p>return decorator</p>
+<h3>Booking System</h3>
+<p>The booking workflow involves expert availability checks, slot conflict detection, and Jitsi room generation:</p>
+<p>@bookings_bp.route(&#x27;/create&#x27;, methods=[&#x27;POST&#x27;])</p>
+<p>@verify_token()</p>
+<p>def create_booking():</p>
+<p>&quot;&quot;&quot;Create a new booking for expert consultation&quot;&quot;&quot;</p>
+<p>db = g.db</p>
+<p>user_id = g.user_id</p>
+<p>data = request.get_json()</p>
+<p>expert_id = data[&#x27;expert_id&#x27;]</p>
+<p>expert = db.query(Expert).filter_by(id=expert_id).first()</p>
+<p>if not expert or expert.status != &#x27;approved&#x27;:</p>
+<p>return jsonify({&#x27;success&#x27;: False,</p>
+<p>&#x27;error&#x27;: &#x27;Expert not available&#x27;}), 400</p>
+<p>slot_start = datetime.fromisoformat(data[&#x27;slot_start&#x27;])</p>
+<p>slot_end = datetime.fromisoformat(data[&#x27;slot_end&#x27;])</p>
+<p># Check for conflicting bookings</p>
+<p>conflicting = db.query(Booking).filter(</p>
+<p>Booking.expert_id == expert_id,</p>
+<p>Booking.status.in_([&#x27;pending&#x27;, &#x27;confirmed&#x27;]),</p>
+<p>Booking.slot_start &lt; slot_end,</p>
+<p>Booking.slot_end &gt; slot_start</p>
+<p>).first()</p>
+<p>if conflicting:</p>
+<p>return jsonify({&#x27;success&#x27;: False,</p>
+<p>&#x27;error&#x27;: &#x27;Slot conflict&#x27;}), 400</p>
+<p># Generate Jitsi room and create booking</p>
+<p>jitsi_room = generate_jitsi_room()</p>
+<p>booking = Booking(user_id=user_id, expert_id=expert_id,</p>
+<p>slot_start=slot_start, slot_end=slot_end,</p>
+<p>jitsi_room=jitsi_room, status=&#x27;pending&#x27;)</p>
+<p>db.add(booking)</p>
+<p>db.commit()</p>
+<p>return jsonify({</p>
+<p>&#x27;success&#x27;: True, &#x27;booking_id&#x27;: booking.id,</p>
+<p>&#x27;jitsi_room&#x27;: jitsi_room</p>
+<p>}), 201</p>
+<h3>Razorpay Payment Integration</h3>
+<p>Order creation and signature verification are handled securely:</p>
+<p>def create_razorpay_order(amount, currency=&#x27;INR&#x27;, receipt=None, notes=None):</p>
+<p>&quot;&quot;&quot;Create a Razorpay order for payment processing&quot;&quot;&quot;</p>
+<p>client = get_razorpay_client()</p>
+<p>amount_paise = int(amount * 100)  # Convert to paise</p>
+<p>data = {</p>
+<p>&#x27;amount&#x27;: amount_paise,</p>
+<p>&#x27;currency&#x27;: currency,</p>
+<p>&#x27;receipt&#x27;: receipt,</p>
+<p>&#x27;notes&#x27;: notes or {},</p>
+<p>&#x27;payment_capture&#x27;: 1  # Auto capture</p>
+<p>}</p>
+<p>order = client.order.create(data=data)</p>
+<p>return order</p>
+<p>def verify_razorpay_signature(razorpay_order_id,</p>
+<p>razorpay_payment_id,</p>
+<p>razorpay_signature):</p>
+<p>&quot;&quot;&quot;Verify Razorpay payment signature for security&quot;&quot;&quot;</p>
+<p>client = get_razorpay_client()</p>
+<p>params_dict = {</p>
+<p>&#x27;razorpay_order_id&#x27;: razorpay_order_id,</p>
+<p>&#x27;razorpay_payment_id&#x27;: razorpay_payment_id,</p>
+<p>&#x27;razorpay_signature&#x27;: razorpay_signature</p>
+<p>}</p>
+<p>client.utility.verify_payment_signature(params_dict)</p>
+<p>return True</p>
+<h3>SQLAlchemy ORM Models</h3>
+<p>Models are defined with relationships and constraints to ensure data integrity. Example User model:</p>
+<p>class User(Base):</p>
+<p>&quot;&quot;&quot;User model for authentication and profile management&quot;&quot;&quot;</p>
+<p>__tablename__ = &#x27;users&#x27;</p>
+<p>id = Column(Integer, primary_key=True, autoincrement=True)</p>
+<p>name = Column(String(255), nullable=False)</p>
+<p>email = Column(String(255), unique=True, nullable=False, index=True)</p>
+<p>password_hash = Column(String(255), nullable=False)</p>
+<p>is_admin = Column(Boolean, default=False, nullable=False)</p>
+<p>created_at = Column(DateTime, server_default=func.now(), nullable=False)</p>
+<p># Relationships</p>
+<p>user_skills = relationship(&#x27;UserSkill&#x27;, back_populates=&#x27;user&#x27;,</p>
+<p>cascade=&#x27;all, delete-orphan&#x27;)</p>
+<p>saved_careers = relationship(&#x27;SavedCareer&#x27;, back_populates=&#x27;user&#x27;,</p>
+<p>cascade=&#x27;all, delete-orphan&#x27;)</p>
+<p>expert_profile = relationship(&#x27;Expert&#x27;, back_populates=&#x27;user&#x27;,</p>
+<p>uselist=False, cascade=&#x27;all, delete-orphan&#x27;)</p>
+<p>bookings = relationship(&#x27;Booking&#x27;, back_populates=&#x27;user&#x27;,</p>
+<p>cascade=&#x27;all, delete-orphan&#x27;)</p>
+<p>def to_dict(self, include_sensitive=False):</p>
+<p>data = {</p>
+<p>&#x27;id&#x27;: self.id, &#x27;name&#x27;: self.name, &#x27;email&#x27;: self.email,</p>
+<p>&#x27;is_admin&#x27;: self.is_admin,</p>
+<p>&#x27;created_at&#x27;: self.created_at.isoformat()</p>
+<p>}</p>
+<p>return data</p>
+<h3>Skill Gap Analysis</h3>
+<p>The analysis compares user skills with career requirements, calculating gaps and readiness percentages:</p>
+<p>@staticmethod</p>
+<p>def calculate_skill_gap(user_id, career_id):</p>
+<p>&quot;&quot;&quot;Calculate skill gaps between user skills and career requirements&quot;&quot;&quot;</p>
+<p>career = g.db.query(Career).get(career_id)</p>
+<p>user_skills = g.db.query(UserSkill).filter_by(user_id=user_id).all()</p>
+<p>user_skill_map = {us.skill_id: us.proficiency for us in user_skills}</p>
+<p>career_skills = g.db.query(CareerSkill).options(</p>
+<p>joinedload(CareerSkill.skill)</p>
+<p>).filter_by(career_id=career_id).all()</p>
+<p>gaps = []</p>
+<p>met_requirements = []</p>
+<p>proficiency_levels = [&#x27;beginner&#x27;, &#x27;intermediate&#x27;, &#x27;advanced&#x27;, &#x27;expert&#x27;]</p>
+<p>for cs in career_skills:</p>
+<p>req_idx = proficiency_levels.index(cs.required_level.lower())</p>
+<p>if cs.skill_id not in user_skill_map:</p>
+<p>gaps.append({</p>
+<p>&#x27;skill_name&#x27;: cs.skill.name,</p>
+<p>&#x27;current_level&#x27;: &#x27;Not acquired&#x27;,</p>
+<p>&#x27;required_level&#x27;: cs.required_level,</p>
+<p>&#x27;gap&#x27;: req_idx + 1</p>
+<p>})</p>
+<p>else:</p>
+<p>user_idx = proficiency_levels.index(user_skill_map[cs.skill_id].lower())</p>
+<p>if user_idx &lt; req_idx:</p>
+<p>gaps.append({</p>
+<p>&#x27;skill_name&#x27;: cs.skill.name,</p>
+<p>&#x27;current_level&#x27;: user_skill_map[cs.skill_id],</p>
+<p>&#x27;required_level&#x27;: cs.required_level,</p>
+<p>&#x27;gap&#x27;: req_idx - user_idx</p>
+<p>})</p>
+<p>else:</p>
+<p>met_requirements.append({</p>
+<p>&#x27;skill_name&#x27;: cs.skill.name,</p>
+<p>&#x27;current_level&#x27;: user_skill_map[cs.skill_id],</p>
+<p>&#x27;required_level&#x27;: cs.required_level</p>
+<p>})</p>
+<p>readiness = (len(met_requirements) / len(career_skills) * 100)</p>
+<p>return {</p>
+<p>&#x27;career_title&#x27;: career.title,</p>
+<p>&#x27;gaps&#x27;: gaps,</p>
+<p>&#x27;met_requirements&#x27;: met_requirements,</p>
+<p>&#x27;readiness_percentage&#x27;: round(readiness)</p>
+<p>}</p>
+<h3>Frontend Routing</h3>
+<p>Routes are defined with React Router, employing lazy loading for performance optimization:</p>
+<p>import { lazy, Suspense } from &#x27;react&#x27;;</p>
+<p>import { Routes, Route } from &#x27;react-router-dom&#x27;;</p>
+<p>// Lazy-loaded pages for code splitting</p>
+<p>const Home = lazy(() =&gt; import(&#x27;./pages/Home&#x27;));</p>
+<p>const Login = lazy(() =&gt; import(&#x27;./pages/Login&#x27;));</p>
+<p>const Signup = lazy(() =&gt; import(&#x27;./pages/Signup&#x27;));</p>
+<p>const Dashboard = lazy(() =&gt; import(&#x27;./pages/Dashboard&#x27;));</p>
+<p>const CareerRecommendation = lazy(() =&gt; import(&#x27;./pages/CareerRecommendation&#x27;));</p>
+<p>const CareerDetails = lazy(() =&gt; import(&#x27;./pages/CareerDetails&#x27;));</p>
+<p>const Experts = lazy(() =&gt; import(&#x27;./pages/Experts&#x27;));</p>
+<p>const Bookings = lazy(() =&gt; import(&#x27;./pages/Bookings&#x27;));</p>
+<p>const Meeting = lazy(() =&gt; import(&#x27;./pages/Meeting&#x27;));</p>
+<p>const AdminDashboard = lazy(() =&gt; import(&#x27;./pages/AdminDashboard&#x27;));</p>
+<p>const ExpertDashboard = lazy(() =&gt; import(&#x27;./pages/ExpertDashboard&#x27;));</p>
+<p>function AppRoutes() {</p>
+<p>return (</p>
+<p>&lt;Suspense fallback={&lt;div&gt;Loading...&lt;/div&gt;}&gt;</p>
+<p>&lt;Routes&gt;</p>
+<p>&lt;Route path=&quot;/&quot; element={&lt;Home /&gt;} /&gt;</p>
+<p>&lt;Route path=&quot;/login&quot; element={&lt;Login /&gt;} /&gt;</p>
+<p>&lt;Route path=&quot;/signup&quot; element={&lt;Signup /&gt;} /&gt;</p>
+<p>&lt;Route path=&quot;/dashboard&quot; element={&lt;Dashboard /&gt;} /&gt;</p>
+<p>&lt;Route path=&quot;/careers&quot; element={&lt;CareerRecommendation /&gt;} /&gt;</p>
+<p>&lt;Route path=&quot;/careers/:id&quot; element={&lt;CareerDetails /&gt;} /&gt;</p>
+<p>&lt;Route path=&quot;/experts&quot; element={&lt;Experts /&gt;} /&gt;</p>
+<p>&lt;Route path=&quot;/bookings&quot; element={&lt;Bookings /&gt;} /&gt;</p>
+<p>&lt;Route path=&quot;/meeting/:roomId&quot; element={&lt;Meeting /&gt;} /&gt;</p>
+<p>&lt;Route path=&quot;/admin/*&quot; element={&lt;AdminDashboard /&gt;} /&gt;</p>
+<p>&lt;Route path=&quot;/expert/dashboard&quot; element={&lt;ExpertDashboard /&gt;} /&gt;</p>
+<p>&lt;/Routes&gt;</p>
+<p>&lt;/Suspense&gt;</p>
+<p>);</p>
+<p>}</p>
+<h3>Flask Application Entry Point</h3>
+<p>The main application initializes Flask, configures database connection pooling, registers blueprints, and sets CORS policies:</p>
+<p>from flask import Flask, jsonify</p>
+<p>from flask_cors import CORS</p>
+<p>from sqlalchemy import create_engine</p>
+<p>from sqlalchemy.orm import sessionmaker, scoped_session</p>
+<p>def create_app():</p>
+<p>app = Flask(__name__)</p>
+<p># Database connection with pooling</p>
+<p>engine = create_engine(</p>
+<p>DATABASE_URL,</p>
+<p>pool_size=10, max_overflow=20, pool_recycle=3600,</p>
+<p>pool_pre_ping=True,</p>
+<p>connect_args={&#x27;charset&#x27;: &#x27;utf8mb4&#x27;, &#x27;use_unicode&#x27;: True}</p>
+<p>)</p>
+<p>SessionLocal = scoped_session(sessionmaker(bind=engine))</p>
+<p># CORS configuration</p>
+<p>CORS(app, origins=[&#x27;http://localhost:5173&#x27;],</p>
+<p>supports_credentials=True)</p>
+<p># Register Blueprints</p>
+<p>from routes.auth import auth_bp</p>
+<p>from routes.careers import careers_bp</p>
+<p>from routes.bookings import bookings_bp</p>
+<p>from routes.payments import payments_bp</p>
+<p>from routes.experts import experts_bp</p>
+<p>from routes.admin import admin_bp</p>
+<p>from routes.feedback import feedback_bp</p>
+<p>from routes.contact import contact_bp</p>
+<p>from routes.expert_dashboard import expert_dashboard_bp</p>
+<p>app.register_blueprint(auth_bp, url_prefix=&#x27;/api/auth&#x27;)</p>
+<p>app.register_blueprint(careers_bp, url_prefix=&#x27;/api/careers&#x27;)</p>
+<p>app.register_blueprint(bookings_bp, url_prefix=&#x27;/api/bookings&#x27;)</p>
+<p>app.register_blueprint(payments_bp, url_prefix=&#x27;/api/payments&#x27;)</p>
+<p>app.register_blueprint(experts_bp, url_prefix=&#x27;/api/experts&#x27;)</p>
+<p>app.register_blueprint(admin_bp, url_prefix=&#x27;/api/admin&#x27;)</p>
+<p>app.register_blueprint(feedback_bp, url_prefix=&#x27;/api/feedback&#x27;)</p>
+<p>app.register_blueprint(contact_bp, url_prefix=&#x27;/api/contact&#x27;)</p>
+<p>app.register_blueprint(expert_dashboard_bp, url_prefix=&#x27;/api/expert&#x27;)</p>
+<p>return app</p>
+<h3>5.2.1 Code Efficiency</h3>
+<p>Efficiency is achieved through various techniques:</p>
+<h2>5.3 Testing Approach</h2>
+<h3>5.3.1 Unit Testing</h3>
+<p>Frontend unit tests utilize Jest and React Testing Library:</p>
+<p>// Example: Testing ErrorBoundary component</p>
+<p>import { render, screen } from &#x27;@testing-library/react&#x27;;</p>
+<p>import ErrorBoundary from &#x27;../ErrorBoundary&#x27;;</p>
+<p>test(&#x27;renders children when no error&#x27;, () =&gt; {</p>
+<p>render(</p>
+<p>&lt;ErrorBoundary&gt;</p>
+<p>&lt;div&gt;Test Content&lt;/div&gt;</p>
+<p>&lt;/ErrorBoundary&gt;</p>
+<p>);</p>
+<p>expect(screen.getByText(&#x27;Test Content&#x27;)).toBeInTheDocument();</p>
+<p>});</p>
+<p>Backend testing involves manual API testing with Postman or similar tools, verifying each route against expected responses.</p>
+<h3>5.3.2 Integrated Testing</h3>
+<p>Complete workflows are tested to ensure seamless operation:</p>
+<p>Authentication flow: Registration → OTP → Login → Token usage → Refresh → Logout</p>
+<p>Career flow: Skill save → Recommendations → Career Details → Skill gap → PDF</p>
+<p>Booking flow: Expert browse → Book slot → Payment → Confirmation email → meeting</p>
+<p>Admin flow: Login → Expert approval → booking oversight → analytics</p>
+<h3>Beta Testing</h3>
+<h2>Beta testing was conducted with a group of 5-10 users who:</h2>
+<h2>Registered and completed the skill assessment</h2>
+<h2>Reviewed career recommendations for relevance</h2>
+<h2>Tested the expert booking and payment flow</h2>
+<h2>Provided UI/UX feedback on mobile and desktop</h2>
+<h2>Identified edge cases in form validation</h2>
+<h2>5.3.4 Test Cases</h2>
+<h2>Chapter 6: Results and Discussion</h2>
+<h3>6.1 Test Reports</h3>
+<p>Authentication Module Results</p>
+<p>Career Recommendation Results</p>
+<p>Payment &amp; Booking Results</p>
+<p>Sample API response - Career Recommendations</p>
+<p>{</p>
+<p>&quot;success&quot;: true,</p>
+<p>&quot;recommendations&quot;: [</p>
+<p>{</p>
+<p>&quot;id&quot;: 3,</p>
+<p>&quot;title&quot;: &quot;Full Stack Developer&quot;,</p>
+<p>&quot;description&quot;: &quot;Build complete web applications...&quot;,</p>
+<p>&quot;salary_range&quot;: &quot;₹8L - ₹25L&quot;,</p>
+<p>&quot;demand_level&quot;: &quot;very_high&quot;,</p>
+<p>&quot;match_score&quot;: 85,</p>
+<p>&quot;matched_skills&quot;: 7,</p>
+<p>&quot;total_required_skills&quot;: 9</p>
+<p>},</p>
+<p>{</p>
+<p>&quot;id&quot;: 7,</p>
+<p>&quot;title&quot;: &quot;Data Analyst&quot;,</p>
+<p>&quot;description&quot;: &quot;Analyze and interpret data...&quot;,</p>
+<p>&quot;salary_range&quot;: &quot;₹5L - ₹15L&quot;,</p>
+<p>&quot;demand_level&quot;: &quot;high&quot;,</p>
+<p>&quot;match_score&quot;: 62,</p>
+<p>&quot;matched_skills&quot;: 4,</p>
+<p>&quot;total_required_skills&quot;: 7</p>
+<p>}</p>
+<p>]</p>
+<p>}</p>
+<p>Sample API response – Skill Gap Analysis</p>
+<p>{</p>
+<p>&quot;success&quot;: true,</p>
+<p>&quot;skill_gap&quot;: {</p>
+<p>&quot;career_title&quot;: &quot;Machine Learning Engineer&quot;,</p>
+<p>&quot;met_requirements&quot;: [</p>
+<p>{&quot;skill_name&quot;: &quot;Python&quot;, &quot;current_level&quot;: &quot;advanced&quot;, &quot;required_level&quot;: &quot;advanced&quot;},</p>
+<p>{&quot;skill_name&quot;: &quot;Statistics&quot;, &quot;current_level&quot;: &quot;intermediate&quot;, &quot;required_level&quot;: &quot;intermediate&quot;}</p>
+<p>],</p>
+<p>&quot;gaps&quot;: [</p>
+<p>{&quot;skill_name&quot;: &quot;TensorFlow&quot;, &quot;current_level&quot;: &quot;Not acquired&quot;, &quot;required_level&quot;: &quot;advanced&quot;, &quot;gap&quot;: 3},</p>
+<p>{&quot;skill_name&quot;: &quot;Deep Learning&quot;, &quot;current_level&quot;: &quot;beginner&quot;, &quot;required_level&quot;: &quot;advanced&quot;, &quot;gap&quot;: 2}</p>
+<p>],</p>
+<p>&quot;total_required_skills&quot;: 8,</p>
+<p>&quot;met_skills_count&quot;: 4,</p>
+<p>&quot;readiness_percentage&quot;: 50</p>
+<p>}</p>
+<p>}</p>
+<h3>6.2 User Documentation</h3>
+<p>Prerequisites: Node.js 18+, Python 3.10+, MySQL 8.0+</p>
+<p>Backend Setup:</p>
+<p>cd backend</p>
+<p>python -m venv venv</p>
+<p>venv\Scripts\activate        # Windows</p>
+<p>pip install -r requirements.txt</p>
+<p>python setup_database.py     # Creates tables and seeds data</p>
+<p>python app.py                # Starts Flask server on port 5000</p>
+<p>Frontend Setup:</p>
+<p>cd frontend</p>
+<p>npm install</p>
+<p>npm run dev                  # Starts Vite dev server on port 5173</p>
+<p>Environment Variables (backend .env):</p>
+<p>DB_HOST=localhost</p>
+<p>DB_PORT=3306</p>
+<p>DB_USER=root</p>
+<p>DB_PASSWORD=your_password</p>
+<p>DB_NAME=careerportal</p>
+<p>JWT_SECRET_KEY=your_secret</p>
+<p>RAZORPAY_KEY_ID=rzp_test_...</p>
+<p>RAZORPAY_KEY_SECRET=...</p>
+<p>MAIL_USERNAME=your_email@gmail.com</p>
+<p>MAIL_PASSWORD=your_app_password</p>
+<p>User Guide:</p>
+<h2>Chapter 7: Conclusions</h2>
+<h3>7.1 Summary of Achievements</h3>
+<p>CareerPortal successfully demonstrates that a web-based career guidance platform can effectively combine automated skill matching with human expertise, creating an accessible and affordable career development ecosystem.The system demonstrates robust architecture, secure workflows, and user-centric design, validated through extensive testing and user feedback.</p>
+<h3>7.1.1 Significance of the System</h3>
+<p>Democratized Career Guidance: The platform makes personalized career recommendations accessible to anyone with internet access, eliminating geographical and financial barriers to professional career counseling.</p>
+<p>Quantified Career Matching: Unlike generic job portals, CareerPortal uses a transparent, weighted matching algorithm that provides users with a quantifiable match score, enabling data-driven career decisions.</p>
+<p>Integrated Expert Marketplace: The platform creates a complete ecosystem where users can discover careers, identify skill gaps, and immediately connect with domain experts for personalized guidance — all within a single application.</p>
+<p>Modern Architecture: The project demonstrates proficiency in modern full-stack development practices including REST API design, JWT authentication, ORM-based data access, payment gateway integration, and component-based frontend architecture.</p>
+<p>Scalable Design: The stateless REST API, database connection pooling, and lazy-loaded frontend ensure the platform can scale to serve a growing user base.</p>
+<h3>7.2 Limitations of the System</h3>
+<h3>7.3 Future Scope of the Project</h3>
+<p>ML-based Recommendations: Incorporate machine learning models for personalized, adaptive suggestions.</p>
+<p>AI-Powered Skill Assessment: Use coding challenges and portfolio analysis for verified skills.</p>
+<p>Multi-currency Payments: Support Stripe alongside Razorpay for global transactions.</p>
+<p>Real-time Chat: Implement WebSocket-based messaging for pre- and post-session communication.</p>
+<p>Mobile Application: Develop native apps with push notifications for enhanced user engagement.</p>
+<p>Resume Builder: Offer tools for creating professional resumes aligned with career goals.</p>
+<p>Job Board Integration: Connect to external job portals for direct application opportunities.</p>
+<p>Calendar Integration: Sync bookings with Google Calendar and Outlook.</p>
+<p>Analytics Dashboard: Track user progress and platform usage metrics.</p>
+<p>Multi-language Support: Expand accessibility through regional language options.</p>
+<h2>References</h2>
+<p>Pallets Projects. (2024). Flask Web Development Framework — Documentation. Retrieved from https://flask.palletsprojects.com/</p>
+<p>Bayer, M. (2024). SQLAlchemy — The Database Toolkit for Python — Documentation. Retrieved from https://docs.sqlalchemy.org/</p>
+<p>Meta Platforms, Inc. (2024). React — A JavaScript Library for Building User Interfaces — Documentation. Retrieved from https://react.dev/</p>
+<p>Evan You. (2024). Vite — Next Generation Frontend Tooling — Documentation. Retrieved from https://vitejs.dev/</p>
+<p>Tailwind Labs. (2024). Tailwind CSS — A Utility-First CSS Framework — Documentation. Retrieved from https://tailwindcss.com/</p>
+<p>Oracle Corporation. (2024). MySQL 8.0 Reference Manual. Retrieved from https://dev.mysql.com/doc/refman/8.0/en/</p>
+<p>Padilla, J. (2024). PyJWT — JSON Web Tokens for Python — Documentation. Retrieved from https://pyjwt.readthedocs.io/</p>
+<p>Razorpay Software Pvt. Ltd. (2024). Razorpay API Integration Guide. Retrieved from https://razorpay.com/docs/</p>
+<p>8x8, Inc. (2024). Jitsi Meet — Developer Guide. Retrieved from https://jitsi.github.io/handbook/</p>
+<p>ReportLab Inc. (2024). ReportLab — PDF Generation Library for Python — Documentation. Retrieved from https://docs.reportlab.com/</p>
+<p>Provos, N. &amp; Mazières, D. (1999). A Future-Adaptable Password Scheme (bcrypt). USENIX Annual Technical Conference. Retrieved from https://pypi.org/project/bcrypt/</p>
+<p>Remix Software, Inc. (2024). React Router v6 — Documentation. Retrieved from https://reactrouter.com/</p>
+<p>Formik Contributors. (2024). Formik — Build Forms in React — Documentation. Retrieved from https://formik.org/</p>
+<p>Axios Contributors. (2024). Axios — Promise-based HTTP Client for the Browser and Node.js. Retrieved from https://axios-http.com/</p>
+<p>Pressman, R.S. (2014). Software Engineering: A Practitioner’s Approach (8th ed.). New York: McGraw-Hill Education.</p>
+<p>Sommerville, I. (2015). Software Engineering (10th ed.). London: Pearson Education.</p>
+<p>Elmasri, R. &amp; Navathe, S.B. (2016). Fundamentals of Database Systems (7th ed.). London: Pearson Education.</p>
+<table>
+<tr>
+<td>Event</td>
+<td>Trigger</td>
+<td>Source</td>
+<td>Activity / Process</td>
+<td>Output / Response</td>
+<td>Destination</td>
+</tr>
+<tr>
+<td>User registers</td>
+<td>User fills registration form</td>
+<td>User</td>
+<td>Store user details in DB.</td>
+<td>&quot;Success message, login enabled&quot;</td>
+<td>users table</td>
+</tr>
+<tr>
+<td>User logs in</td>
+<td>User enters credentials/OTP</td>
+<td>User</td>
+<td>Validate credentials via Flask API.</td>
+<td>JWT/session token</td>
+<td>Browser session</td>
+</tr>
+<tr>
+<td>Input skills &amp; interests</td>
+<td>User submits skill form</td>
+<td>User</td>
+<td>Store skills and interests in the database.</td>
+<td>Confirmation &amp; proceed to recommendation</td>
+<td>User profile in DB</td>
+</tr>
+<tr>
+<td>Generate career recommendations</td>
+<td>User requests recommendations</td>
+<td>System</td>
+<td>Apply rule-based algorithm to match user skills with careers in the database.</td>
+<td>Ranked list of careers with match %</td>
+<td>User dashboard</td>
+</tr>
+<tr>
+<td>View career details</td>
+<td>User clicks on a specific career</td>
+<td>User</td>
+<td>Fetch detailed career information from DB.</td>
+<td>Show description, salary, roadmap, demand, top companies, etc.</td>
+<td>Frontend UI</td>
+</tr>
+<tr>
+<td>View skill gap</td>
+<td>User clicks on a recommended career to see the analysis</td>
+<td>User</td>
+<td>Compare user&#x27;s skills vs. the career&#x27;s required skills.</td>
+<td>A visual list/graph of missing skills (the gap) and match %</td>
+<td>User UI</td>
+</tr>
+<tr>
+<td>Suggest learning resources</td>
+<td>User requests resources for an identified skill gap</td>
+<td>User</td>
+<td>Fetch relevant tutorials/courses mapped to the required skills.</td>
+<td>Display a list of recommended learning resources with links</td>
+<td>User UI</td>
+</tr>
+<tr>
+<td>Save/bookmark career</td>
+<td>User clicks the &#x27;save&#x27; button</td>
+<td>User</td>
+<td>Insert a record linking the user and career ID.</td>
+<td>&quot;Career saved&quot; confirmation message</td>
+<td>saved_careers table</td>
+</tr>
+<tr>
+<td>Export PDF report</td>
+<td>User clicks the &#x27;download&#x27; button</td>
+<td>User</td>
+<td>Fetch saved careers and generate a PDF using jsPDF/react-to-print.</td>
+<td>A downloadable career report file (.pdf)</td>
+<td>User’s device</td>
+</tr>
+<tr>
+<td>Email report</td>
+<td>User clicks the &#x27;send report&#x27; button</td>
+<td>User</td>
+<td>Format a report via Flask-Mail and send it using the SMTP service.</td>
+<td>Email with the career report attached</td>
+<td>User&#x27;s email inbox</td>
+</tr>
+<tr>
+<td>Compare careers</td>
+<td>User selects multiple careers to compare</td>
+<td>User</td>
+<td>Fetch and organize the details for all selected careers.</td>
+<td>A side-by-side comparison table (salary, skills, demand, etc.)</td>
+<td>Frontend UI</td>
+</tr>
+<tr>
+<td>Expert registers</td>
+<td>Expert submits profile &amp; documents</td>
+<td>Expert</td>
+<td>Save expert&#x27;s details and files in the database with a &quot;pending&quot; status.</td>
+<td>&quot;Application submitted for review&quot; message</td>
+<td>experts table</td>
+</tr>
+<tr>
+<td>Admin approves expert</td>
+<td>Admin reviews and approves documents</td>
+<td>Admin</td>
+<td>Update the expert&#x27;s status from &quot;pending&quot; to &quot;approved&quot;.</td>
+<td>The expert&#x27;s profile is activated and they are notified</td>
+<td>experts table</td>
+</tr>
+<tr>
+<td>Initiate consultation booking</td>
+<td>User selects an expert and a time slot, then clicks &#x27;Book Now&#x27;</td>
+<td>User</td>
+<td>Create a preliminary booking record and initiate a transaction with the payment gateway.</td>
+<td>Redirect the user to the Razorpay payment page</td>
+<td>Razorpay gateway</td>
+</tr>
+<tr>
+<td>Confirm booking after payment</td>
+<td>Razorpay sends a success confirmation callback</td>
+<td>External System</td>
+<td>Verify payment, update booking status to &quot;confirmed&quot;, generate a unique Jitsi link, and send confirmation emails.</td>
+<td>&quot;Booking Confirmed&quot; page with session details</td>
+<td>bookings table, User &amp; Expert email inboxes</td>
+</tr>
+<tr>
+<td>Join video session</td>
+<td>At the scheduled time, user or expert clicks the &#x27;join&#x27; link</td>
+<td>User/Expert</td>
+<td>The system provides the securely embedded Jitsi video room.</td>
+<td>A live video consultation is started</td>
+<td>User &amp; Expert UI</td>
+</tr>
+<tr>
+<td>Submit feedback</td>
+<td>User submits the feedback form after a session</td>
+<td>User</td>
+<td>Save the rating and comments in the database, linked to the booking.</td>
+<td>&quot;Thank you for your feedback&quot; response</td>
+<td>feedbacks table</td>
+</tr>
+<tr>
+<td>Admin views dashboard</td>
+<td>Admin logs into the admin panel</td>
+<td>Admin</td>
+<td>Fetch analytics data from the DB and render it into visual charts using Recharts.</td>
+<td>Interactive dashboard with charts (popular careers, skill gaps, user activity)</td>
+<td>Admin dashboard</td>
+</tr>
+</table>
+<table>
+<tr>
+<td>Constraint Type</td>
+<td>Implementation</td>
+</tr>
+<tr>
+<td>Primary Keys</td>
+<td>Auto-incremented integer IDs on all tables</td>
+</tr>
+<tr>
+<td>Foreign Keys</td>
+<td>CASCADE on delete for referential integrity</td>
+</tr>
+<tr>
+<td>Unique Constraints</td>
+<td>users.email, skills.name, experts.user_id, transactions.booking_id</td>
+</tr>
+<tr>
+<td>ENUM Constraints</td>
+<td>Proficiency levels, demand levels, booking status, transaction status</td>
+</tr>
+<tr>
+<td>CHECK Constraints</td>
+<td>feedbacks.rating BETWEEN 1 AND 5</td>
+</tr>
+<tr>
+<td>NOT NULL</td>
+<td>All critical fields enforced at DB level</td>
+</tr>
+<tr>
+<td>Indexing</td>
+<td>users.email indexed for login lookups</td>
+</tr>
+</table>
+<table>
+<tr>
+<td>Technique</td>
+<td>Implementation</td>
+</tr>
+<tr>
+<td>Database Connection Pooling</td>
+<td>pool_size=10, max_overflow=20, pool_pre_ping=True</td>
+</tr>
+<tr>
+<td>Lazy Loading</td>
+<td>React routes loaded on demand via React.lazy()</td>
+</tr>
+<tr>
+<td>O(1) Skill Lookups</td>
+<td>Dictionary-based user_skill_map for skill matching</td>
+</tr>
+<tr>
+<td>Eager Loading</td>
+<td>SQLAlchemy joinedload() to prevent N+1 query problems</td>
+</tr>
+<tr>
+<td>Input Validation</td>
+<td>Early returns for invalid data before DB operations</td>
+</tr>
+<tr>
+<td>Scoped Sessions</td>
+<td>Thread-safe DB sessions with automatic cleanup</td>
+</tr>
+<tr>
+<td>Tree-shaking</td>
+<td>Vite + Rollup eliminate unused code in production</td>
+</tr>
+</table>
+<table>
+<tr>
+<td>TC-ID</td>
+<td>Input</td>
+<td>Action</td>
+<td>Expected Output</td>
+<td>Actual Output</td>
+<td>Status</td>
+</tr>
+<tr>
+<td>TC-01</td>
+<td>Valid name, email, password, OTP</td>
+<td>POST /api/auth/register</td>
+<td>201, tokens + user</td>
+<td>201, tokens + user</td>
+<td>Pass</td>
+</tr>
+<tr>
+<td>TC-02</td>
+<td>Existing email</td>
+<td>POST /api/auth/register</td>
+<td>409, “Email already registered”</td>
+<td>409, error</td>
+<td>Pass</td>
+</tr>
+<tr>
+<td>TC-03</td>
+<td>Wrong password</td>
+<td>POST /api/auth/login</td>
+<td>401, “Invalid email or password”</td>
+<td>401, error</td>
+<td>Pass</td>
+</tr>
+<tr>
+<td>TC-04</td>
+<td>No auth header</td>
+<td>GET /api/careers/recommendations</td>
+<td>401, “Missing token”</td>
+<td>401, MISSING_TOKEN</td>
+<td>Pass</td>
+</tr>
+<tr>
+<td>TC-05</td>
+<td>Expired token</td>
+<td>GET /api/careers/recommendations</td>
+<td>401, “Token expired”</td>
+<td>401, TOKEN_EXPIRED</td>
+<td>Pass</td>
+</tr>
+<tr>
+<td>TC-06</td>
+<td>Valid skills saved</td>
+<td>GET /api/careers/recommendations</td>
+<td>200, ranked careers</td>
+<td>200, sorted list</td>
+<td>Pass</td>
+</tr>
+<tr>
+<td>TC-07</td>
+<td>Approved expert, valid slot</td>
+<td>POST /api/bookings/create</td>
+<td>201, jitsi_room</td>
+<td>201, booking created</td>
+<td>Pass</td>
+</tr>
+<tr>
+<td>TC-08</td>
+<td>Conflicting time slot</td>
+<td>POST /api/bookings/create</td>
+<td>400, “Slot conflict”</td>
+<td>400, SLOT_CONFLICT</td>
+<td>Pass</td>
+</tr>
+<tr>
+<td>TC-09</td>
+<td>Valid Razorpay signature</td>
+<td>POST /api/payments/verify</td>
+<td>200, transaction recorded</td>
+<td>200, completed</td>
+<td>Pass</td>
+</tr>
+<tr>
+<td>TC-10</td>
+<td>Non-admin token</td>
+<td>POST /api/admin/experts/approve</td>
+<td>403, “Insufficient privileges”</td>
+<td>403, error</td>
+<td>Pass</td>
+</tr>
+</table>
+<table>
+<tr>
+<td>Test Scenario</td>
+<td>Requests</td>
+<td>Pass Rate</td>
+<td>Avg Response Time</td>
+</tr>
+<tr>
+<td>User Registration (valid)</td>
+<td>50</td>
+<td>100%</td>
+<td>320ms</td>
+</tr>
+<tr>
+<td>User Registration (duplicate email)</td>
+<td>20</td>
+<td>100%</td>
+<td>45ms</td>
+</tr>
+<tr>
+<td>Login (password)</td>
+<td>100</td>
+<td>100%</td>
+<td>180ms</td>
+</tr>
+<tr>
+<td>Login (OTP)</td>
+<td>30</td>
+<td>100%</td>
+<td>210ms</td>
+</tr>
+<tr>
+<td>Token Refresh</td>
+<td>50</td>
+<td>100%</td>
+<td>35ms</td>
+</tr>
+<tr>
+<td>Protected Route (valid token)</td>
+<td>200</td>
+<td>100%</td>
+<td>25ms</td>
+</tr>
+<tr>
+<td>Protected Route (expired token)</td>
+<td>50</td>
+<td>100%</td>
+<td>12ms</td>
+</tr>
+</table>
+<table>
+<tr>
+<td>Scenario</td>
+<td>Skills Saved</td>
+<td>Careers in DB</td>
+<td>Recommendations Returned</td>
+<td>Avg Response Time</td>
+</tr>
+<tr>
+<td>Full stack skills</td>
+<td>12</td>
+<td>20</td>
+<td>8</td>
+<td>145ms</td>
+</tr>
+<tr>
+<td>Data science skills</td>
+<td>8</td>
+<td>20</td>
+<td>5</td>
+<td>110ms</td>
+</tr>
+<tr>
+<td>No skills saved</td>
+<td>0</td>
+<td>20</td>
+<td>0</td>
+<td>15ms</td>
+</tr>
+<tr>
+<td>Single skill</td>
+<td>1</td>
+<td>20</td>
+<td>3</td>
+<td>85ms</td>
+</tr>
+</table>
+<table>
+<tr>
+<td>Test</td>
+<td>Result</td>
+</tr>
+<tr>
+<td>Razorpay order creation</td>
+<td>Order ID generated, amount in paise</td>
+</tr>
+<tr>
+<td>Signature verification (valid)</td>
+<td>Transaction recorded as &quot;completed&quot;</td>
+</tr>
+<tr>
+<td>Signature verification (tampered)</td>
+<td>Rejected, status &quot;failed&quot;</td>
+</tr>
+<tr>
+<td>Booking with slot conflict</td>
+<td>Correctly rejected with SLOT_CONFLICT</td>
+</tr>
+<tr>
+<td>Auto-completion of past bookings</td>
+<td>Status changed to &quot;completed&quot;</td>
+</tr>
+</table>
+<table>
+<tr>
+<td>#</td>
+<td>Limitation</td>
+<td>Impact</td>
+</tr>
+<tr>
+<td>L1</td>
+<td>Rule-based recommendations — The matching algorithm uses predetermined weights rather than learning from user outcomes</td>
+<td>Recommendations may not improve over time</td>
+</tr>
+<tr>
+<td>L2</td>
+<td>Single payment gateway — Only Razorpay (INR) is supported</td>
+<td>Limited to Indian currency; international users cannot pay</td>
+</tr>
+<tr>
+<td>L3</td>
+<td>No real-time chat — Communication is limited to scheduled video calls</td>
+<td>Users cannot message experts outside of booked sessions</td>
+</tr>
+<tr>
+<td>L4</td>
+<td>Self-assessed skills — Users rate their own proficiency without verification</td>
+<td>Skill assessments may be inaccurate, affecting recommendation quality</td>
+</tr>
+<tr>
+<td>L5</td>
+<td>No mobile app — Responsive web design only</td>
+<td>Native mobile features (push notifications, offline access) unavailable</td>
+</tr>
+<tr>
+<td>L6</td>
+<td>Static career data — Career and skill data is manually seeded by admins</td>
+<td>Database requires manual updates to reflect market changes</td>
+</tr>
+<tr>
+<td>L7</td>
+<td>No calendar integration — Booking time slots are standalone</td>
+<td>Users cannot sync with Google Calendar or Outlook</td>
+</tr>
+</table>
+
+</body>
+</html>
