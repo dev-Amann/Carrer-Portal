@@ -1,19 +1,79 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Booking - CarrerPortal</title>
+    <title>New Booking Received - CareerPortal</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #1e293b; background-color: #f8fafc; margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: 20px auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .header { background-color: #4f46e5; color: #ffffff; padding: 40px 20px; text-align: center; }
+        .header h1 { margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.025em; }
+        .header p { margin: 8px 0 0; font-size: 14px; opacity: 0.9; }
+        .content { padding: 40px 30px; }
+        .greeting { font-size: 18px; font-weight: 600; margin-bottom: 16px; color: #0f172a; }
+        .details-box { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; margin: 24px 0; }
+        .details-box h3 { margin-top: 0; color: #0f172a; font-size: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; margin-bottom: 16px; }
+        .detail-row { margin: 12px 0; font-size: 14px; }
+        .label { font-weight: 600; color: #64748b; width: 100px; display: inline-block; }
+        .value { color: #1e293b; font-weight: 500; }
+        .button-container { text-align: center; margin: 32px 0; }
+        .btn { background-color: #4f46e5; color: #ffffff !important; padding: 14px 28px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: 600; font-size: 16px; }
+        .footer { background-color: #f1f5f9; padding: 24px; text-align: center; font-size: 12px; color: #64748b; }
+        a { color: #4f46e5; text-decoration: none; font-weight: 500; }
+        .signature { margin-top: 32px; border-top: 1px solid #e2e8f0; padding-top: 16px; font-size: 14px; color: #475569; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📅 New Booking Alert</h1>
+            <p>A new consultation has been scheduled</p>
+        </div>
+        
+        <div class="content">
+            <div class="greeting">Hello {{ expert_name }}!</div>
+            <p>You have a new booking from <strong>{{ user_name }}</strong>. The session details are provided below:</p>
+            
+            <div class="details-box">
+                <h3>📋 Appointment Details</h3>
+                <div class="detail-row">
+                    <span class="label">Client:</span>
+                    <span class="value">{{ user_name }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Date:</span>
+                    <span class="value">{{ formatted_date }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Time:</span>
+                    <span class="value">{{ formatted_start_time }} - {{ formatted_end_time }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Booking ID:</span>
+                    <span class="value">#{{ booking_id }}</span>
+                </div>
+            </div>
+            
+            <div class="button-container">
+                <a href="{{ dashboard_url }}" class="btn">View in Dashboard</a>
+            </div>
+            
+            <p>Please ensure you are ready to join the meeting via your <a href="{{ dashboard_url }}">Expert Dashboard</a> at the scheduled time.</p>
+            
+            <div class="signature">
+                Best regards,<br>
+                <strong>The CareerPortal Team</strong>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2026 CareerPortal. All rights reserved.</p>
+            <p>This is an automated notification. Please do not reply directly to this email.</p>
+        </div>
+    </div>
+</body>
+</html>
 
         .container {
             max-width: 600px;

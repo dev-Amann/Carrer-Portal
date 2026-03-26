@@ -92,6 +92,7 @@ export const authAPI = {
   verifyOTP: (data) => api.post('/auth/verify-otp', data),
   register: (data) => api.post('/auth/register', data),
   login: (data) => api.post('/auth/login', data),
+  resetPassword: (data) => api.post('/auth/reset-password', data),
   refresh: () => api.post('/auth/refresh'),
   logout: () => api.post('/auth/logout'),
 }

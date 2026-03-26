@@ -62,8 +62,8 @@ def send_otp():
                     'error': 'Email already registered'
                 }), 409
         
-        # For login OTP, check if user exists
-        if purpose == 'login':
+        # For login or password reset OTP, check if user exists
+        if purpose in ['login', 'password_reset']:
             user = g.db.query(User).filter_by(email=email).first()
             if not user:
                 return jsonify({
@@ -422,4 +422,78 @@ def logout():
         return jsonify({
             'success': False,
             'error': 'Logout failed'
+        }), 500
+
+
+@auth_bp.route('/reset-password', methods=['POST'])
+def reset_password():
+    """
+    Reset user password using OTP verification
+    
+    Request Body:
+        {
+            "email": "user@example.com",
+            "otp": "123456",
+            "new_password": "newpassword123"
+        }
+    """
+    try:
+        data = request.get_json()
+        
+        if not data:
+            return jsonify({
+                'success': False,
+                'error': 'Request body is required'
+            }), 400
+        
+        email = data.get('email', '').strip().lower()
+        otp = data.get('otp', '').strip()
+        new_password = data.get('new_password', '')
+        
+        if not email or not otp or not new_password:
+            return jsonify({
+                'success': False,
+                'error': 'Email, OTP, and new password are required'
+            }), 400
+            
+        # Validate password strength
+        is_valid, error_message = validate_password_strength(new_password)
+        if not is_valid:
+            return jsonify({
+                'success': False,
+                'error': error_message
+            }), 400
+        
+        # Verify OTP
+        otp_success, otp_message = verify_otp(email, otp, purpose='password_reset')
+        if not otp_success:
+            return jsonify({
+                'success': False,
+                'error': otp_message
+            }), 400
+        
+        # Find user and update password
+        user = g.db.query(User).filter_by(email=email).first()
+        if not user:
+            return jsonify({
+                'success': False,
+                'error': 'User not found'
+            }), 404
+        
+        user.password_hash = hash_password(new_password)
+        g.db.commit()
+        
+        logger.info(f"Password reset successful for {email}")
+        
+        return jsonify({
+            'success': True,
+            'message': 'Password has been reset successfully'
+        }), 200
+        
+    except Exception as e:
+        g.db.rollback()
+        logger.error(f"Password reset error: {str(e)}", exc_info=True)
+        return jsonify({
+            'success': False,
+            'error': 'Password reset failed'
         }), 500

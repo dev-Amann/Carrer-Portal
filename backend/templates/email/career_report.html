@@ -5,293 +5,109 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Career Recommendation Report</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        .container {
-            background-color: #ffffff;
-            margin: 20px auto;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .header {
-            background: linear-gradient(135deg, #34d399 0%, #3b82f6 100%);
-            color: white;
-            padding: 30px 20px;
-            text-align: center;
-        }
-        .header h1 {
-            margin: 0;
-            font-size: 28px;
-            font-weight: 700;
-        }
-        .header p {
-            margin: 10px 0 0;
-            font-size: 14px;
-            opacity: 0.9;
-        }
-        .content {
-            padding: 30px 20px;
-        }
-        .greeting {
-            font-size: 16px;
-            margin-bottom: 20px;
-            color: #555;
-        }
-        .career-card {
-            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-            border-left: 4px solid #3b82f6;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 8px;
-        }
-        .career-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: #1e40af;
-            margin: 0 0 10px;
-        }
-        .career-description {
-            color: #555;
-            margin: 10px 0;
-            line-height: 1.8;
-        }
-        .info-grid {
-            display: table;
-            width: 100%;
-            margin: 15px 0;
-        }
-        .info-row {
-            display: table-row;
-        }
-        .info-label {
-            display: table-cell;
-            padding: 8px 0;
-            font-weight: 600;
-            color: #666;
-            width: 40%;
-        }
-        .info-value {
-            display: table-cell;
-            padding: 8px 0;
-            color: #333;
-        }
-        .match-score {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            margin: 20px 0;
-        }
-        .match-score-value {
-            font-size: 36px;
-            font-weight: 700;
-            margin: 0;
-        }
-        .match-score-label {
-            font-size: 14px;
-            margin: 5px 0 0;
-            opacity: 0.9;
-        }
-        .section {
-            margin: 25px 0;
-        }
-        .section-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #1e40af;
-            margin: 0 0 15px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #e5e7eb;
-        }
-        .skill-gap-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .skill-gap-item {
-            background: #fef3c7;
-            border-left: 3px solid #f59e0b;
-            padding: 12px 15px;
-            margin: 8px 0;
-            border-radius: 5px;
-        }
-        .skill-gap-item.met {
-            background: #d1fae5;
-            border-left-color: #10b981;
-        }
-        .skill-name {
-            font-weight: 600;
-            color: #333;
-        }
-        .skill-level {
-            font-size: 13px;
-            color: #666;
-            margin-top: 4px;
-        }
-        .roadmap {
-            background: #f9fafb;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid #e5e7eb;
-        }
-        .roadmap-text {
-            color: #555;
-            line-height: 1.8;
-            margin: 0;
-        }
-        .cta-section {
-            background: linear-gradient(135deg, #34d399 0%, #3b82f6 100%);
-            padding: 25px;
-            text-align: center;
-            margin: 30px 0;
-            border-radius: 8px;
-        }
-        .cta-button {
-            display: inline-block;
-            background: white;
-            color: #3b82f6;
-            padding: 12px 30px;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: 600;
-            margin: 10px 5px;
-            transition: transform 0.2s;
-        }
-        .cta-button:hover {
-            transform: translateY(-2px);
-        }
-        .footer {
-            background: #f9fafb;
-            padding: 20px;
-            text-align: center;
-            color: #666;
-            font-size: 13px;
-        }
-        .footer a {
-            color: #3b82f6;
-            text-decoration: none;
-        }
-        .badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-            margin: 2px;
-        }
-        .badge-high {
-            background: #d1fae5;
-            color: #065f46;
-        }
-        .badge-medium {
-            background: #fef3c7;
-            color: #92400e;
-        }
-        .progress-bar {
-            background: #e5e7eb;
-            height: 8px;
-            border-radius: 4px;
-            overflow: hidden;
-            margin: 10px 0;
-        }
-        .progress-fill {
-            background: linear-gradient(90deg, #34d399 0%, #3b82f6 100%);
-            height: 100%;
-            border-radius: 4px;
-        }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #1e293b; background-color: #f8fafc; margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: 20px auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .header { background-color: #4f46e5; color: #ffffff; padding: 40px 20px; text-align: center; }
+        .header h1 { margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.025em; }
+        .header p { margin: 8px 0 0; font-size: 14px; opacity: 0.9; }
+        .content { padding: 40px 30px; }
+        .greeting { font-size: 18px; font-weight: 600; margin-bottom: 16px; color: #0f172a; }
+        .career-card { background-color: #f1f5f9; border-left: 4px solid #4f46e5; padding: 24px; margin: 24px 0; border-radius: 8px; }
+        .career-title { font-size: 20px; font-weight: 700; color: #4338ca; margin: 0 0 12px; }
+        .career-description { color: #475569; margin: 12px 0; font-size: 15px; }
+        .info-grid { width: 100%; margin: 16px 0; border-collapse: collapse; }
+        .info-label { padding: 8px 0; font-weight: 600; color: #64748b; width: 40%; font-size: 14px; }
+        .info-value { padding: 8px 0; color: #1e293b; font-size: 14px; }
+        .match-score { background-color: #4f46e5; color: #ffffff; padding: 24px; border-radius: 12px; text-align: center; margin: 32px 0; }
+        .match-score-value { font-size: 40px; font-weight: 800; margin: 0; }
+        .match-score-label { font-size: 14px; margin: 4px 0 0; opacity: 0.9; }
+        .section-title { font-size: 18px; font-weight: 700; color: #0f172a; margin: 32px 0 16px; padding-bottom: 8px; border-bottom: 2px solid #e2e8f0; }
+        .skill-gap-list { padding: 0; margin: 0; list-style: none; }
+        .skill-gap-item { background: #fffbeb; border-left: 3px solid #f59e0b; padding: 12px 16px; margin: 8px 0; border-radius: 6px; }
+        .skill-gap-item.met { background: #f0fdf4; border-left-color: #22c55e; }
+        .skill-name { font-weight: 600; color: #1e293b; font-size: 14px; }
+        .skill-level { font-size: 13px; color: #64748b; margin-top: 4px; }
+        .roadmap { background: #f8fafc; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0; }
+        .cta-section { background-color: #4f46e5; padding: 32px; text-align: center; margin: 40px 0; border-radius: 12px; }
+        .cta-button { display: inline-block; background: white; color: #4f46e5 !important; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: 600; margin: 8px; }
+        .footer { background-color: #f1f5f9; padding: 24px; text-align: center; color: #64748b; font-size: 12px; }
+        .badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+        .badge-high { background: #dcfce7; color: #166534; }
+        .badge-medium { background: #fef9c3; color: #854d0e; }
+        .progress-bar { background: #e2e8f0; height: 10px; border-radius: 5px; overflow: hidden; margin: 16px 0; }
+        .progress-fill { background-color: #4f46e5; height: 100%; border-radius: 5px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
         <div class="header">
-            <h1>🎯 Your Career Recommendation Report</h1>
-            <p>Personalized Career Guidance from CareerPortal</p>
+            <h1>🎯 Your Career Roadmap</h1>
+            <p>Personalized Insights from CareerPortal</p>
         </div>
 
-        <!-- Content -->
         <div class="content">
-            <div class="greeting">
-                Hi <strong>{{ user_name }}</strong>,
-            </div>
-            <p>Based on your skills and experience, we've identified an excellent career match for you. Here's your detailed career recommendation report:</p>
+            <div class="greeting">Hi <strong>{{ user_name }}</strong>,</div>
+            <p>Based on your profile, we've analyzed your ideal career path. Here is your personalized recommendation report:</p>
 
-            <!-- Career Card -->
             <div class="career-card">
                 <h2 class="career-title">{{ career.title }}</h2>
                 <p class="career-description">{{ career.description }}</p>
 
-                <div class="info-grid">
-                    <div class="info-row">
-                        <div class="info-label">💰 Salary Range:</div>
-                        <div class="info-value"><strong>{{ career.salary_range }}</strong></div>
-                    </div>
-                    <div class="info-row">
-                        <div class="info-label">📈 Market Demand:</div>
-                        <div class="info-value">
+                <table class="info-grid">
+                    <tr>
+                        <td class="info-label">💰 Salary Range:</td>
+                        <td class="info-value"><strong>{{ career.salary_range }}</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="info-label">📈 Market Demand:</td>
+                        <td class="info-value">
                             <span class="badge badge-{{ 'high' if career.demand_level in ['high', 'very_high'] else 'medium' }}">
-                                {{ career.demand_level.replace('_', ' ').upper() }}
+                                {{ career.demand_level.replace('_', ' ') }}
                             </span>
-                        </div>
-                    </div>
-                    <div class="info-row">
-                        <div class="info-label">✅ Skills Matched:</div>
-                        <div class="info-value"><strong>{{ skill_gap.met_skills_count }}/{{ skill_gap.total_required_skills }}</strong></div>
-                    </div>
-                </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="info-label">✅ Skills Matched:</td>
+                        <td class="info-value"><strong>{{ skill_gap.met_skills_count }}/{{ skill_gap.total_required_skills }}</strong></td>
+                    </tr>
+                </table>
             </div>
 
-            <!-- Match Score -->
             <div class="match-score">
                 <p class="match-score-value">{{ "%.0f"|format(skill_gap.readiness_percentage) }}%</p>
                 <p class="match-score-label">Career Readiness Score</p>
             </div>
 
-            <!-- Progress Bar -->
             <div class="progress-bar">
                 <div class="progress-fill" style="width: {{ skill_gap.readiness_percentage }}%"></div>
             </div>
 
-            <!-- Skills You Have -->
             {% if skill_gap.met_requirements %}
             <div class="section">
-                <h3 class="section-title">✅ Skills You Already Have</h3>
+                <h3 class="section-title">✅ Skills You Possess</h3>
                 <ul class="skill-gap-list">
                     {% for skill in skill_gap.met_requirements %}
                     <li class="skill-gap-item met">
                         <div class="skill-name">{{ skill.skill_name }}</div>
-                        <div class="skill-level">
-                            Current: <strong>{{ skill.current_level }}</strong> | 
-                            Required: {{ skill.required_level }}
-                        </div>
+                        <div class="skill-level">Current: {{ skill.current_level }} | Required: {{ skill.required_level }}</div>
                     </li>
                     {% endfor %}
                 </ul>
             </div>
             {% endif %}
 
-            <!-- Skills to Develop -->
             {% if skill_gap.gaps %}
             <div class="section">
-                <h3 class="section-title">📚 Skills to Develop</h3>
+                <h3 class="section-title">📚 Skills to Target</h3>
                 <ul class="skill-gap-list">
                     {% for skill in skill_gap.gaps %}
                     <li class="skill-gap-item">
                         <div class="skill-name">{{ skill.skill_name }}</div>
                         <div class="skill-level">
                             {% if skill.current_level %}
-                            Current: <strong>{{ skill.current_level }}</strong> → Target: <strong>{{ skill.required_level }}</strong>
+                            Transition: {{ skill.current_level }} → Target: {{ skill.required_level }}
                             {% else %}
-                            Status: <strong>Not yet acquired</strong> | Target: <strong>{{ skill.required_level }}</strong>
+                            Target: {{ skill.required_level }}
                             {% endif %}
                         </div>
                     </li>
@@ -300,38 +116,32 @@
             </div>
             {% endif %}
 
-            <!-- Learning Roadmap -->
             {% if career.roadmap %}
             <div class="section">
-                <h3 class="section-title">🗺️ Your Learning Roadmap</h3>
+                <h3 class="section-title">🗺️ Recommended Roadmap</h3>
                 <div class="roadmap">
-                    <p class="roadmap-text">{{ career.roadmap }}</p>
+                    <p style="margin: 0; font-size: 14px; color: #475569;">{{ career.roadmap }}</p>
                 </div>
             </div>
             {% endif %}
 
-            <!-- Call to Action -->
             <div class="cta-section">
-                <h3 style="color: white; margin: 0 0 15px;">Ready to Start Your Journey?</h3>
-                <a href="{{ dashboard_url }}" class="cta-button">View Dashboard</a>
-                <a href="{{ experts_url }}" class="cta-button">Book Expert Consultation</a>
+                <h3 style="color: white; margin-top: 0; font-size: 20px;">Ready to Level Up?</h3>
+                <a href="{{ dashboard_url }}" class="cta-button">Go to Dashboard</a>
+                <a href="{{ experts_url }}" class="cta-button">Book Consultation</a>
             </div>
 
-            <p style="color: #666; font-size: 14px; margin-top: 30px;">
-                💡 <strong>Pro Tip:</strong> Focus on developing the missing skills one at a time. Consider booking a consultation with our experts for personalized guidance on your career transition.
+            <p style="color: #64748b; font-size: 13px; text-align: center;">
+                💡 <strong>Pro Tip:</strong> Focus on bridging your top skill gaps first to accelerate your career transition.
             </p>
         </div>
 
-        <!-- Footer -->
         <div class="footer">
-            <p>
-                <strong>CareerPortal</strong> - Your Partner in Career Growth<br>
-                <a href="{{ website_url }}">Visit Website</a> | 
-                <a href="{{ contact_url }}">Contact Support</a>
-            </p>
-            <p style="margin-top: 15px; font-size: 12px; color: #999;">
-                This email was sent to {{ user_email }} because you requested a career recommendation report.<br>
-                © 2025 CareerPortal. All rights reserved.
+            <p><strong>CareerPortal</strong> - Empowing Your Career Journey</p>
+            <p><a href="{{ website_url }}">Website</a> • <a href="{{ contact_url }}">Support</a></p>
+            <p style="margin-top: 16px; font-size: 11px;">
+                Sent to {{ user_email }} per your request.<br>
+                © 2026 CareerPortal. All rights reserved.
             </p>
         </div>
     </div>

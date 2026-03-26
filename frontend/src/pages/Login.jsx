@@ -25,6 +25,12 @@ const Login = () => {
   const [timer, setTimer] = useState(0);
 
   useEffect(() => {
+    if (location.state?.message) {
+      setSuccessMessage(location.state.message);
+      // Clear the state so the message doesn't persist on refresh
+      window.history.replaceState({}, document.title);
+    }
+
     let interval;
     if (timer > 0) {
       interval = setInterval(() => {

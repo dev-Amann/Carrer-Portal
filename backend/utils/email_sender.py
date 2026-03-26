@@ -179,7 +179,8 @@ def send_otp_email(email, otp, purpose='verification'):
     try:
         purpose_text = {
             'verification': 'Email Verification',
-            'login': 'Login Verification'
+            'login': 'Login Verification',
+            'password_reset': 'Password Reset'
         }.get(purpose, 'Verification')
         
         # Create email message

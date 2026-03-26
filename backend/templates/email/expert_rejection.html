@@ -1,110 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expert Application Update - CareerPortal</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 600px;
-            margin: 20px auto;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .header {
-            background: linear-gradient(135deg, #6EE7B7 0%, #3B82F6 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-        .header h1 {
-            margin: 0;
-            font-size: 24px;
-        }
-        .content {
-            padding: 30px;
-        }
-        .info-box {
-            background: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 15px;
-            margin: 20px 0;
-        }
-        .info-box h3 {
-            margin-top: 0;
-            color: #856404;
-        }
-        .info-box ul {
-            margin: 10px 0;
-            padding-left: 20px;
-        }
-        .cta-button {
-            display: inline-block;
-            background: linear-gradient(135deg, #6EE7B7 0%, #3B82F6 100%);
-            color: white;
-            padding: 15px 30px;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
-            margin: 20px 0;
-        }
-        .footer {
-            background: #f9f9f9;
-            padding: 20px;
-            text-align: center;
-            font-size: 12px;
-            color: #666;
-        }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #1e293b; background-color: #f8fafc; margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: 20px auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .header { background-color: #4f46e5; color: #ffffff; padding: 40px 20px; text-align: center; }
+        .header h1 { margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.025em; }
+        .content { padding: 40px 30px; }
+        .greeting { font-size: 18px; font-weight: 600; margin-bottom: 16px; color: #0f172a; }
+        .status-box { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; margin: 24px 0; }
+        .status-box h3 { margin-top: 0; color: #475569; font-size: 16px; margin-bottom: 12px; }
+        .status-box ul { margin: 0; padding-left: 20px; color: #64748b; font-size: 14px; }
+        .status-box li { margin-bottom: 8px; }
+        .button-container { text-align: center; margin: 32px 0; }
+        .btn { background-color: #4f46e5; color: #ffffff !important; padding: 14px 28px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: 600; font-size: 16px; }
+        .footer { background-color: #f1f5f9; padding: 24px; text-align: center; font-size: 12px; color: #64748b; }
+        .signature { margin-top: 32px; border-top: 1px solid #e2e8f0; padding-top: 16px; font-size: 14px; color: #475569; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>CarrerPortal Expert Application</h1>
+            <h1>Application Update</h1>
         </div>
         <div class="content">
-            <h2>Hello {{ name }},</h2>
+            <div class="greeting">Hello {{ name }},</div>
             
-            <p>Thank you for your interest in becoming an expert on CarrerPortal.</p>
+            <p>Thank you for your interest in becoming an expert on <strong>CareerPortal</strong>.</p>
             
-            <p>After careful review, we regret to inform you that we are unable to approve your expert application at this time.</p>
+            <p>After a careful review of your application, we regret to inform you that we are unable to approve your expert status at this time.</p>
             
-            <div class="info-box">
-                <h3>Why might this happen?</h3>
+            <div class="status-box">
+                <h3>Common Reasons for This Decision:</h3>
                 <ul>
-                    <li>Incomplete or insufficient documentation</li>
-                    <li>Specialization area not currently needed</li>
-                    <li>Experience level doesn't match our current requirements</li>
-                    <li>Profile information needs more detail</li>
+                    <li>The profile requires more detailed professional information</li>
+                    <li>We currently have a high volume of experts in your specialization</li>
+                    <li>Credentials or certifications could not be fully verified</li>
+                    <li>The application was incomplete or lacked specific experience details</li>
                 </ul>
             </div>
             
-            <p><strong>Don't be discouraged!</strong> You're welcome to reapply in the future with updated information or additional credentials.</p>
+            <p>Please do not let this discourage you! You are welcome to update your information and reapply in the future once you have more details to share.</p>
             
-            <div style="text-align: center;">
-                <a href="{{ reapply_url }}" class="cta-button">
-                    Apply Again
-                </a>
+            <div class="button-container">
+                <a href="{{ reapply_url }}" class="btn">View Application / Reapply</a>
             </div>
             
-            <p>If you have questions about this decision or would like feedback on your application, please don't hesitate to contact our support team.</p>
+            <p>We appreciate your interest in being part of our journey and wish you continued success in your professional career.</p>
             
-            <p>We appreciate your interest in CarrerPortal and wish you the best in your professional journey.</p>
-            
-            <p>Best regards,<br>The CarrerPortal Team</p>
+            <div class="signature">
+                Best regards,<br>
+                <strong>The CareerPortal Team</strong>
+            </div>
         </div>
         <div class="footer">
-            <p>© 2024 CarrerPortal. All rights reserved.</p>
-            <p>This is an automated email. Please do not reply.</p>
+            <p>© 2026 CareerPortal. All rights reserved.</p>
+            <p>This is an automated notification. Please do not reply directly to this email.</p>
         </div>
     </div>
 </body>

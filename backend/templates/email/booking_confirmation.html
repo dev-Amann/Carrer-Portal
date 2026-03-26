@@ -3,115 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking Confirmed - CarrerPortal</title>
+    <title>Booking Confirmed - CareerPortal</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 600px;
-            margin: 20px auto;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .header {
-            background: linear-gradient(135deg, #6EE7B7 0%, #3B82F6 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-        .header h1 {
-            margin: 0;
-            font-size: 28px;
-        }
-        .header p {
-            margin: 10px 0 0 0;
-            font-size: 16px;
-            opacity: 0.95;
-        }
-        .content {
-            padding: 30px;
-        }
-        .content h2 {
-            color: #111827;
-            margin-top: 0;
-        }
-        .booking-details {
-            background: #f9f9f9;
-            border-left: 4px solid #3B82F6;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 4px;
-        }
-        .booking-details h3 {
-            margin-top: 0;
-            color: #111827;
-        }
-        .detail-row {
-            margin: 10px 0;
-            display: flex;
-            align-items: baseline;
-        }
-        .label {
-            font-weight: bold;
-            color: #555;
-            min-width: 120px;
-        }
-        .value {
-            color: #333;
-        }
-        .important {
-            background: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 4px;
-        }
-        .important strong {
-            color: #856404;
-        }
-        .button-container {
-            text-align: center;
-            margin: 30px 0;
-        }
-        .meeting-link {
-            background: linear-gradient(135deg, #6EE7B7 0%, #3B82F6 100%);
-            color: white;
-            padding: 15px 30px;
-            text-decoration: none;
-            border-radius: 5px;
-            display: inline-block;
-            font-weight: bold;
-            font-size: 16px;
-        }
-        .meeting-link:hover {
-            opacity: 0.9;
-        }
-        .footer {
-            background: #f9f9f9;
-            padding: 20px;
-            text-align: center;
-            font-size: 12px;
-            color: #666;
-            border-top: 1px solid #e5e7eb;
-        }
-        .footer p {
-            margin: 5px 0;
-        }
-        a {
-            color: #3B82F6;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #1e293b; background-color: #f8fafc; margin: 0; padding: 0; }
+        .container { max-width: 600px; margin: 20px auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .header { background-color: #4f46e5; color: #ffffff; padding: 40px 20px; text-align: center; }
+        .header h1 { margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.025em; }
+        .header p { margin: 8px 0 0; font-size: 14px; opacity: 0.9; }
+        .content { padding: 40px 30px; }
+        .greeting { font-size: 18px; font-weight: 600; margin-bottom: 16px; color: #0f172a; }
+        .booking-details { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; margin: 24px 0; }
+        .booking-details h3 { margin-top: 0; color: #0f172a; font-size: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; margin-bottom: 16px; }
+        .detail-row { margin: 12px 0; font-size: 14px; }
+        .label { font-weight: 600; color: #64748b; width: 120px; display: inline-block; }
+        .value { color: #1e293b; font-weight: 500; }
+        .important { background-color: #fffbeb; border-left: 4px solid #f59e0b; padding: 16px; margin: 24px 0; border-radius: 8px; font-size: 14px; color: #92400e; }
+        .button-container { text-align: center; margin: 32px 0; }
+        .btn { background-color: #4f46e5; color: #ffffff !important; padding: 14px 28px; text-decoration: none; border-radius: 8px; display: inline-block; font-weight: 600; font-size: 16px; }
+        .footer { background-color: #f1f5f9; padding: 24px; text-align: center; font-size: 12px; color: #64748b; }
+        a { color: #4f46e5; text-decoration: none; font-weight: 500; }
+        .signature { margin-top: 32px; border-top: 1px solid #e2e8f0; padding-top: 16px; font-size: 14px; color: #475569; }
     </style>
 </head>
 <body>
@@ -122,11 +33,11 @@
         </div>
         
         <div class="content">
-            <h2>Hello {{ user_name }}!</h2>
+            <div class="greeting">Hello {{ user_name }}!</div>
             <p>Great news! Your booking with <strong>{{ expert_name }}</strong> has been confirmed and payment received.</p>
             
             <div class="booking-details">
-                <h3>📅 Booking Details</h3>
+                <h3>📅 Appointment Information</h3>
                 <div class="detail-row">
                     <span class="label">Expert:</span>
                     <span class="value">{{ expert_name }}</span>
@@ -145,32 +56,34 @@
                 </div>
                 {% if razorpay_payment_id %}
                 <div class="detail-row">
-                    <span class="label">Transaction ID:</span>
+                    <span class="label">Transaction:</span>
                     <span class="value">{{ razorpay_payment_id }}</span>
                 </div>
                 {% endif %}
             </div>
             
             <div class="important">
-                <strong>⏰ Important:</strong> Please join the meeting at the scheduled time from your dashboard.
+                <strong>⏰ Reminder:</strong> Please join the meeting at the scheduled time. You can access the meeting link directly from your dashboard.
             </div>
             
             <div class="button-container">
-                <a href="{{ dashboard_url }}" class="meeting-link">Go to Dashboard</a>
+                <a href="{{ dashboard_url }}" class="btn">Go to Dashboard</a>
             </div>
             
-            <p>You can access your booking details and join the meeting from your <a href="{{ dashboard_url }}">dashboard</a>.</p>
+            <p><strong>How to Join:</strong><br>
+            Log in to your <a href="{{ dashboard_url }}">CareerPortal Dashboard</a> at the start of your session and click the "Join Meeting" button next to your appointment.</p>
             
-            <p><strong>To Join:</strong> Log in to your dashboard and look for the "Join" button next to your confirmed booking.</p>
+            <p>If you have any questions or need to reschedule, please reach out to us through the contact section on our website.</p>
             
-            <p>If you have any questions or need to reschedule, please contact us through your dashboard.</p>
-            
-            <p>Best regards,<br>The CarrerPortal Team</p>
+            <div class="signature">
+                Best regards,<br>
+                <strong>The CareerPortal Team</strong>
+            </div>
         </div>
         
         <div class="footer">
-            <p>© 2024 CarrerPortal. All rights reserved.</p>
-            <p>This is an automated email. Please do not reply.</p>
+            <p>© 2026 CareerPortal. All rights reserved.</p>
+            <p>This is an automated confirmation. Please do not reply directly to this email.</p>
         </div>
     </div>
 </body>
