@@ -84,11 +84,7 @@ def _send_via_flask_mail(contact_data):
             msg.html = None
         
         # Render plain text template as fallback
-        try:
-            msg.body = render_template('email/contact.txt', **contact_data)
-        except Exception as e:
-            logger.warning(f"Failed to render text template: {str(e)}")
-            msg.body = "New contact form submission received. Please check the dashboard."
+        msg.body = "New contact form submission received. Please view this email in an HTML-compatible client."
         
         # Send email
         mail.send(msg)
@@ -130,11 +126,7 @@ def _send_via_sendgrid(contact_data):
             html_content = "<p>New contact form submission received.</p>"
         
         # Render plain text content
-        try:
-            text_content = render_template('email/contact.txt', **contact_data)
-        except Exception as e:
-            logger.warning(f"Failed to render text template for SendGrid: {str(e)}")
-            text_content = "New contact form submission received."
+        text_content = "New contact form submission received. Please view the HTML version for full details."
         
         # Create SendGrid message
         message = SGMail(
@@ -204,11 +196,7 @@ def send_otp_email(email, otp, purpose='verification'):
             msg.html = f"<p>Your verification code is: <strong>{otp}</strong></p>"
 
         # Create plain text content
-        try:
-            msg.body = render_template('email/otp_verification.txt', **template_context)
-        except Exception as e:
-            logger.warning(f"Failed to render OTP text template: {str(e)}")
-            msg.body = f"Your verification code is: {otp}"
+        msg.body = f"Your CarrerPortal verification code is: {otp}"
         
         # Send email
         mail.send(msg)
@@ -249,10 +237,7 @@ def send_expert_approval_email(email, name, specialization):
                                       name=name, 
                                       specialization=specialization,
                                       dashboard_url=dashboard_url)
-            msg.body = render_template('email/expert_approval.txt',
-                                      name=name,
-                                      specialization=specialization,
-                                      dashboard_url=dashboard_url)
+            msg.body = f"Hello {name}, your expert application for {specialization} has been approved! Log in at: {dashboard_url}"
         except Exception as e:
             logger.warning(f"Failed to render template: {str(e)}, using fallback")
             msg.body = f"Hello {name},\n\nYour expert application for {specialization} has been approved!\n\nAccess your dashboard at: {dashboard_url}"
@@ -295,9 +280,7 @@ def send_expert_rejection_email(email, name):
             msg.html = render_template('email/expert_rejection.html',
                                       name=name,
                                       reapply_url=reapply_url)
-            msg.body = render_template('email/expert_rejection.txt',
-                                      name=name,
-                                      reapply_url=reapply_url)
+            msg.body = f"Hello {name}, regarding your expert application: we are unable to approve it at this time. You can reapply at: {reapply_url}"
         except Exception as e:
             logger.warning(f"Failed to render template: {str(e)}, using fallback")
             msg.body = f"Hello {name},\n\nThank you for your interest. We are unable to approve your expert application at this time.\n\nYou can reapply at: {reapply_url}"
@@ -368,7 +351,7 @@ def send_booking_confirmation_email(user_email, user_name, expert_name, slot_sta
         # Render templates
         try:
             msg.html = render_template('email/booking_confirmation.html', **template_context)
-            msg.body = render_template('email/booking_confirmation.txt', **template_context)
+            msg.body = f"Your booking with {expert_name} is confirmed for {formatted_date}. View details: {dashboard_url}"
         except Exception as e:
             logger.warning(f"Failed to render booking confirmation templates: {str(e)}")
             # Fallback to basic text
@@ -437,7 +420,7 @@ def send_expert_booking_notification_email(expert_email, expert_name, user_name,
         # Render templates
         try:
             msg.html = render_template('email/expert_booking_notification.html', **template_context)
-            msg.body = render_template('email/expert_booking_notification.txt', **template_context)
+            msg.body = f"New booking from {user_name} for {formatted_date}. Check your dashboard: {dashboard_url}"
         except Exception as e:
             logger.warning(f"Failed to render expert booking notification templates: {str(e)}")
             # Fallback to basic text
