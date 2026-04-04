@@ -22,7 +22,7 @@ const CareerComparisonModal = ({ careers, onClose }) => {
     try {
       setLoading(true);
       const careerIds = careers.map(c => c.id);
-      const response = await api.post('/careers/email-comparison', {
+      const response = await api.post('/careers/compare/email', {
         career_ids: careerIds
       });
       if (response.data.success) {
@@ -39,7 +39,7 @@ const CareerComparisonModal = ({ careers, onClose }) => {
     try {
       setLoading(true);
       const careerIds = careers.map(c => c.id);
-      const response = await api.post('/careers/download-comparison-pdf', {
+      const response = await api.post('/careers/compare/download-pdf', {
         career_ids: careerIds
       }, {
         responseType: 'blob'

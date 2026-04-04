@@ -317,3 +317,9 @@ class CareerService:
         """Generate comparison PDF and email it"""
         from services.career_report_service import CareerReportService
         return CareerReportService.generate_comparison_report(user_id, career_ids, CareerService.calculate_skill_gap)
+
+    @staticmethod
+    def download_comparison_report(user_id, career_ids):
+        """Generate comparison PDF and return buffer for download"""
+        from services.career_report_service import CareerReportService
+        return CareerReportService.download_comparison_report_buffer(user_id, career_ids, CareerService.calculate_skill_gap)

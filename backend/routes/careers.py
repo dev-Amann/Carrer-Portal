@@ -146,6 +146,28 @@ def email_career_report(career_id):
         logger.error(f"Error in email_career_report: {str(e)}")
         return jsonify({'success': False, 'error': str(e)}), 500
 
+@careers_bp.route('/careers/compare/download-pdf', methods=['POST'])
+@verify_token()
+def download_comparison_pdf():
+    """Download comparison PDF for multiple careers"""
+    try:
+        user_id = g.user_id
+        data = request.get_json()
+        if not data or 'career_ids' not in data:
+            return jsonify({'success': False, 'error': 'career_ids required'}), 400
+
+        pdf_buffer = CareerService.download_comparison_report(user_id, data['career_ids'])
+        pdf_buffer.seek(0)
+        return send_file(
+            pdf_buffer,
+            mimetype='application/pdf',
+            as_attachment=True,
+            download_name='career_comparison_report.pdf'
+        )
+    except Exception as e:
+        logger.error(f"Error in download_comparison_pdf: {str(e)}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 @careers_bp.route('/careers/compare/email', methods=['POST'])
 @verify_token()
 def email_career_comparison():

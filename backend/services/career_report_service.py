@@ -126,3 +126,34 @@ class CareerReportService:
         except Exception as e:
             logger.error(f"Error generating comparison report: {str(e)}")
             raise
+
+    @staticmethod
+    def download_comparison_report_buffer(user_id, career_ids, calculate_skill_gap_fn):
+        """Generate comparison PDF and return buffer for direct browser download"""
+        try:
+            user = g.db.query(User).get(user_id)
+            careers = g.db.query(Career).filter(Career.id.in_(career_ids)).all()
+
+            if not careers:
+                raise Exception("No careers found for the given IDs")
+
+            comparison_data = []
+            for career in careers:
+                skill_gap = calculate_skill_gap_fn(user_id, career.id)
+                comparison_data.append({
+                    'career': career.to_dict(),
+                    'matched_skills': skill_gap['met_skills_count'],
+                    'total_skills': skill_gap['total_required_skills'],
+                    'readiness_percentage': skill_gap['readiness_percentage']
+                })
+
+            user_data = user.to_dict()
+            pdf_buffer = create_career_comparison_pdf(user_data, comparison_data)
+
+            if not pdf_buffer:
+                raise Exception("Failed to generate PDF")
+
+            return pdf_buffer
+        except Exception as e:
+            logger.error(f"Error generating comparison PDF for download: {str(e)}")
+            raise
