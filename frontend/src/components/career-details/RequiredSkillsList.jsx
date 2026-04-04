@@ -19,7 +19,7 @@ const RequiredSkillsList = ({ skills }) => {
                         className="flex flex-col p-5 bg-white border border-slate-200 rounded-xl hover:border-indigo-300 hover:shadow-md transition-all group shadow-sm"
                     >
                         <div className="flex items-start justify-between mb-2">
-                            <h3 className="font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors">{skill.skill_name}</h3>
+                            <h3 className="font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors">{skill.name || skill.skill_name}</h3>
                             <span className="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs rounded border border-blue-100 capitalize font-medium">
                                 {skill.required_level}
                             </span>

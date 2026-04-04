@@ -207,24 +207,7 @@ const Experts = () => {
           </div>
         )}
 
-        {/* CTA Section */}
-        <section className="mt-20 text-center bg-indigo-600 rounded-2xl p-10 relative overflow-hidden shadow-lg">
-          <div className="relative z-10">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4 text-white">
-              Want to become an expert on our platform?
-            </h2>
-            <p className="text-lg mb-8 text-indigo-100 opacity-90">
-              Share your knowledge and help others grow in their careers
-            </p>
-            <Button
-              onClick={() => navigate('/expert/register')}
-              size="lg"
-              className="bg-white text-indigo-600 hover:bg-indigo-50 border-none shadow-md"
-            >
-              Apply as Expert
-            </Button>
-          </div>
-        </section>
+
       </div>
 
       {toast.show && (

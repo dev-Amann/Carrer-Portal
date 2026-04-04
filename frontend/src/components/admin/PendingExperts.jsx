@@ -79,21 +79,23 @@ const PendingExperts = ({ experts, onApprove, onReject }) => {
                                 </div>
 
                                 {/* Actions */}
-                                <div className="flex flex-col sm:flex-row lg:flex-col gap-3 min-w-[140px] justify-center">
-                                    <Button
+                                <div className="flex flex-col sm:flex-row lg:flex-col gap-3 min-w-[150px] justify-center">
+                                    <button
                                         onClick={() => onApprove(expert.id)}
-                                        className="w-full justify-center bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm"
+                                        className="flex items-center justify-center gap-2 w-full px-5 py-2.5 rounded-full font-semibold text-sm text-white transition-all duration-200 hover:scale-105 active:scale-95"
+                                        style={{ background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)', boxShadow: '0 4px 14px rgba(16,185,129,0.4)' }}
                                     >
-                                        <CheckIcon className="w-4 h-4 mr-2" />
+                                        <CheckIcon className="w-4 h-4" />
                                         Approve
-                                    </Button>
-                                    <Button
+                                    </button>
+                                    <button
                                         onClick={() => onReject(expert.id)}
-                                        className="w-full justify-center bg-white text-red-600 border border-red-200 hover:bg-red-50"
+                                        className="flex items-center justify-center gap-2 w-full px-5 py-2.5 rounded-full font-semibold text-sm text-white transition-all duration-200 hover:scale-105 active:scale-95"
+                                        style={{ background: 'linear-gradient(135deg, #f87171 0%, #dc2626 100%)', boxShadow: '0 4px 14px rgba(220,38,38,0.35)' }}
                                     >
-                                        <XIcon className="w-4 h-4 mr-2" />
+                                        <XIcon className="w-4 h-4" />
                                         Reject
-                                    </Button>
+                                    </button>
                                 </div>
                             </div>
                         </div>

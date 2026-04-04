@@ -72,6 +72,7 @@ class CareerSkill(Base):
             'career_id': self.career_id,
             'skill_id': self.skill_id,
             'skill_name': self.skill.name if self.skill else None,
+            'category': self.skill.category if self.skill else None,
             'required_level': self.required_level
         }
     

@@ -117,15 +117,14 @@ const ExpertProfile = ({ profile, onSave }) => {
             ) : (
                 <div className="space-y-6 relative z-10">
                     <div>
-                        <Input
-                            label="Bio"
-                            as="textarea"
+                        <label className="block text-sm font-medium text-slate-600 mb-1.5 ml-1">Bio</label>
+                        <textarea
                             value={editForm.bio}
                             onChange={(e) => setEditForm({ ...editForm, bio: e.target.value })}
                             rows={6}
                             maxLength={1000}
                             placeholder="Tell clients about your expertise and experience..."
-                            className="text-slate-900 bg-white border-slate-300 focus:border-indigo-500"
+                            className="w-full px-4 py-3 rounded-lg border border-slate-300 bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-500 resize-y transition-colors duration-150"
                         />
                         <p className="mt-2 text-xs text-slate-500 text-right">
                             {editForm.bio.length}/1000 characters
@@ -133,18 +132,22 @@ const ExpertProfile = ({ profile, onSave }) => {
                     </div>
 
                     <div>
-                        <Input
-                            label="Hourly Rate"
-                            type="number"
-                            value={editForm.rate_per_hour}
-                            onChange={(e) => setEditForm({ ...editForm, rate_per_hour: e.target.value })}
-                            min="0"
-                            max="100000"
-                            step="50"
-                            placeholder="1500"
-                            icon={<span className="text-slate-400 font-bold">₹</span>}
-                            className="text-slate-900 bg-white border-slate-300 focus:border-indigo-500"
-                        />
+                        <label className="block text-sm font-medium text-slate-600 mb-1.5 ml-1">Hourly Rate</label>
+                        <div className="relative">
+                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <span className="text-slate-500 font-bold">₹</span>
+                            </div>
+                            <input
+                                type="number"
+                                value={editForm.rate_per_hour}
+                                onChange={(e) => setEditForm({ ...editForm, rate_per_hour: e.target.value })}
+                                min="0"
+                                max="100000"
+                                step="50"
+                                placeholder="1500"
+                                className="w-full pl-8 pr-4 py-2.5 rounded-lg border border-slate-300 bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-500 transition-colors duration-150"
+                            />
+                        </div>
                         <p className="mt-2 text-xs text-slate-500">
                             Set your hourly consultation rate
                         </p>
